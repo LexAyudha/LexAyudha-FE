@@ -1,5 +1,5 @@
+// Dynamically applying colorful text effects depending on the selected theme
 import React, { useEffect, useRef } from 'react';
-
 
 export default function ChromaticEffect({ themeName, themeColors, children }) {
   const elementRef = useRef(null);
@@ -10,14 +10,14 @@ export default function ChromaticEffect({ themeName, themeColors, children }) {
     const text = elementRef.current.textContent;
     let fragments;
     
-    // Determine splitting method based on theme
+    // Determine the splitting method based on theme
     switch(themeName) {
       case 'chromTheme_1':
         // Split by words, preserve whitespace
         fragments = text.split(/(\s+)/);
         break;
       case 'chromTheme_2':
-        // Split by pairs of characters
+        // Split by pair of characters
         fragments = text.match(/.{1,2}/gs) || [];
         break;
       case 'chromTheme_3':
