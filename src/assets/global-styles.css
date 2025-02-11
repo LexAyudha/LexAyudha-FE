@@ -1,0 +1,405 @@
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('/OpenDyslexic-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'ComicSans';
+  src: url('/Ldfcomicsans-jj7l.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+:root {
+    /* Default theme */
+    --background-color: #ffffff;
+    --primary-color: #FBFBFD;
+    --font-family: Arial, sans-serif;
+    --text-color: #333333;
+
+    /* Font sizes, line heights and etc.. */
+    --fs-7xl: 106px;
+    --fs-6xl: 96px;
+    --fs-5xl: 65px;
+    --fs-4xl: 52px;
+    --fs-3xl: 40px;
+    --fs-2xl: 34px;
+    --fs-xl: 29px;
+    --fs-lg: 24px;
+    --fs-md: 17px;
+    --fs-sm: 15px;
+    --fs-xs: 12px;
+    --lh-xs: 17px;
+    --lh-sm: 26px;
+    --lh-md-dense: 24px;
+    --lh-md: 26px;
+    --lh-lg: 30px;
+    --lh-xl: 37px;
+    --lh-2xl: 42px;
+    --lh-6xl: 102px;
+    --lh-7xl: 115px;
+    --lh-5xl: 69px;
+    --lh-4xl: 60px;
+    --lh-3xl: 52px;
+    --spc-4xl: 96px;
+    --spc-3xl: 64px;
+    --spc-2xl: 48px;
+    --spc-2xl-neg: -48px;
+    --spc-xl: 32px;
+    --spc-xl-neg: -32px;
+    --spc-lg: 24px;
+    --spc-lg-neg: -24px;
+    --spc-md: 16px;
+    --spc-md-neg: -16px;
+    --spc-sm: 8px;
+    --spc-xs: 4px;
+    --spc-2xs: 2px;
+    --img-zoom-half: 1.05;
+  }
+  
+  /* Fonts sizes css */
+  .h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+}
+.h1 .small,
+.h1 small,
+.h2 .small,
+.h2 small,
+.h3 .small,
+.h3 small,
+.h4 .small,
+.h4 small,
+.h5 .small,
+.h5 small,
+.h6 .small,
+.h6 small,
+h1 .small,
+h1 small,
+h2 .small,
+h2 small,
+h3 .small,
+h3 small,
+h4 .small,
+h4 small,
+h5 .small,
+h5 small,
+h6 .small,
+h6 small {
+  font-weight: 400;
+  line-height: 1;
+  color: #777;
+}
+.h1,
+.h2,
+.h3,
+h1,
+h2,
+h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+.h1 .small,
+.h1 small,
+.h2 .small,
+.h2 small,
+.h3 .small,
+.h3 small,
+h1 .small,
+h1 small,
+h2 .small,
+h2 small,
+h3 .small,
+h3 small {
+  font-size: 65%;
+}
+.h4,
+.h5,
+.h6,
+h4,
+h5,
+h6 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.h4 .small,
+.h4 small,
+.h5 .small,
+.h5 small,
+.h6 .small,
+.h6 small,
+h4 .small,
+h4 small,
+h5 .small,
+h5 small,
+h6 .small,
+h6 small {
+  font-size: 75%;
+}
+.h1,
+h1 {
+  font-size: 36px;
+}
+.h2,
+h2 {
+  font-size: 30px;
+}
+.h3,
+h3 {
+  font-size: 24px;
+}
+.h4,
+h4 {
+  font-size: 18px;
+}
+.h5,
+h5 {
+  font-size: 14px;
+}
+.h6,
+h6 {
+  font-size: 12px;
+}
+p {
+  margin: 0 0 10px;
+}
+
+/* Scroll bar css */
+/* For Webkit browsers (Chrome, Safari) */
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5); /* Change the color and opacity as needed */
+  border-radius: 10px;
+  border: 2px solid transparent;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
+}
+
+  /* Apply variables to your elements */
+  body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+  }
+
+  .la-container{
+    max-width: 1920px;
+    width: 100%;
+    
+    
+  }
+  .dyl-choose-training-bg{
+    background-image: url(/src/assets/Dyslexic_t_bg.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 95% 95%;
+    box-shadow: 1px 0px 34px -1px rgba(0,0,0,0.42);
+  }
+
+  .dysc-choose-training-bg{
+    background-image: url(/src/assets/Dyscalculic_t_bg.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 95% 95%;
+    box-shadow: 1px 0px 34px -1px rgba(0,0,0,0.42);
+  }
+
+  .primary-color-bg{
+    background-color: var(--primary-color);
+  }
+
+  .main-border-color{
+    border: 4px solid var(--background-color);
+  }
+
+  /* Ant-Design CSS overwrites */
+  .ant-float-btn-primary{
+    width: 80px;
+    height: 80px;
+   padding: 5px;
+  }
+  .ant-float-btn-group-wrap{
+    bottom: 110px !important;
+  }
+  .ant-float-btn.ant-float-btn-default .ant-float-btn-body{
+    width: 80px;
+   
+    border-radius: 5px;
+    transform: translateX(-20px);
+  }
+  .theme-1-btn .ant-float-btn-body {
+    background-color: #007bff ;
+    .ant-float-btn-description{
+      color: #ffffff;
+    }
+    border: 4px solid #333333;
+  }
+  .theme-2-btn .ant-float-btn-body {
+    background-color: #007bff ;
+    .ant-float-btn-description{
+      color: #ffffff;
+    }
+    border: 4px solid #333333;
+  }
+  .theme-3-btn .ant-float-btn-body {
+    background-color: #F2F0E8 ;
+    .ant-float-btn-description{
+      color: #114960;
+    }
+    border: 4px solid #FEE2AF;
+  }
+
+  /* Your accounts css*/
+  .your-account-bg{
+    background-image: url(/src/assets/LexAyudha_logo.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 70% ;
+
+  }
+
+  /* Login page css */
+  .la-login-right-panel{
+    background-image: url(/src/assets/LexAyudha_logo.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+  }
+
+
+
+
+
+
+
+
+
+  /* Google login btn css - starts here */
+  .gsi-material-button {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -webkit-appearance: none;
+    /* background-color: WHITE; */
+    background-image: none;
+    border: 1px solid #747775;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    /* color: #1f1f1f; */
+    cursor: pointer;
+    font-family: 'Roboto', arial, sans-serif;
+    font-size: 14px;
+    height: 40px;
+    letter-spacing: 0.25px;
+    outline: none;
+    overflow: hidden;
+    padding: 0 12px;
+    position: relative;
+    text-align: center;
+    -webkit-transition: background-color .218s, border-color .218s, box-shadow .218s;
+    transition: background-color .218s, border-color .218s, box-shadow .218s;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+    max-width: 400px;
+    min-width: min-content;
+  }
+  
+  .gsi-material-button .gsi-material-button-icon {
+    height: 20px;
+    margin-right: 12px;
+    min-width: 20px;
+    width: 20px;
+  }
+  
+  .gsi-material-button .gsi-material-button-content-wrapper {
+    -webkit-align-items: center;
+    align-items: center;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    height: 100%;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+  }
+  
+  .gsi-material-button .gsi-material-button-contents {
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    font-family: 'Roboto', arial, sans-serif;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+  }
+  
+  .gsi-material-button .gsi-material-button-state {
+    -webkit-transition: opacity .218s;
+    transition: opacity .218s;
+    bottom: 0;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  
+  .gsi-material-button:disabled {
+    cursor: default;
+    background-color: #ffffff61;
+    border-color: #1f1f1f1f;
+  }
+  
+  .gsi-material-button:disabled .gsi-material-button-contents {
+    opacity: 38%;
+  }
+  
+  .gsi-material-button:disabled .gsi-material-button-icon {
+    opacity: 38%;
+  }
+  
+  .gsi-material-button:not(:disabled):active .gsi-material-button-state, 
+  .gsi-material-button:not(:disabled):focus .gsi-material-button-state {
+    background-color: #303030;
+    opacity: 12%;
+  }
+  
+  .gsi-material-button:not(:disabled):hover {
+    -webkit-box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .30), 0 1px 3px 1px rgba(60, 64, 67, .15);
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .30), 0 1px 3px 1px rgba(60, 64, 67, .15);
+  }
+  
+  .gsi-material-button:not(:disabled):hover .gsi-material-button-state {
+    background-color: #303030;
+    opacity: 8%;
+  }
+  /* Google login btn css - ends here */
