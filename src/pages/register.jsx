@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import MinimalHeader from '../components/minimalHeader'
-import ChangeThemeFB from '../components/changeThemeFB'
-import SignInWithGoogleBtn from '../components/signInWithGoogle'
+import MinimalHeader from '../components/minimalHeader.jsx'
+import ChangeThemeFB from '../components/changeThemeFB.jsx'
+import SignInWithGoogleBtn from '../components/signInWithGoogle.jsx'
 import axios from 'axios'
 import { ToastContainer, toast, Bounce } from 'react-toastify'
 import { data } from 'react-router-dom'
@@ -188,10 +188,10 @@ export default function Register() {
                 transition={Bounce}
             />
             <MinimalHeader />
-            <ChangeThemeFB />
-            <div className='flex h-full w-full  justify-center'>
-                <div className='  w-[50%] flex justify-center  items-center z-10 shadow-[0px_0px_10px_5px_rgba(0,_0,_0,_0.1)] rounded-[0px_20px_20px_0px]'>
-                    <div className=' flex flex-col w-[400px] shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] rounded-[20px] p-6'>
+            {/* <ChangeThemeFB /> */}
+            <div className='flex h-screen w-full  justify-center'>
+                <div className='  w-[50%] flex justify-center   items-center z-10 shadow-[0px_0px_10px_5px_rgba(0,_0,_0,_0.1)] '>
+                    <div className=' flex flex-col w-[400px] mt-[36px] shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] rounded-[20px] p-6'>
                         
                         {!stepCompleted ? (
                             <>
@@ -204,7 +204,7 @@ export default function Register() {
                                     <p className='m-0 text-red-500'>{error}</p>
                                 </div>
                                 <div className=' flex justify-center'>
-                                    <button type='submit' onClick={handleStepCompleted} className='btn btn-primary m-0 px-4 py-1 rounded-xl w-full text-center mt-5 main-border-color'>Sign up</button>
+                                    <button type='submit' onClick={handleStepCompleted} className='btn btn-primary m-0 px-4 py-2 rounded-[4px] text-center mt-5 bg-blue-600 text-white w-[200px] hover:bg-blue-700 '>Sign up</button>
                                 </div>
                             </>
                         ) : (
@@ -216,7 +216,7 @@ export default function Register() {
                                     <p className='m-0 text-red-500'>{error}</p>
                                 </div>
                                 <div className=' flex justify-center'>
-                                    <button type='submit' onClick={handleVerifyOTP} className='btn btn-primary m-0 px-4 py-1 rounded-xl w-full text-center mt-5 main-border-color'>Verify</button>
+                                    <button type='submit' onClick={handleVerifyOTP} className='btn btn-primary m-0 px-4 py-2 rounded-[4px] text-center mt-5 bg-blue-600 text-white w-[200px] hover:bg-blue-700 '>Verify</button>
                                 </div>
                             </>
                         )}
@@ -229,7 +229,7 @@ export default function Register() {
                             <SignInWithGoogleBtn  />
                         </div>
                         <div className=' flex justify-center pt-10'>
-                            <p >Already have an account? <a href='/login' className=' underline'>Sign in</a></p>
+                            <p >Already have an account? <a href='/login' className=' underline hover:text-blue-600'>Sign in</a></p>
                         </div>
                     </div>
                 </div>

@@ -90,10 +90,10 @@ export default function Login() {
         transition={Bounce}
       />
       <MinimalHeader />
-      <ChangeThemeFB />
-      <div className='flex h-full w-full  justify-center'>
-        <div className='  w-[50%] flex justify-center items-center z-10 shadow-[0px_0px_10px_5px_rgba(0,_0,_0,_0.1)] rounded-[0px_20px_20px_0px]'>
-          <div className=' flex flex-col w-[400px] shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] p-6 rounded-[20px] '>
+      {/* <ChangeThemeFB /> */}
+      <div className='flex h-screen w-full justify-center'>
+        <div className='  w-[50%] flex justify-center items-center z-10 shadow-[0px_0px_10px_5px_rgba(0,_0,_0,_0.1)] '>
+          <div className=' flex flex-col w-[400px] mt-[36px] shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] p-6 rounded-[20px] '>
             <h1 className=' font-bold'>Hi there,</h1>
             <p className=''>Welcome back to LexAyudha</p>
             <input type='email' placeholder='email' onChange={handleEmail} required className='my-2 p-2 shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] rounded-full px-4' />
@@ -106,7 +106,7 @@ export default function Login() {
             </div>
             <div>
               <div className=' flex justify-center'>
-                <button type='submit' onClick={handleSubmit} className='btn btn-primary m-0 px-4 py-1 rounded-xl w-full text-center mt-5 main-border-color'>Sign in</button>
+                <button type='submit' onClick={handleSubmit} className='btn btn-primary m-0 px-4 py-2 rounded-[4px] text-center mt-5 bg-blue-600 text-white w-[200px] hover:bg-blue-700 '>Sign in</button>
               </div>
               <div className='flex items-center justify-evenly py-2'>
                 <div className='w-[35%] h-[2px] bg-slate-900'></div>
@@ -117,7 +117,7 @@ export default function Login() {
                 <SignInWithGoogleBtn />
               </div>
               <div className=' flex justify-center pt-10'>
-                <p >Don't have an account? <a href='/register' className=' underline'>Sign up</a></p>
+                <p >Don't have an account? <a href='/register' className=' underline hover:text-blue-700'>Sign up</a></p>
               </div>
             </div>
 
