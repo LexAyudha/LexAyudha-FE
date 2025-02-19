@@ -1,3 +1,4 @@
+// Dyslexia screen reader main page
 import React, { useEffect, useState, } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import ChangeThemeFB from '../../components/changeThemeFB';
