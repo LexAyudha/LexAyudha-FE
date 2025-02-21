@@ -5,6 +5,7 @@ import AccountList from "../pages/yourAccounts.jsx";
 import Login from "../pages/login.jsx";
 import Register from "../pages/register.jsx";
 import Dashboard from "../pages/dashboard.jsx";
+import TrainingWelcome from "../pages/trainingWelcome.jsx";
 
 
 const Router = () => {
@@ -79,7 +80,7 @@ const Router = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard/:id" element={<Dashboard />} />
-      
+      <Route path="/training" element={<TrainingWelcome />} />
     </Routes>
   );
 };
