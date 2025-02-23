@@ -6,6 +6,32 @@ import Login from "../pages/login.jsx";
 import Register from "../pages/register.jsx";
 import Dashboard from "../pages/dashboard.jsx";
 
+//touch-math
+import PNumber0 from '../components/touch-math/PracticingComponent/PNumber0.jsx';
+import PNumber1 from '../components/touch-math/PracticingComponent/PNumber1.jsx';
+import PNumber2 from '../components/touch-math/PracticingComponent/PNumber2.jsx';
+import PNumber3 from '../components/touch-math/PracticingComponent/PNumber3.jsx';
+import PNumber4 from '../components/touch-math/PracticingComponent/PNumber4.jsx';
+import PNumber5 from '../components/touch-math/PracticingComponent/PNumber5.jsx';
+import PNumber6 from '../components/touch-math/PracticingComponent/PNumber6.jsx';
+import PNumber7 from '../components/touch-math/PracticingComponent/PNumber7.jsx';
+import PNumber8 from '../components/touch-math/PracticingComponent/PNumber8.jsx';
+import PNumber9 from '../components/touch-math/PracticingComponent/PNumber9.jsx';
+import TNumber0 from '../components/touch-math/TeachingComponents/TNumber0.jsx';
+import TNumber1 from '../components/touch-math/TeachingComponents/TNumber1.jsx';
+import TNumber2 from '../components/touch-math/TeachingComponents/TNumber2.jsx';
+import TNumber3 from '../components/touch-math/TeachingComponents/TNumber3.jsx';
+import TNumber4 from '../components/touch-math/TeachingComponents/TNumber4.jsx';
+import TNumber5 from '../components/touch-math/TeachingComponents/TNumber5.jsx';
+import TNumber6 from '../components/touch-math/TeachingComponents/TNumber6.jsx';
+import TNumber7 from '../components/touch-math/TeachingComponents/TNumber7.jsx';
+import TNumber8 from '../components/touch-math/TeachingComponents/TNumber8.jsx';
+import TNumber9 from '../components/touch-math/TeachingComponents/TNumber9.jsx';
+import Addition from '../components/touch-math/Exercises/Addition.jsx';
+import Subtraction from '../components/touch-math/Exercises/Subtraction.jsx';
+import Addition2 from '../components/touch-math/Exercises/AdditionLevel2.jsx';
+import TAddition from '../components/touch-math/TeachingOperations/TeachingAddition.jsx'
+
 
 const Router = () => {
 //   const ProtectedRoute = ({ children }) => {
@@ -79,6 +105,35 @@ const Router = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard/:id" element={<Dashboard />} />
+
+      {/* touch maths */}
+      <Route path="/number1" element={<Number1/>} />
+      <Route path="/touch-math" element={<TAddition/>} />
+      <Route path="/touch-math/teaching_number0" element={<TNumber0/>} />
+      <Route path="/touch-math/teaching_number1" element={<TNumber1/>} />
+      <Route path="/touch-math/teaching_number2" element={<TNumber2/>} />
+      <Route path="/touch-math/teaching_number3" element={<TNumber3/>} />
+      <Route path="/touch-math/teaching_number4" element={<TNumber4/>} />
+      <Route path="/touch-math/teaching_number5" element={<TNumber5/>} />
+      <Route path="/touch-math/teaching_number6" element={<TNumber6/>} />
+      <Route path="/touch-math/teaching_number7" element={<TNumber7/>} />
+      <Route path="/touch-math/teaching_number8" element={<TNumber8/>} />
+      <Route path="/touch-math/teaching_number9" element={<TNumber9/>} />
+              
+      <Route path="/touch-math/practice_number0" element={<PNumber0/>} />
+      <Route path="/touch-math/practice_number1" element={<PNumber1/>} />
+      <Route path="/touch-math/practice_number2" element={<PNumber2/>} />
+      <Route path="/touch-math/practice_number3" element={<PNumber3/>} />
+      <Route path="/touch-math/practice_number4" element={<PNumber4/>} />
+      <Route path="/touch-math/practice_number5" element={<PNumber5/>} />
+      <Route path="/touch-math/practice_number6" element={<PNumber6/>} />
+      <Route path="/touch-math/practice_number7" element={<PNumber7/>} />
+      <Route path="/touch-math/practice_number8" element={<PNumber8/>} />
+      <Route path="/touch-math/practice_number9" element={<PNumber9/>} />
+
+      <Route path="/addition" element={<Addition/>} />
+      <Route path="/substraction" element={<Subtraction/>} />
+      <Route path="/addition_level2" element={<Addition2/>} />
       
     </Routes>
   );
