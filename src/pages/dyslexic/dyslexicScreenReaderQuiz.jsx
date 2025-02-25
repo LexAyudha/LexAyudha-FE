@@ -1,3 +1,4 @@
+// Dyslexia screen reader quiz page
 import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import ChangeThemeFB from '../../components/changeThemeFB';

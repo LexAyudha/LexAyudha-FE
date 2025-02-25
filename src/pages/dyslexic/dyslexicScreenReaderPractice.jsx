@@ -12,10 +12,9 @@ import { getLessons } from '../../api/RecurringAPI';
 
 
 export default function DyslexicScreenReaderPractice() {
-
     const paramObj = useParams()
     const lessonID = paramObj?.id //Check for parameter 'id'
-
+    
     const [selectedChromTheme, setSelecetedChromeTheme] = useState(localStorage.getItem('selectedChromaticTheme'))
     const [selectedColPattern, setSelectedColPattern] = useState(localStorage.getItem('selectedColPattern'))
     const [lesson, setLesson] = useState();
