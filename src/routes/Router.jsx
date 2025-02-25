@@ -1,13 +1,15 @@
 import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import Home from "../pages/TestWelcom.jsx";
 import AccountList from "../pages/yourAccounts.jsx";
 import Login from "../pages/login.jsx";
 import Register from "../pages/register.jsx";
 import Dashboard from "../pages/dashboard.jsx";
 import TrainingWelcome from "../pages/trainingWelcome.jsx";
-
-
+import ConfigOnBoardingPage from "../pages/configOnBoarding.jsx";
+import SpeechCalibPage from "../pages/speechCalib.jsx";
+import SelectTrainingPage from "../pages/SelectTraining.jsx";
+import DyslexicTrainingControlPanel from "../pages/dyslexicTrainingControlPanel.jsx";
+import DyscalculiaTrainingControlPanel from "../pages/DyscalculiaTrainingControlPanel.jsx";
 const Router = () => {
 //   const ProtectedRoute = ({ children }) => {
 //     // const isAuthenticated = localStorage.getItem("jsonwebtoken") ? true : false;
@@ -81,6 +83,11 @@ const Router = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard/:id" element={<Dashboard />} />
       <Route path="/training" element={<TrainingWelcome />} />
+      <Route path="/config-onboarding" element={<ConfigOnBoardingPage />} />
+      <Route path="/speechCalibration" element={<SpeechCalibPage />} />
+      <Route path ='/selectTraining' element={<SelectTrainingPage/>} />
+      <Route path ='/dyslexic-training' element={<DyslexicTrainingControlPanel/>} />
+      <Route path ='/dyscalculic-training' element={<DyscalculiaTrainingControlPanel/>} />
     </Routes>
   );
 };

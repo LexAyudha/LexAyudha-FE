@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { FloatButton } from "antd";
-import { CommentOutlined, CustomerServiceOutlined } from '@ant-design/icons';
 import Draggable from 'react-draggable';
 import { themes, fonts } from '../configs/theme.js';
 
 export default function ChangeThemeFB({ initialThemeName, initialFontName }) {
-  const [selectedFont, setSelectedFont] = useState(initialFontName || '');
-  const [selectedTheme, setSelectedTheme] = useState(initialThemeName || '');
+  const [selectedFont, setSelectedFont] = useState(localStorage.getItem('selectedFont') || initialFontName || '');
+  const [selectedTheme, setSelectedTheme] = useState(localStorage.getItem('selectedTheme') || initialThemeName || '');
 
   useEffect(() => {
-    if (initialFontName) {
-      applyFont(initialFontName);
+    if (selectedFont) {
+      applyFont(selectedFont);
     }
-    if (initialThemeName) {
-      applyTheme(initialThemeName);
+    if (selectedTheme) {
+      applyTheme(selectedTheme);
     }
-  }, [initialFontName, initialThemeName]);
+  }, [selectedFont, selectedTheme]);
 
   const applyFont = (fontName) => {
     const theme = fonts[fontName];
@@ -33,11 +32,13 @@ export default function ChangeThemeFB({ initialThemeName, initialFontName }) {
 
   const handleFontChange = (fontName) => {
     setSelectedFont(fontName);
+    localStorage.setItem('selectedFont', fontName);
     applyFont(fontName);
   };
 
   const handleThemeChange = (themeName) => {
     setSelectedTheme(themeName);
+    localStorage.setItem('selectedTheme', themeName);
     applyTheme(themeName);
   };
 
