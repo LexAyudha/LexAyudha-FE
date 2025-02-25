@@ -4,7 +4,7 @@ export default function DyscalculiaTrainingControlPanel() {
 
 
   return (
-    <div>
+    <div className='la-container'>
       This is Dyscalculia Training panel!
     </div>
   )
