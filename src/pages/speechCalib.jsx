@@ -60,7 +60,7 @@ export default function SpeechCalibPage() {
         if (!recordedBlob) return;
 
         sendAudioToAPI(recordedBlob);
-        downloadAudio(recordedBlob);
+        //downloadAudio(recordedBlob);
     }, [recordedBlob, error]);
 
     // Get the error when it occurs
