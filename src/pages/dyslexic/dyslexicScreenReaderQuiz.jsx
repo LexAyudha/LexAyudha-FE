@@ -13,7 +13,6 @@ import DysLexiaQuizReportPDFDoc from '../../components/dysLexiaQuizReportPDFDoc'
 
 
 export default function DyslexicScreenReaderQuiz() {
-
     const paramObj = useParams()
     const lessonID = paramObj?.id //Check for parameter 'id'
 
