@@ -75,7 +75,7 @@ export default function Login() {
   }
 
   return (
-    <div className='la-container h-[calc(100vh-80px)] flex-col'>
+    <div className='w-screen h-[calc(100vh-80px)] flex-col'>
       <ToastContainer
         position="top-right"
         autoClose={5000}

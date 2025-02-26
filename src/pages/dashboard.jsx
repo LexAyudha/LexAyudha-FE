@@ -165,7 +165,7 @@ export default function Dashboard() {
           </div>
         </div>
         <div className='w-full p-[14px] h-[calc(100vh-320px)] flex items-center justify-center'>
-          <div className='primary-color-bg w-full  bottom-0 px-10 py-5 z-[5]   rounded-md '>
+          <div className='primary-color-bg w-full h-full  bottom-0 px-10 py-5 z-[5]   rounded-md '>
             {panel === 'training' && (
               <DashTraining />
             )}

@@ -11,7 +11,7 @@ const Layouts = () => {
 //   const role = payload?.decodedJWT.userRole;
     const role = '';
   return (
-    <div>
+    <div className="page-container">
       {role === "admin" ? (
         <>
           {/* <AdminNavBar /> */}

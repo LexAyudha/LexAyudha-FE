@@ -36,7 +36,7 @@ export default function DashTraining({ userData }) {
   ]
 
   return (
-    <div className='flex h-[calc(100%-20px)] flex-col'>
+    <div className='flex h-[calc(100%-20px)] flex-col justify-between'>
       <div className='flex w-full'>
         <div className='flex w-[50%] flex-col'>
           <h3 className=' font-bold'>Previous Session Details</h3>
@@ -61,7 +61,7 @@ export default function DashTraining({ userData }) {
         </div>
       </div>
       <div className='flex items-center justify-center py-5'>
-        <Button type='primary' className='w-[200px]'>Start Training</Button>
+        <Button type='primary' className='w-[200px]' onClick={()=>{window.location='/training'}}>Start Training</Button>
       </div>
     </div>
   )

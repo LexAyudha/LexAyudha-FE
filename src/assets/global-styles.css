@@ -207,10 +207,18 @@ p {
   }
 
   .la-container{
-    max-width: 1920px;
+   
+    max-width: 1440px;
     width: 100%;
     
-    
+  }
+  .page-container{
+    display: flex;
+   
+    justify-content: center;
+    align-items: center;
+    max-width: 1920px;
+    width: 100%;
   }
   .dyl-choose-training-bg{
     background-image: url(/src/assets/Dyslexic_t_bg.png);
@@ -236,6 +244,23 @@ p {
     border: 4px solid var(--background-color);
   }
 
+  .theme-txt-color{
+    color: var(--text-color);
+  }
+
+  /* Audio Visualizer */
+  .voice-visualizer__btn {
+    display: none;
+  }
+  .voice-visualizer__buttons-container{
+    margin-bottom: 0px !important;
+  }
+  .voice-visualizer__btn-container{
+    display: none !important;
+  }
+  .voice-visualizer__btn-center{
+    background-color: var(--primary-color)!important;
+  }
   /* Ant-Design CSS overwrites */
   .ant-float-btn-primary{
     width: 80px;
@@ -290,7 +315,21 @@ p {
     background-size: 100%;
   }
 
-
+  /* Custom loader */
+  .custom-loader {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: 
+      radial-gradient(farthest-side,var(--text-color) 94%,#0000) top/8px 8px no-repeat,
+      conic-gradient(#0000 30%, var(--text-color));
+    -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 8px),#000 0);
+    animation:s3 1s infinite linear;
+  }
+  
+  @keyframes s3{ 
+    100%{transform: rotate(1turn)}
+  }
 
 
 
