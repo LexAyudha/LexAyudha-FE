@@ -10,6 +10,7 @@ import Number7 from '../Numbers/Number7';
 import Number8 from '../Numbers/Number8';
 import Number9 from '../Numbers/Number9';
 import Number0 from '../Numbers/Number0';
+import ChangeThemeFB from '../../changeThemeFB';
 
 const AdditionExerciseWithTouchPoints = () => {
   // Randomly generate numbers
@@ -58,6 +59,7 @@ const AdditionExerciseWithTouchPoints = () => {
 
   return (
     <div style={{ textAlign: 'center', fontFamily: 'Arial', padding: '10px' }}>
+     <ChangeThemeFB/>
       <h2 style={{ fontSize: '50px', marginBottom: '100px' }}>Touch Math Addition Practice</h2>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px' }}>
         {/* Render numbers side by side */}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import for navigation
-import "../../Style/TeachNumber.css"; // Adjust the path if needed
+import "../../../assets/TeachNumber.css";  // Adjust the path if needed
 
 const Number4 = () => {
   const [visiblePoints, setVisiblePoints] = useState(0); // To track the number of visible touchpoints

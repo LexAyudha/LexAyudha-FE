@@ -122,7 +122,7 @@ export default function SpeechCalibPage() {
             <div className='flex h-[650px] w-[1200px] text-wrap  flex-col justify-between relative'>
                 <div className='absolute flex right-0 top-0'>
                     {/* Need insert training selection page link */}
-                    <a href='#' className='theme-txt-color py-[5px] primary-color-bg rounded-md px-[30px]'> Skip</a>
+                    <a href='/selectTraining' className='theme-txt-color py-[5px] primary-color-bg rounded-md px-[30px]'> Skip</a>
                 </div>
                 <div className='flex flex-col'>
                     <h1 className='w-full text-center my-[32px]'>Speech Calibration</h1>

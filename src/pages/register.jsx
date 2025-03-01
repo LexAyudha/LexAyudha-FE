@@ -173,7 +173,8 @@ export default function Register() {
     }
 
     return (
-        <div className='w-screen h-[calc(100vh-80px)] flex-col'>
+        <> <MinimalHeader />
+            <div className='w-screen la-container h-[calc(100vh-80px)] flex-col'>
             <ToastContainer
                 position="top-right"
                 autoClose={5000}
@@ -187,10 +188,10 @@ export default function Register() {
                 theme="light"
                 transition={Bounce}
             />
-            <MinimalHeader />
+           
             {/* <ChangeThemeFB /> */}
             <div className='flex h-screen w-full  justify-center'>
-                <div className='  w-[50%] flex justify-center   items-center z-10 shadow-[0px_0px_10px_5px_rgba(0,_0,_0,_0.1)] '>
+                <div className='  w-[50%] flex justify-center   items-center z-10 shadow-[8px_0px_10px_1px_rgba(0,_0,_0,_0.1)] '>
                     <div className=' flex flex-col w-[400px] mt-[36px] shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] rounded-[20px] p-6'>
                         
                         {!stepCompleted ? (
@@ -233,8 +234,10 @@ export default function Register() {
                         </div>
                     </div>
                 </div>
-                <div className='  w-[50%] primary-color-bg la-login-right-panel'></div>
+                <div className='  w-[50%]  la-login-right-panel'></div>
             </div>
         </div>
+        </>
+        
     )
 }

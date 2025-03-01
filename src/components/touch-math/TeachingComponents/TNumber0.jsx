@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import for navigation
-import "../../Style/TeachNumber.css";
+import "../../../assets/TeachNumber.css"; 
 
 const Number0 = () => {
   const [femaleVoice, setFemaleVoice] = useState(null); // Store selected female voice

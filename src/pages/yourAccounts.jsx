@@ -14,9 +14,9 @@ export default function YourAccounts() {
   let ul = [];
   useEffect(() => {
 
-    // for (let i = 0; i < 10; i++) {
-    //   ul.push(obj);
-    // }
+    for (let i = 0; i < 10; i++) {
+      ul.push(obj);
+    }
     setUserList(ul);
   }, []);
 
@@ -70,7 +70,7 @@ export default function YourAccounts() {
         )}
         
       </div>
-      <ChangeThemeFB />
+     
     </div>
   )
 }

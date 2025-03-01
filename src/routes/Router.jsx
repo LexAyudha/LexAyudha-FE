@@ -36,6 +36,8 @@ import SpeechCalibPage from "../pages/speechCalib.jsx";
 import SelectTrainingPage from "../pages/SelectTraining.jsx";
 import DyslexicTrainingControlPanel from "../pages/dyslexicTrainingControlPanel.jsx";
 import DyscalculiaTrainingControlPanel from "../pages/DyscalculiaTrainingControlPanel.jsx";
+import DyslexicScreenReader from "../pages/dyslexic/dyslexicScreenReader.jsx";
+
 const Router = () => {
   //   const ProtectedRoute = ({ children }) => {
   //     // const isAuthenticated = localStorage.getItem("jsonwebtoken") ? true : false;
@@ -108,9 +110,18 @@ const Router = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard/:id" element={<Dashboard />} />
+      <Route path="/training" element={<TrainingWelcome />} />
+      <Route path="/config-onboarding" element={<ConfigOnBoardingPage />} />
+      <Route path="/speechCalibration" element={<SpeechCalibPage />} />
+      <Route path="/selectTraining" element={<SelectTrainingPage />} />
+      <Route path="/dyslexic-training" element={<DyslexicTrainingControlPanel />} />
+      <Route path="/dyscalculic-training" element={<DyscalculiaTrainingControlPanel />}/>
 
+      {/* Dyslexic training */}
+      <Route path ='/screen-reader-lessons/:id' element={<DyslexicScreenReader/>}/>
+      
       {/* touch maths */}
-      <Route path="/number1" element={<Number1 />} />
+      {/* <Route path="/number1" element={<Number1 />} /> */}
       <Route path="/touch-math" element={<TAddition />} />
       <Route path="/touch-math/teaching_number0" element={<TNumber0 />} />
       <Route path="/touch-math/teaching_number1" element={<TNumber1 />} />
@@ -137,18 +148,7 @@ const Router = () => {
       <Route path="/addition" element={<Addition />} />
       <Route path="/substraction" element={<Subtraction />} />
       <Route path="/addition_level2" element={<Addition2 />} />
-      <Route path="/training" element={<TrainingWelcome />} />
-      <Route path="/config-onboarding" element={<ConfigOnBoardingPage />} />
-      <Route path="/speechCalibration" element={<SpeechCalibPage />} />
-      <Route path="/selectTraining" element={<SelectTrainingPage />} />
-      <Route
-        path="/dyslexic-training"
-        element={<DyslexicTrainingControlPanel />}
-      />
-      <Route
-        path="/dyscalculic-training"
-        element={<DyscalculiaTrainingControlPanel />}
-      />
+      
     </Routes>
   );
 };
