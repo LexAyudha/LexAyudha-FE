@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import for navigation
-import "../../Style/TeachNumber.css"; 
+import "../../../assets/TeachNumber.css"; 
 
 const Number9 = () => {
   const [visiblePoints, setVisiblePoints] = useState(0); // To track the number of visible touchpoints

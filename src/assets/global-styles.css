@@ -204,13 +204,14 @@ p {
     background-color: var(--background-color);
     color: var(--text-color);
     font-family: var(--font-family);
+
   }
 
   .la-container{
    
     max-width: 1440px;
     width: 100%;
-    
+   
   }
   .page-container{
     display: flex;
@@ -276,6 +277,15 @@ p {
     border-radius: 5px;
     transform: translateX(-20px);
   }
+
+  :where(.css-dev-only-do-not-override-nqoqt9).ant-float-btn-primary{
+    opacity: 0.4 !important;
+    transition: opacity 0.3s ease;
+  }
+  :where(.css-dev-only-do-not-override-nqoqt9).ant-float-btn-primary:hover{
+    opacity: 1 !important;
+  }
+
   .theme-1-btn .ant-float-btn-body {
     background-color: #007bff ;
     .ant-float-btn-description{
