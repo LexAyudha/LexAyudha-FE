@@ -1,3 +1,4 @@
+// Dyslexia main dashboard selection panels
 import React, { useEffect, useState } from 'react'
 import AlternativeHeader from '../components/alternativeHeader'
 import ChangeThemeFB from '../components/changeThemeFB'
