@@ -286,6 +286,24 @@ p {
     opacity: 1 !important;
   }
 
+  :where(.css-dev-only-do-not-override-nqoqt9).ant-modal .ant-modal-content{
+    background-color: var(--background-color) !important;
+  }
+  :where(.css-dev-only-do-not-override-nqoqt9).ant-btn-variant-outlined, :where(.css-dev-only-do-not-override-nqoqt9).ant-btn-variant-dashed{
+    background-color: var(--background-color) !important;
+    border-color: var(--primary-color) !important;
+  }
+  :where(.css-dev-only-do-not-override-nqoqt9).ant-modal .ant-modal-header{
+    background-color: var(--background-color) !important;
+  }
+  :where(.css-dev-only-do-not-override-nqoqt9).ant-modal .ant-modal-title, .ant-modal-body, :where(.css-dev-only-do-not-override-nqoqt9).ant-btn-color-default{
+    color: var(--text-color);
+  }
+  :where(.css-dev-only-do-not-override-nqoqt9).ant-btn-variant-solid{
+    background-color: var(--primary-color);
+    color: var(--text-color);
+  }
+  
   .theme-1-btn .ant-float-btn-body {
     background-color: #007bff ;
     .ant-float-btn-description{

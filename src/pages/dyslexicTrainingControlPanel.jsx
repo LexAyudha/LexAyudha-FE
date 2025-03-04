@@ -9,39 +9,105 @@ const lessonList = [
   {
     id: '01',
     name: 'Lesson 1',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    example: 'The cat is orange and is so sweet.',
-    chromaticTheme: 'chromTheme_1'
+    description: 'A simple start with two-word sentences.',
+    example: 'Cat sleeps.',
+    chromaticTheme: 'chromTheme_1',
+    chapters: [
+      'Cat runs.',
+      'Dog barks.',
+      'Bird flies.',
+      'Sun shines.',
+      'Rain falls.',
+      'Wind blows.',
+      'Tree grows.',
+      'Fish swims.',
+      'Clock ticks.',
+      'Leaf drops.',
+      'Baby laughs.'
+    ]
   },
   {
     id: '02',
     name: 'Lesson 2',
-    description: 'Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula.',
-    example: 'The dog barked loudly at the stranger.',
-    chromaticTheme: 'chromTheme_2'
+    description: 'Slightly longer sentences with three words.',
+    example: 'The dog barks.',
+    chromaticTheme: 'chromTheme_2',
+    chapters: [
+      'The cat sleeps.',
+      'She runs fast.',
+      'Birds fly high.',
+      'He eats apples.',
+      'The sun sets.',
+      'Clouds move slowly.',
+      'Fish swim deep.',
+      'Wind blows strong.',
+      'Flowers bloom beautifully.',
+      'The dog jumps.',
+      'Rain falls gently.'
+    ]
   },
   {
     id: '03',
     name: 'Lesson 3',
-    description: 'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Fusce id purus. Ut varius tincidunt libero. Phasellus dolor. Maecenas vestibulum mollis diam.',
-    example: 'She quickly ran towards the bus stop.',
-    chromaticTheme: 'chromTheme_3'
+    description: 'Building up complexity with four-word sentences.',
+    example: 'She quickly ran away.',
+    chromaticTheme: 'chromTheme_3',
+    chapters: [
+      'The boy runs fast.',
+      'She drinks warm tea.',
+      'Clouds cover the sky.',
+      'They play outside happily.',
+      'The baby smiles brightly.',
+      'He reads a book.',
+      'Waves crash on rocks.',
+      'The sun rises early.',
+      'Leaves fall in autumn.',
+      'The dog barks loudly.',
+      'A cat sleeps peacefully.'
+    ]
   },
   {
     id: '04',
     name: 'Lesson 4',
-    description: 'Donec quis dui at dolor tempor interdum. Vivamus mollis hendrerit ex. Sed et nisi sit amet sapien feugiat convallis. Morbi ultricies justo quis orci pharetra, nec lacinia elit sagittis.',
-    example: 'The flowers bloomed beautifully in the garden.',
-    chromaticTheme: 'chromTheme_4'
+    description: 'Introducing five-word sentence structures.',
+    example: 'The flowers bloom in spring.',
+    chromaticTheme: 'chromTheme_2',
+    chapters: [
+      'The bird sings every morning.',
+      'She walks to school daily.',
+      'The baby laughs so loudly.',
+      'Raindrops fall on the ground.',
+      'The wind blows very strong.',
+      'He quickly runs to work.',
+      'The car moves very fast.',
+      'They enjoy playing outside together.',
+      'Leaves turn red in autumn.',
+      'The sun sets behind mountains.',
+      'A dog chases the ball.'
+    ]
   },
   {
     id: '05',
     name: 'Lesson 5',
-    description: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed bibendum, ante vitae aliquet volutpat, quam ligula vehicula nunc, eu tincidunt justo erat ut augue.',
-    example: 'He carefully placed the books on the shelf.',
-    chromaticTheme: 'chromTheme_5'
+    description: 'Challenging six-word sentence patterns.',
+    example: 'He carefully placed the books neatly.',
+    chromaticTheme: 'chromTheme_3',
+    chapters: [
+      'She happily danced in the rain.',
+      'The birds chirped in the trees.',
+      'He quickly ran towards the bus.',
+      'A cat jumped onto the sofa.',
+      'Leaves rustled in the autumn wind.',
+      'The sun slowly disappeared behind clouds.',
+      'She read a book before bed.',
+      'The dog wagged its tail happily.',
+      'Children played joyfully in the park.',
+      'A train passed through the tunnel.',
+      'The waves crashed against the rocks.'
+    ]
   }
 ];
+
 
 export default function DyslexicTrainingControlPanel() {
 
@@ -54,7 +120,7 @@ export default function DyslexicTrainingControlPanel() {
 
   useEffect(() => {
     setLessons(lessonList);
-    
+
   }, []);
 
 
@@ -64,11 +130,34 @@ export default function DyslexicTrainingControlPanel() {
     setSelectedChromaticTheme(lessons[index].chromaticTheme)
   }
 
-  const handleStartLesson = ()=>{
-    
+  const handleStartLesson = () => {
+
     navigate(`/screen-reader-lessons/${selectedLesson?.id}`)
- 
+
   }
+  const updateChromaticTheme = async (theme) => {
+    const paylaod = {
+      id: selectedLesson?.id,
+      chromaticTheme: theme
+    }
+    try {
+      const res = await axios.patch('', paylaod)
+      if (res.status === 200) {
+        //Recall or update the lessonList here
+      }
+    } catch (error) {
+      console.error(error)
+    }
+
+    //Only a dev test. Remove this later on
+    setSelectedLesson((prevLesson)=>({
+      ...prevLesson,
+      chromaticTheme:theme
+    }))
+    
+    console.log('This is payload: ', paylaod)
+  }
+
   // const getLessons = async()=>{
 
   //   const res = await axios.get('api-call');
@@ -95,7 +184,7 @@ export default function DyslexicTrainingControlPanel() {
                     <div className='flex justify-center py-[10px] cursor-pointer' onClick={() => handleClickedLesson(index)}>
                       {Item?.name}
                     </div>
-                    
+
                   </li>
                 )
               })}
@@ -106,19 +195,19 @@ export default function DyslexicTrainingControlPanel() {
             <div className='flex flex-col justify-between'>
               <h3 className='pb-[16px]'>{selectedLesson?.name}</h3>
               <p className='h-[150px] overflow-x-hidden'>{selectedLesson?.description}</p>
-              <div className=' mt-[20px]'>
+              <div className=' mt-[20px]  px-[20px] py-[10px] rounded-md'>
                 <p>Ex: </p>
-                <span className=' text-[36px]'>{selectedLesson?.example}</span>
+                <p className={`m-0 text-[36px] ${selectedLesson.chromaticTheme}`} data-attribute="chromatic">{selectedLesson?.example}</p>
               </div>
             </div>
             <div className='flex justify-between items-center'>
               <div className='cursor-pointer'>
-                <ChromaticModel initialChromaticTheme={''} onChromaticThemeChange={''} />
+                <ChromaticModel initialChromaticTheme={selectedLesson?.chromaticTheme} updateChromaticTheme={updateChromaticTheme} />
               </div>
               <a target='' onClick={handleStartLesson} className='flex cursor-pointer items-center justify-center primary-color-bg rounded-md py-[10px] px-[35px] '>
                 <div className='flex group relative items-center'>
                   <p className='m-0'>Start</p>
-                  <i class="fa-solid fa-chevron-right ml-[5px]"></i>
+                  <i className="fa-solid fa-chevron-right ml-[5px]"></i>
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"></span>
                 </div>
 
