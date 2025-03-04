@@ -77,7 +77,7 @@ const Number3 = () => {
           </button>
 
           <button
-            onClick={() => navigate('/practice_number4')}
+            onClick={() => navigate('/touch-math/quiz_number4')}
             className="pnext-button"
           >
             Next

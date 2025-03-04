@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import for navigation
-import "../../../assets/TeachNumber.css"; 
+import "../../../assets/TeachNumber.css";
 
 const Number0 = () => {
   const [femaleVoice, setFemaleVoice] = useState(null); // Store selected female voice
@@ -36,11 +36,11 @@ const Number0 = () => {
   };
 
   const handleNextClick = () => {
-    navigate("/teaching_number1"); // Navigate to TNumber1 component
+    navigate("/touch-math/teaching_number1"); // Navigate to TNumber1 component
   };
 
   const handlePracticeClick = () => {
-    navigate("/practice_number0"); // Navigate to /number2 for practice
+    navigate("/touch-math/quiz_number0"); // Navigate to /number2 for practice
   };
 
   // Function to handle text-to-speech

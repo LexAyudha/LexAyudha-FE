@@ -1,0 +1,266 @@
+/* Full-screen container */
+.full-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: #fff8dc;
+    padding: 20px;
+}
+
+/* Add more space below the title */
+h2 {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 40px; /* Increased space */
+    text-align: center;
+}
+
+
+/* Menu container */
+.menu-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    width: 80%;
+    margin-bottom: 15px;
+}
+
+/* Menu button */
+.menu-button {
+    width: 280px;
+    height: 200px;
+    background-color: #daa520;
+    color: white;
+    padding: 12px;
+    border-radius: 12px;
+    border: 2px solid #8b6508;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: background 0.3s;
+}
+
+/* Text and arrow in one row */
+.menu-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* Image inside the button */
+.menu-image {
+    width: 100px;
+    height: auto;
+    margin-top: 5px;
+}
+
+/* Dropdown */
+.dropdown {
+    width: 280px;
+    background-color: #daa520;
+    border: 2px solid #8b6508;
+    border-radius: 8px;
+    margin-top: 5px;
+    overflow: hidden;
+    text-align: center;
+}
+
+/* Dropdown items */
+.dropdown-item {
+    padding: 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #8b6508;
+    font-size: 18px;
+}
+
+.dropdown-item:hover {
+    background-color: #b8860b;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+/* Arrow position */
+.arrow {
+    font-size: 18px;
+}
+
+.title {
+    font-size: 28px;
+    margin-bottom: 50px;
+}
+
+.description {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+    text-align: left;
+}
+
+.number-display {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 15px; /* Spacing between images */
+}
+
+.number-image {
+    transition: transform 0.3s ease-in-out; /* Smooth animation */
+}
+
+.number-image:hover {
+    transform: scale(1.1); /* Slightly increase size on hover */
+}
+
+.close-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #ff4d4d;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.close-button:hover {
+    background-color: #cc0000;
+}
+
+/* Updated styles for the Number Sense Quiz */
+.quiz-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border-radius: 12px;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.quiz-counter {
+  position: fixed;
+  top: 50px;
+  right: 30px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.quiz-title {
+    font-size: 40px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 120px;
+    text-align: center;
+}
+
+.quiz-box {
+    display: flex;
+    justify-content: space-around;
+    width: 80%;
+    margin-bottom: 30px;
+}
+
+.number-box {
+    width: 250px; /* Increased box size */
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 200px; /* Larger text inside the boxes */
+    color: #007BFF;
+    border: 3px solid #ccc;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.number-box.selected {
+    border-color: #0099cc; /* Highlight selected box */
+}
+
+.number-box.correct {
+    background-color: #28a745; /* Green background for correct answer */
+    color: white;
+    border-color: #218838;
+}
+
+.quiz-actions {
+    display: flex;
+    justify-content: space-around;
+    width: 50%;
+}
+
+.check-answer, .next-quiz {
+    padding: 12px 24px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 70px;
+}
+
+.check-answer {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+}
+
+.check-answer:hover {
+    background-color: #cc0000;
+}
+
+.next-quiz {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+}
+
+.next-quiz:hover {
+    background-color: #45a049;
+}
+
+.next-quiz-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+/* Additional styles for the quiz */
+.number-box:hover {
+    transform: scale(1.1); /* Hover effect to enlarge number box */
+}
+
+.number-box:active {
+    transform: scale(0.95); /* Slight shrink on active click */
+}
+
+
+  /* Add green background for correct answer */
+.correct-answer-highlight {
+    background-color: #28a745; /* Green background */
+    color: white; /* White text for visibility */
+  }
+  

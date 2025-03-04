@@ -26,16 +26,19 @@ import TNumber6 from "../components/touch-math/TeachingComponents/TNumber6.jsx";
 import TNumber7 from "../components/touch-math/TeachingComponents/TNumber7.jsx";
 import TNumber8 from "../components/touch-math/TeachingComponents/TNumber8.jsx";
 import TNumber9 from "../components/touch-math/TeachingComponents/TNumber9.jsx";
+import TNumberSense from "../components/touch-math/Number_Sense/Teaching_Number_Sense.jsx"
+import NumberSenseQuiz from "../components/touch-math/Number_Sense/Number_sense_quiz.jsx"
 import Addition from "../components/touch-math/Exercises/Addition.jsx";
 import Subtraction from "../components/touch-math/Exercises/Subtraction.jsx";
 import Addition2 from "../components/touch-math/Exercises/AdditionLevel2.jsx";
 import TAddition from "../components/touch-math/TeachingOperations/TeachingAddition.jsx";
+
 import TrainingWelcome from "../pages/trainingWelcome.jsx";
 import ConfigOnBoardingPage from "../pages/configOnBoarding.jsx";
 import SpeechCalibPage from "../pages/speechCalib.jsx";
 import SelectTrainingPage from "../pages/SelectTraining.jsx";
 import DyslexicTrainingControlPanel from "../pages/dyslexicTrainingControlPanel.jsx";
-import DyscalculiaTrainingControlPanel from "../pages/DyscalculiaTrainingControlPanel.jsx";
+import DyscalculiaTrainingControlPanel from "../pages/dyscalculiaTrainingControlPanel.jsx";
 import DyslexicScreenReader from "../pages/dyslexic/dyslexicScreenReader.jsx";
 
 const Router = () => {
@@ -121,8 +124,6 @@ const Router = () => {
       <Route path ='/screen-reader-lessons/:id' element={<DyslexicScreenReader/>}/>
       
       {/* touch maths */}
-      {/* <Route path="/number1" element={<Number1 />} /> */}
-      <Route path="/touch-math" element={<TAddition />} />
       <Route path="/touch-math/teaching_number0" element={<TNumber0 />} />
       <Route path="/touch-math/teaching_number1" element={<TNumber1 />} />
       <Route path="/touch-math/teaching_number2" element={<TNumber2 />} />
@@ -134,19 +135,23 @@ const Router = () => {
       <Route path="/touch-math/teaching_number8" element={<TNumber8 />} />
       <Route path="/touch-math/teaching_number9" element={<TNumber9 />} />
 
-      <Route path="/touch-math/practice_number0" element={<PNumber0 />} />
-      <Route path="/touch-math/practice_number1" element={<PNumber1 />} />
-      <Route path="/touch-math/practice_number2" element={<PNumber2 />} />
-      <Route path="/touch-math/practice_number3" element={<PNumber3 />} />
-      <Route path="/touch-math/practice_number4" element={<PNumber4 />} />
-      <Route path="/touch-math/practice_number5" element={<PNumber5 />} />
-      <Route path="/touch-math/practice_number6" element={<PNumber6 />} />
-      <Route path="/touch-math/practice_number7" element={<PNumber7 />} />
-      <Route path="/touch-math/practice_number8" element={<PNumber8 />} />
-      <Route path="/touch-math/practice_number9" element={<PNumber9 />} />
+      <Route path="/touch-math/quiz_number0" element={<PNumber0 />} />
+      <Route path="/touch-math/quiz_number1" element={<PNumber1 />} />
+      <Route path="/touch-math/quiz_number2" element={<PNumber2 />} />
+      <Route path="/touch-math/quiz_number3" element={<PNumber3 />} />
+      <Route path="/touch-math/quiz_number4" element={<PNumber4 />} />
+      <Route path="/touch-math/quiz_number5" element={<PNumber5 />} />
+      <Route path="/touch-math/quiz_number6" element={<PNumber6 />} />
+      <Route path="/touch-math/quiz_number7" element={<PNumber7 />} />
+      <Route path="/touch-math/quiz_number8" element={<PNumber8 />} />
+      <Route path="/touch-math/quiz_number9" element={<PNumber9 />} />
 
-      <Route path="/addition" element={<Addition />} />
-      <Route path="/substraction" element={<Subtraction />} />
+      <Route path="/touch-math/teaching-number-sense" element={<TNumberSense />} />
+      <Route path="/touch-math/quiz-number-sense" element={<NumberSenseQuiz />} />
+
+      <Route path="/touch-math/teaching-addition" element={<TAddition />} />
+      <Route path="/practice-addition" element={<Addition />} />
+      <Route path="/practice-substraction" element={<Subtraction />} />
       <Route path="/addition_level2" element={<Addition2 />} />
       
     </Routes>

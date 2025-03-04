@@ -47,8 +47,8 @@ const Number1 = () => {
 
           {/* Single Touch Point on the number "1" */}
           <circle
-            cx={100} // Position the touch point in the center of the number
-            cy={22}  // Adjust to position the touch point where it aligns with "1"
+            cx={102} // Position the touch point in the center of the number
+            cy={18}  // Adjust to position the touch point where it aligns with "1"
             r={14} // Radius of the touch point
             fill={touchPoint ? "#FFD700" : "#0041c2"} // Golden when active
             onClick={handleTouch}
@@ -64,7 +64,7 @@ const Number1 = () => {
           </button>
 
           <button
-            onClick={() => navigate('/practice_number2')}
+            onClick={() => navigate('/touch-math/quiz_number2')}
             className="pnext-button"
           >
             Next

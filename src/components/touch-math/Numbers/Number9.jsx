@@ -1,16 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const Number9 = ({ onTouchPointChange }) => {
+const Number9 = ({ highlightedTouchPoint }) => {
   const [touchPoints, setTouchPoints] = useState([true, true, true, true, true, true, true, true, true]);
 
   const handleTouch = (index) => {
     const updatedPoints = [...touchPoints];
     updatedPoints[index] = !updatedPoints[index];
     setTouchPoints(updatedPoints);
-
-    if (onTouchPointChange) {
-      onTouchPointChange(updatedPoints);
-    }
   };
 
   return (
@@ -21,17 +17,28 @@ const Number9 = ({ onTouchPointChange }) => {
       </text>
 
       {/* Larger Touch Points (First 5) */}
-      <circle cx={74.5} cy={100} r={12} fill={touchPoints[0] ? "#FFD700" : "#0041c2"} onClick={() => handleTouch(0)} />
-      <circle cx={120} cy={32} r={12} fill={touchPoints[1] ? "#FFD700" : "#0041c2"} onClick={() => handleTouch(1)} />
-      <circle cx={165.5} cy={90} r={12} fill={touchPoints[2] ? "#FFD700" : "#0041c2"} onClick={() => handleTouch(2)} />
-      <circle cx={160} cy={160} r={12} fill={touchPoints[3] ? "#FFD700" : "#0041c2"} onClick={() => handleTouch(3)} />
-      <circle cx={75} cy={164} r={12} fill={touchPoints[4] ? "#FFD700" : "#0041c2"} onClick={() => handleTouch(4)} />
+      {[{ cx: 74.5, cy: 100 }, { cx: 120, cy: 32 }, { cx: 165.5, cy: 90 }, { cx: 160, cy: 160 }, { cx: 75, cy: 164 }].map((pos, index) => (
+        <circle
+          key={index}
+          cx={pos.cx}
+          cy={pos.cy}
+          r={12}
+          fill={index === highlightedTouchPoint ? "#FFD700" : "#c27e00"}
+          onClick={() => handleTouch(index)}
+        />
+      ))}
 
       {/* Smaller Touch Points (Next 4) */}
-      <circle cx={120} cy={32} r={8} fill={touchPoints[5] ? "#FF0000" : "#0041c2"} onClick={() => handleTouch(5)} />
-      <circle cx={165.5} cy={90} r={8} fill={touchPoints[6] ? "#FF0000" : "#0041c2"} onClick={() => handleTouch(6)} />
-      <circle cx={160} cy={160} r={8} fill={touchPoints[7] ? "#FF0000" : "#0041c2"} onClick={() => handleTouch(7)} />
-      <circle cx={75} cy={164} r={8} fill={touchPoints[8] ? "#FF0000" : "#0041c2"} onClick={() => handleTouch(8)} />
+      {[{ cx: 120, cy: 32 }, { cx: 165.5, cy: 90 }, { cx: 160, cy: 160 }, { cx: 75, cy: 164 }].map((pos, index) => (
+        <circle
+          key={index + 5}
+          cx={pos.cx}
+          cy={pos.cy}
+          r={8}
+          fill={index + 5 === highlightedTouchPoint ? "#f56342" : "#FF0000"}
+          onClick={() => handleTouch(index + 5)}
+        />
+      ))}
     </svg>
   );
 };

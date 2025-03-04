@@ -59,11 +59,11 @@ const Number7 = () => {
   };
 
   const handleNextClick = () => {
-    navigate("/teaching_number8"); // Navigate to teaching_number8 component
+    navigate("/touch-math/teaching_number8"); // Navigate to teaching_number8 component
   };
 
   const handlePracticeClick = () => {
-    navigate("/practice_number7"); // Navigate to /practice_number7 for practice
+    navigate("/touch-math/quiz_number7"); // Navigate to /practice_number7 for practice
   };
 
   // Function to handle text-to-speech with a female voice
