@@ -300,8 +300,8 @@ p {
     color: var(--text-color);
   }
   :where(.css-dev-only-do-not-override-nqoqt9).ant-btn-variant-solid{
-    background-color: var(--primary-color);
-    color: var(--text-color);
+    /* background-color: var(--primary-color);
+    color: var(--text-color); */
   }
   
   .theme-1-btn .ant-float-btn-body {
@@ -340,7 +340,7 @@ p {
     background-image: url(/src/assets/LexAyudha_logo.png);
     background-position: center;
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: 80%;
   }
 
   /* Custom loader */
