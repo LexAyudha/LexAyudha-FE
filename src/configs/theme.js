@@ -43,7 +43,7 @@ export const themes = {
     },
     theme8: {
       '--background-color': '#FFF',
-      '--primary-color': '#FBFBFD',
+      '--primary-color': '#E5E5E5',
       '--text-color': '#2A2A2A'
     },
 };
