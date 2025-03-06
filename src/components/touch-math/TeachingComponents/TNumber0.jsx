@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import for navigation
 import "../../../assets/TeachNumber.css";
+import ChangeThemeFB from "../../changeThemeFB";
+
+const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 const Number0 = () => {
   const [femaleVoice, setFemaleVoice] = useState(null); // Store selected female voice
   const navigate = useNavigate(); // Hook for navigation
+  const [numberList, setNumberList] = useState(numbers)
+  const [currentNumberIndex, setCurrentNumberIndex] = useState(0)
 
   useEffect(() => {
     // Get voices when they are loaded
@@ -28,20 +33,32 @@ const Number0 = () => {
     if (speechSynthesis.getVoices().length > 0) {
       getAvailableVoices();
     }
+
+    if (numberList.length == 0) {
+      setNumberList(numbers)
+      setCurrentNumberIndex(0);
+    }
   }, []);
 
   const handleLearnClick = () => {
-    // Pronounce "zero"
-    speakNumber("zero");
+    // Pronounce the number
+    speakNumber(numberList[currentNumberIndex]);
   };
 
   const handleNextClick = () => {
-    navigate("/touch-math/teaching_number1"); // Navigate to TNumber1 component
+    if (currentNumberIndex + 1 < numberList.length) {
+      setCurrentNumberIndex(currentNumberIndex + 1)
+    }
+
+    //navigate("/touch-math/teaching_number1"); // Navigate to TNumber1 component
   };
 
   const handlePracticeClick = () => {
-    navigate("/touch-math/quiz_number0"); // Navigate to /number2 for practice
+    navigate(`/touch-math/quiz_number/${currentNumberIndex}`); // Navigate to /number2 for practice
   };
+  const handleFinish = () => {
+    navigate(`/dyscalculic-training`)
+  }
 
   // Function to handle text-to-speech
   const speakNumber = (number) => {
@@ -59,30 +76,41 @@ const Number0 = () => {
   };
 
   return (
-    <div className="app">
+    <div className="la-container relative flex flex-col items-center justify-center h-screen">
+      <ChangeThemeFB />
+      <div className=" w-full justify-center items-center h-fit relative">
+        <div className="flex flex-col items-center justify-center">
 
-      {/* Header */}
-      <h1>Let's Learn Number 0</h1>
+          {/* Header */}
+          <h1 className="w-fit">Let's Learn Number {numberList[currentNumberIndex]}</h1>
 
-      {/* Practice Button */}
-      <button className="practice-button" onClick={handlePracticeClick}>
-        Practice
-      </button>
+          <div className="number-container">
+            {/* Styled Number */}
+            <div className="number">{numberList[currentNumberIndex]}</div>
+          </div>
 
-      <div className="number-container">
-        {/* Styled Number */}
-        <div className="number">0</div>
+          {/* Learn Button */}
+          <button className="learn-button" onClick={handleLearnClick}>
+            Let's Learn
+          </button>
+        </div>
+
+        {/* Practice Button */}
+        <button className="practice-button" onClick={handlePracticeClick}>
+          Practice
+        </button>
+        {/* Next Button */}
+        <div>
+          <button className={`next-button ${currentNumberIndex + 1 < numberList.length ? 'flex' : 'hidden'}`} onClick={handleNextClick}>
+            Next
+          </button>
+          <button className={`next-button ${currentNumberIndex + 1 < numberList.length ? 'hidden' : 'flex'}`} onClick={handleFinish}>
+            Finish
+          </button>
+        </div>
       </div>
 
-      {/* Learn Button */}
-      <button className="learn-button" onClick={handleLearnClick}>
-        Let's Learn
-      </button>
 
-      {/* Next Button */}
-      <button className="next-button" onClick={handleNextClick}>
-        Next
-      </button>
     </div>
   );
 };
