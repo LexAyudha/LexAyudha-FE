@@ -124,8 +124,9 @@ const Router = () => {
       <Route path ='/screen-reader-lessons/:id' element={<DyslexicScreenReader/>}/>
       
       {/* touch maths */}
-      <Route path="/touch-math/teaching_number0" element={<TNumber0 />} />
-      <Route path="/touch-math/teaching_number1" element={<TNumber1 />} />
+      <Route path="/touch-math/teaching_number/:id" element={<TNumber0 />} />
+      {/* Following TNumber routes should be deleted */}
+      <Route path="/touch-math/teaching_number1" element={<TNumber1 />} /> 
       <Route path="/touch-math/teaching_number2" element={<TNumber2 />} />
       <Route path="/touch-math/teaching_number3" element={<TNumber3 />} />
       <Route path="/touch-math/teaching_number4" element={<TNumber4 />} />
@@ -135,8 +136,9 @@ const Router = () => {
       <Route path="/touch-math/teaching_number8" element={<TNumber8 />} />
       <Route path="/touch-math/teaching_number9" element={<TNumber9 />} />
 
-      <Route path="/touch-math/quiz_number0" element={<PNumber0 />} />
-      <Route path="/touch-math/quiz_number1" element={<PNumber1 />} />
+      <Route path="/touch-math/quiz_number/:id" element={<PNumber0 />} />
+
+      {/* <Route path="/touch-math/quiz_number1" element={<PNumber1 />} />
       <Route path="/touch-math/quiz_number2" element={<PNumber2 />} />
       <Route path="/touch-math/quiz_number3" element={<PNumber3 />} />
       <Route path="/touch-math/quiz_number4" element={<PNumber4 />} />
@@ -144,7 +146,7 @@ const Router = () => {
       <Route path="/touch-math/quiz_number6" element={<PNumber6 />} />
       <Route path="/touch-math/quiz_number7" element={<PNumber7 />} />
       <Route path="/touch-math/quiz_number8" element={<PNumber8 />} />
-      <Route path="/touch-math/quiz_number9" element={<PNumber9 />} />
+      <Route path="/touch-math/quiz_number9" element={<PNumber9 />} /> */}
 
       <Route path="/touch-math/teaching-number-sense" element={<TNumberSense />} />
       <Route path="/touch-math/quiz-number-sense" element={<NumberSenseQuiz />} />

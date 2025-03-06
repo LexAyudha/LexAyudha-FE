@@ -21,11 +21,12 @@
 }
 
 .number {
-  font-size: 500px; /* Increased number size */
+  font-size: 450px; /* Increased number size */
   font-weight: bold;
-  color: #0041c2;
+  color: var(--text-color);
   position: absolute;
   top: 50%;
+  z-index: -10;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -47,16 +48,16 @@
 .learn-button {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border: 2px solid var(--text-color);
   border-radius: 5px;
   cursor: pointer;
   margin-top: 30px;
 }
 
 .learn-button:hover {
-  background-color: #0056b3;
+  background-color:  rgba(0, 0, 0, 0.1);
 }
 
 .next-button {
@@ -69,7 +70,7 @@
   cursor: pointer;
   margin-top: 30px;
   position: absolute; 
-  bottom: 40px; 
+  bottom: 0px; 
   right: 40px;
 }
 
@@ -79,13 +80,13 @@
 
 .practice-button {
   position: absolute;
-  top: 40px;
+  top: 16px;
   right: 40px;
   padding: 10px 20px;
-  background-color: #f0ad4e;
+  background-color: var(--text-color);
   border: none;
   border-radius: 5px;
-  color: white;
+  color: var(--background-color);
   cursor: pointer;
   font-size: 16px,
 }
@@ -116,21 +117,19 @@
 .check-answer-button {
   padding: 10px 20px;
   font-size: 18px;
-  font-family: Arial;
-  color: #fff;
-  background-color: #0041c2;
+  color: var(--text-color);
+  background-color: var(--primary-color);
   border: none;
   border-radius: 5px;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.3s ease;
-  width: 15%;  
-  margin-right: 10px;  
+  transition: background-color 0.3s ease;  
+    
   
 }
 
 .check-answer-button:hover {
-  background-color: #0033a0;
+  background-color:  rgba(0, 0, 0, 0.1);
 
 }
 

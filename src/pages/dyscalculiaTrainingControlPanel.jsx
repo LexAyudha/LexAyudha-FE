@@ -8,6 +8,7 @@ import numberSenseImg from "../assets/NumberSense.png";
 import countingImg from "../assets/Bcounting.png";
 import additionImg from "../assets/addition.png";
 import subtractionImg from "../assets/Subtractions.png";
+import ChangeThemeFB from "../components/changeThemeFB";
 
 export default function LearningActivity() {
   const [selected, setSelected] = useState(null);
@@ -17,7 +18,7 @@ export default function LearningActivity() {
     "Touch Math": {
       image: touchMathImg,
       options: ["Learn", "Practice", "Quiz"],
-      routes: ["/touch-math/teaching_number0", "/practice_number0", "/touch-math/quiz_number0"] // Routes for options
+      routes: ["/touch-math/teaching_number/0", "/practice_number/0", "/touch-math/quiz_number/0"] // Routes for options
     },
     "Number Sense": {
       image: numberSenseImg,
@@ -29,9 +30,6 @@ export default function LearningActivity() {
       options: ["Learn", "Practice", "Quiz"],
       routes: ["/teach_backward_counting", "/practice_backward_counting", "/quiz_backward_counting"]
     },
-  };
-
-  const menuItemsRow2 = {
     Addition: {
       image: additionImg,
       options: ["Learn", "Practice", "Quiz"],
@@ -52,8 +50,10 @@ export default function LearningActivity() {
   };
 
   return (
-    <div className="full-screen">
-      <h2 style={{ marginBottom: "60px" }}>Select Your Learning Activity</h2>
+
+    <div className="la-container flex flex-col items-center justify-center h-screen">
+      <ChangeThemeFB />
+      <h2 className="mb-[60px]">Select Your Learning Activity</h2>
 
       {/* First row */}
       <div className="menu-container">
@@ -64,66 +64,39 @@ export default function LearningActivity() {
               onClick={() => setSelected(selected === category ? null : category)}
             >
               {/* Text and arrow on the same line */}
-              <div className="menu-header">
-                <span className="menu-text">{category}</span>
-                <span className="arrow">{selected === category ? "▲" : "▼"}</span>
+              <div className="menu-header my-[10px] ">
+                <h4 className="m-0">{category}</h4>
+                <span className="arrow m-[0px_0px_0px_20px]">
+                  {selected === category ? <i className="fa-solid fa-chevron-up"></i> : <i className="fa-solid fa-chevron-down"></i>}
+                </span>
+              </div>
+              <div className="h-[170px] ">
+                <img src={menuItemsRow1[category].image} alt={category} className={` object-cover h-full   ${selected === category ? 'hidden' : 'block'}`} />
+                {/* Dropdown menu */}
+                {selected === category && (
+                  <div className="dropdown">
+                    {menuItemsRow1[category].options.map((item, index) => (
+                      <div
+                        key={item}
+                        className="dropdown-item"
+                        onClick={() => handleOptionClick(category, index)}
+                      >
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
-              <img src={menuItemsRow1[category].image} alt={category} className="menu-image" />
+
             </button>
 
-            {/* Dropdown menu */}
-            {selected === category && (
-              <div className="dropdown">
-                {menuItemsRow1[category].options.map((item, index) => (
-                  <div
-                    key={item}
-                    className="dropdown-item"
-                    onClick={() => handleOptionClick(category, index)}
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
-            )}
+
+
           </div>
         ))}
       </div>
 
-      {/* Second row */}
-      <div className="menu-container">
-        {Object.keys(menuItemsRow2).map((category) => (
-          <div key={category} className="menu-item">
-            <button
-              className={`menu-button ${selected === category ? "active" : ""}`}
-              onClick={() => setSelected(selected === category ? null : category)}
-            >
-              {/* Text and arrow on the same line */}
-              <div className="menu-header">
-                <span className="menu-text">{category}</span>
-                <span className="arrow">{selected === category ? "▲" : "▼"}</span>
-              </div>
-
-              <img src={menuItemsRow2[category].image} alt={category} className="menu-image" />
-            </button>
-
-            {/* Dropdown menu */}
-            {selected === category && (
-              <div className="dropdown">
-                {menuItemsRow2[category].options.map((item, index) => (
-                  <div
-                    key={item}
-                    className="dropdown-item"
-                    onClick={() => handleOptionClick(category, index)}
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
