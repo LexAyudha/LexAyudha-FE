@@ -4,6 +4,7 @@ import AccountList from "../pages/yourAccounts.jsx";
 import Login from "../pages/login.jsx";
 import Register from "../pages/register.jsx";
 import Dashboard from "../pages/dashboard.jsx";
+import NotFound from "../components/notFoundPage.jsx";
 
 //touch-math
 import PNumber0 from "../components/touch-math/PracticingComponent/PNumber0.jsx";
@@ -124,7 +125,7 @@ const Router = () => {
       <Route path ='/screen-reader-lessons/:id' element={<DyslexicScreenReader/>}/>
       
       {/* touch maths */}
-      <Route path="/touch-math/teaching_number/:id" element={<TNumber0 />} />
+      <Route path="/touch-math/teaching_number" element={<TNumber0 />} />
       {/* Following TNumber routes should be deleted */}
       <Route path="/touch-math/teaching_number1" element={<TNumber1 />} /> 
       <Route path="/touch-math/teaching_number2" element={<TNumber2 />} />
@@ -156,6 +157,8 @@ const Router = () => {
       <Route path="/practice-substraction" element={<Subtraction />} />
       <Route path="/addition_level2" element={<Addition2 />} />
       
+      {/* Catch-all route for 404 */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
