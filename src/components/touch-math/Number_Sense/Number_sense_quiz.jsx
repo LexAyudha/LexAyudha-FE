@@ -1,20 +1,23 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
+import Confetti from "react-confetti";
+import { useWindowSize } from "react-use";
+import "../../../assets/Styles.css";
 
 const Quiz = () => {
   const [selectedNumber, setSelectedNumber] = useState(null);
-  const [checked, setChecked] = useState(false); // Track if the answer has been checked
-  const [quizIndex, setQuizIndex] = useState(1); // Track the current quiz number
-  const totalQuizzes = 10; // Limit to 10 quizzes
+  const [quizIndex, setQuizIndex] = useState(1);
+  const [isCorrect, setIsCorrect] = useState(false);
+  const totalQuizzes = 10;
+
+  const { width, height } = useWindowSize();
 
   const generateRandomNumber = () => Math.floor(Math.random() * 9) + 1;
 
-  // Modify generateQuiz to ensure different numbers for num1 and num2
   const generateQuiz = () => {
     let num1 = generateRandomNumber();
     let num2 = generateRandomNumber();
 
-    // Ensure num1 and num2 are not the same
     while (num1 === num2) {
       num2 = generateRandomNumber();
     }
@@ -31,36 +34,27 @@ const Quiz = () => {
 
   const handleNumberClick = (num) => {
     setSelectedNumber(num);
-  };
 
-  const checkAnswer = () => {
-    setChecked(true); // Mark as checked when the button is clicked
-
-    if (selectedNumber === currentQuiz.correct) {
-      Swal.fire({
-        title: "Correct!",
-        text: "You selected the correct number.",
-        icon: "success",
-        confirmButtonText: "Next Quiz",
-      }).then(() => {
-        nextQuiz(); // Move to the next quiz after SweetAlert confirmation
-      });
+    if (num === currentQuiz.correct) {
+      setIsCorrect(true); 
     } else {
       Swal.fire({
         title: "Wrong!",
-        text: "That's not the largest number.",
+        text: "That's not the largest number. Try again.",
         icon: "error",
-        confirmButtonText: "Try Again",
+        confirmButtonText: "OK",
+      }).then(() => {
+        setSelectedNumber(null);
       });
     }
   };
 
   const nextQuiz = () => {
     if (quizIndex < totalQuizzes) {
-      setChecked(false); // Reset checked state for the next quiz
       setSelectedNumber(null);
+      setIsCorrect(false);
       setCurrentQuiz(generateQuiz());
-      setQuizIndex(quizIndex + 1); // Increase quiz index
+      setQuizIndex(quizIndex + 1);
     } else {
       Swal.fire({
         title: "Quiz Completed!",
@@ -68,9 +62,9 @@ const Quiz = () => {
         icon: "success",
         confirmButtonText: "Restart Quiz",
       }).then(() => {
-        setQuizIndex(1); // Restart quizzes from the first quiz
-        setChecked(false);
+        setQuizIndex(1);
         setSelectedNumber(null);
+        setIsCorrect(false);
         setCurrentQuiz(generateQuiz());
       });
     }
@@ -78,8 +72,29 @@ const Quiz = () => {
 
   return (
     <div className="quiz-container">
+      {isCorrect && (
+        <div className="fireworks-container">
+          <Confetti
+            width={width}
+            height={height}
+            gravity={0.2}
+            numberOfPieces={300}
+            recycle={false}
+            initialVelocityX={1}
+            initialVelocityY={1}
+            colors={['#ff0000', '#00ff00', '#0000ff']}
+            style={{
+              position: 'absolute',
+              bottom: 0, // Start from the bottom of the screen
+              left: 0,
+              right: 0,
+            }}
+          />
+        </div>
+      )}
+
       <div className="quiz-counter">
-        Quiz {quizIndex} / {totalQuizzes} {/* Display quiz number out of total */}
+        Quiz {quizIndex} / {totalQuizzes}
       </div>
 
       <h1 className="quiz-title">Select the larger number</h1>
@@ -88,9 +103,7 @@ const Quiz = () => {
           <div
             key={index}
             className={`number-box ${selectedNumber === num ? "selected" : ""} ${
-              checked && selectedNumber === currentQuiz.correct && num === currentQuiz.correct
-                ? "correct-answer-highlight"
-                : ""
+              isCorrect && num === currentQuiz.correct ? "correct-answer-highlight" : ""
             }`}
             onClick={() => handleNumberClick(num)}
           >
@@ -99,11 +112,11 @@ const Quiz = () => {
         ))}
       </div>
 
-      <div className="quiz-actions">
-        <button className="check-answer" onClick={checkAnswer}>
-          Check Answer
+      {isCorrect && (
+        <button className="next-quiz" onClick={nextQuiz}>
+          Next
         </button>
-      </div>
+      )}
     </div>
   );
 };
