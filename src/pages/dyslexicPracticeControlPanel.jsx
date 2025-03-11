@@ -1,3 +1,4 @@
+// Dyslexia practice page control panel
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import ChangeThemeFB from '../components/changeThemeFB'
