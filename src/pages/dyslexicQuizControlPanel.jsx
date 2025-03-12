@@ -10,7 +10,6 @@ import DysLexiaPracitcePDFDoc from '../components/dysLexiaPracitcePDFDoc';
 
 
 export default function DyslexicQuizControlPanel() {
-
   const [selectedLesson, setSelectedLesson] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedChromaticTheme, setSelectedChromaticTheme] = useState(null);
