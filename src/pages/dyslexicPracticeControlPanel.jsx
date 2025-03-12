@@ -8,9 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getLessons } from '../api/RecurringAPI';
 import DysLexiaPracitcePDFDoc from '../components/dysLexiaPracitcePDFDoc';
 
-
 export default function DyslexicPracticeControlPanel() {
-  
   const [selectedLesson, setSelectedLesson] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedChromaticTheme, setSelectedChromaticTheme] = useState(null);
