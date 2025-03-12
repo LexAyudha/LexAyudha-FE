@@ -61,7 +61,6 @@ export default function DyslexicPracticeControlPanel() {
   
   }
 
-
   const openPdfDownloadMenu = () => {
     setPreviewContent(false)
     setPdfDownloadMenu(true)
