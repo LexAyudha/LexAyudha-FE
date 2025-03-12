@@ -19,7 +19,6 @@ export default function DyslexicPracticeControlPanel() {
   const [pdfChromaticColor, setPdfChromaticColor] = useState()
   const [pdfPreview, setPdfPreview] = useState(null);
   
-
   const navigate = useNavigate();
 
   const { data: lessons, isLoading, error } = useQuery({
@@ -36,8 +35,6 @@ export default function DyslexicPracticeControlPanel() {
         setSelectedLesson(lessons[0]);
         setSelectedChromaticTheme(lessons[0].chromaticTheme);
       }
-      
-
     }, 200);
 
   }, [lessons]);
