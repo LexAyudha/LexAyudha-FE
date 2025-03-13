@@ -189,12 +189,12 @@
 }
 
 .number-box {
-    width: 250px; /* Increased box size */
-    height: 250px;
+    width: 300px; /* Increased box size */
+    height: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 200px; /* Larger text inside the boxes */
+    font-size: 250px; /* Larger text inside the boxes */
     color: #007BFF;
     border: 3px solid #ccc;
     cursor: pointer;
@@ -239,14 +239,15 @@
 }
 
 .next-quiz {
-    background-color: #4caf50;
+    background-color: #2196F3; /* Blue color */
     color: white;
     border: none;
 }
 
 .next-quiz:hover {
-    background-color: #45a049;
+    background-color: #1976D2; /* Darker blue on hover */
 }
+
 
 .next-quiz-button {
     position: fixed;

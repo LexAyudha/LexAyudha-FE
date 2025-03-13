@@ -80,9 +80,9 @@ const TeachingAddition = () => {
       <h2 style={{ fontSize: '50px', marginBottom: '100px' }}>Touch Math Addition Teaching</h2>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px' }}>
         <div>{numberComponents[num1]}</div>
-        <span style={{ fontSize: '200px', color: '#0041c2' }}>+</span>
+        <span style={{ fontSize: '200px', color: '#0041c2', marginLeft: '30px', marginBottom: '60px' }}>+</span>
         <div>{numberComponents[num2]}</div>
-        <span style={{ fontSize: '200px', color: '#0041c2' }}>=</span>
+        <span style={{ fontSize: '200px', color: '#0041c2', marginLeft: '30px', marginBottom: '60px' }}>=</span>
         <input
           type="text"
           value={answer}
@@ -90,6 +90,8 @@ const TeachingAddition = () => {
           style={{
             fontSize: '200px',
             padding: '10px',
+            marginBottom: '60px',
+            marginLeft: '50px',
             borderRadius: '5px',
             border: '1px solid #0041c2',
             width: '250px',

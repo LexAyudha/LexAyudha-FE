@@ -34,7 +34,7 @@ const Number6 = ({ highlightedTouchPoint }) => {
           key={index + 3}
           cx={index === 0 ? 162.9 : index === 1 ? 73 : 123}
           cy={index === 0 ? 61 : index === 1 ? 134 : 194}
-          r={8}
+          r={7}
           fill={index + 3 === highlightedTouchPoint ? "#f56342" : "#FF0000"}
           onClick={() => handleTouch(index + 3)}
         />

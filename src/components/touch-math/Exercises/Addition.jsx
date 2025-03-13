@@ -13,26 +13,16 @@ import Number0 from '../Numbers/Number0';
 import ChangeThemeFB from '../../changeThemeFB';
 
 const AdditionExerciseWithTouchPoints = () => {
-  // Randomly generate numbers
   const [num1, setNum1] = useState(Math.floor(Math.random() * 9) + 1);
   const [num2, setNum2] = useState(Math.floor(Math.random() * 9) + 1);
   const [answer, setAnswer] = useState('');
+  const [quizCount, setQuizCount] = useState(0);
 
-  // Map numbers to their respective touch point components
   const numberComponents = {
-    1: <Number1 />,
-    2: <Number2 />,
-    3: <Number3 />,
-    4: <Number4 />,
-    5: <Number5 />,
-    6: <Number6 />,
-    7: <Number7 />,
-    8: <Number8 />,
-    9: <Number9 />,
-    0: <Number0 />,
+    1: <Number1 />, 2: <Number2 />, 3: <Number3 />, 4: <Number4 />, 5: <Number5 />, 
+    6: <Number6 />, 7: <Number7 />, 8: <Number8 />, 9: <Number9 />, 0: <Number0 />,
   };
 
-  // Function to check the answer
   const handleSubmit = () => {
     const correctAnswer = num1 + num2;
     if (parseInt(answer) === correctAnswer) {
@@ -42,7 +32,18 @@ const AdditionExerciseWithTouchPoints = () => {
         icon: 'success',
         confirmButtonText: 'Next Exercise',
       }).then(() => {
-        // Generate new random numbers and reset answer
+        if (quizCount === 9) {
+          Swal.fire({
+            title: 'Quiz Completed!',
+            text: 'You have completed 10 quizzes! Restarting...',
+            icon: 'info',
+            confirmButtonText: 'Restart',
+          }).then(() => {
+            setQuizCount(0);
+          });
+        } else {
+          setQuizCount(quizCount + 1);
+        }
         setNum1(Math.floor(Math.random() * 9) + 1);
         setNum2(Math.floor(Math.random() * 9) + 1);
         setAnswer('');
@@ -59,32 +60,33 @@ const AdditionExerciseWithTouchPoints = () => {
 
   return (
     <div style={{ textAlign: 'center', fontFamily: 'Arial', padding: '10px' }}>
-     <ChangeThemeFB/>
+      <ChangeThemeFB />
       <h2 style={{ fontSize: '50px', marginBottom: '100px' }}>Touch Math Addition Practice</h2>
+      
+      <div className="quiz-counter">
+        Quiz {quizCount + 1} / 10
+      </div>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px' }}>
-        {/* Render numbers side by side */}
-        <div>{numberComponents[num1]}</div>
-        <span style={{ fontSize: '200px', color: '#0041c2'}}>+</span>
-        <div>{numberComponents[num2]}</div>
-        <span style={{ fontSize: '200px' , marginRight: '50px', color: '#0041c2'}}>=</span>
-
-        {/* Answer input box on the same line */}
+        <div style={{ fontSize: '250px' }}>{numberComponents[num1]}</div>
+        <span style={{ fontSize: '250px', color: '#0041c2' }}>+</span>
+        <div style={{ fontSize: '250px' }}>{numberComponents[num2]}</div>
+        <span style={{ fontSize: '250px', marginRight: '50px', color: '#0041c2' }}>=</span>
         <input
-          type="text" 
+          type="text"
           value={answer}
           onChange={(e) => setAnswer(e.target.value)}
           style={{
-            fontSize: '200px',
+            fontSize: '250px',
             padding: '10px',
             marginBottom: '50px',
             borderRadius: '5px',
             border: '1px solid #0041c2',
-            width: '250px', // Reduced width
-            height: '200px', // Smaller height
-            textAlign: 'center', // Center text
-            appearance: 'none', 
-            MozAppearance: 'textfield', 
-            WebkitAppearance: 'none', 
+            width: '280px',
+            height: '260px',
+            textAlign: 'center',
+            appearance: 'none',
+            MozAppearance: 'textfield',
+            WebkitAppearance: 'none',
           }}
         />
       </div>
