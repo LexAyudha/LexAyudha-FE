@@ -43,7 +43,7 @@ const EmotionDetection = ({ startDetection }) => {
             const formData = new FormData();
             formData.append("file", blob, "frame.jpg");
 
-            fetch("http://localhost:5000/detection", {
+            fetch("http://localhost:5000/api/v1/emotion/detection", {
               method: "POST",
               body: formData,
             })
