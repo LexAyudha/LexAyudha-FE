@@ -1,18 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 
-const EmotionDetection = ({ startDetection }) => {
+const EmotionDetection = ({ startDetection, onStopDetection }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [dragging, setDragging] = useState(false);
   const [position, setPosition] = useState({ x: 50, y: 50 });
+  const streamRef = useRef(null); // To hold the video stream
 
   useEffect(() => {
-    let stream = null;
     let intervalId = null;
 
     const startVideoCapture = async () => {
       try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+        });
+        streamRef.current = stream; // Store the stream in the ref
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
@@ -53,12 +56,16 @@ const EmotionDetection = ({ startDetection }) => {
           }, "image/jpeg");
         }
       }, 1000);
+    } else {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
+      }
     }
 
     return () => {
       if (intervalId) clearInterval(intervalId);
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
       }
     };
   }, [startDetection]);
@@ -102,6 +109,9 @@ const EmotionDetection = ({ startDetection }) => {
         />
       )}
       <canvas ref={canvasRef} style={{ display: "none" }} />
+      <button onClick={onStopDetection} style={{ marginTop: 10 }}>
+        Stop Detection
+      </button>
     </div>
   );
 };
