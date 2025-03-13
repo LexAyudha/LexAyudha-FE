@@ -4,6 +4,7 @@ import ChangeThemeFB from '../components/changeThemeFB'
 import SignInWithGoogleBtn from '../components/signInWithGoogle'
 import axios from 'axios'
 import { ToastContainer, toast, Bounce } from 'react-toastify'
+import axiosInstance from '../api/axiosInstance'
 
 
 
@@ -56,16 +57,16 @@ export default function Login() {
         password: psw
       }
 
-      // const res = await axios.post('http://localhost:5000/api/auth/login', user)
-
-      const res = { status: 200, data: { id: 10 } } // Mock response
+      const res = await axiosInstance.post('/auth/login', user)
 
       if (res.status === 200) {
-        // localStorage.setItem('token', res.data.token)
+        localStorage.setItem('accessToken', res?.data?.accessToken)
+        localStorage.setItem('refreshToken', res?.data?.refreshToken)
 
         toast.success('Login Successful!')
         setTimeout(() => {
-          window.location.href = `/dashboard/${res?.data?.id}`
+          const userId = JSON.parse(atob(res?.data?.accessToken.split('.')[1]))?.userId;
+          window.location.href = `/dashboard/${userId}`
         }, 5000)
 
       } else {

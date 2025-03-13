@@ -5,8 +5,9 @@ import SignInWithGoogleBtn from '../components/signInWithGoogle.jsx'
 import axios from 'axios'
 import { ToastContainer, toast, Bounce } from 'react-toastify'
 import { data } from 'react-router-dom'
-
-
+import axiosInstance from '../api/axiosInstance.js'
+import sha256 from 'crypto-js/sha256';
+import Hex from 'crypto-js/enc-hex';
 
 export default function Register() {
     const [userEmail, setUserEmail] = useState('');
@@ -65,22 +66,21 @@ export default function Register() {
     };
 
     const generateOTP = async () => {
-        const user = {
-            email: userEmail
-        }
+        
 
-        // const res = await axios.post('http://localhost:5000/api/auth/generateOTP', user)
+        const res = await axiosInstance.get('/auth/otp')
 
-        const res = {
-            status: 200,
-            data: {
-                otp: 123456
-            }
-        } // Mock response
+        // const res = {
+        //     status: 200,
+        //     data: {
+        //         otp: 123456
+        //     }
+        // } // Mock response
 
         if (res?.status === 200) {
             toast.success('OTP code sent!')
-            setOtp(parseInt(res?.data?.otp,10));
+            console.log('otp: ',res?.data?.otp);
+            setOtp(res?.data?.otp);
             return true
 
         } else {
@@ -105,41 +105,23 @@ export default function Register() {
     const handleOtpInput = (e) => {
         setUserOtp(parseInt(e.target.value,10));
     }
+
     const verifyOTP = (e) => {
-        if (userOtp == otp) {
-            return true
-        } else if (otp == '') {
+        const hashedOtp = sha256(otp?.toString()).toString(Hex);
+        setError(''); // Clear any previous error messages
+        console.log('hashedOtp', userOtp);
+        console.log('otp', otp);
+        if (otp == userOtp) {
+            return true;
+        } else if (otp === '') {
             setError('OTP is required');
             return false;
-        } else if (userOtp != otp) {
-            console.log(userOtp, otp)
+        } else {
             setError('Invalid OTP');
             return false;
         }
-        setError(''); // Clear any previous error messages 
-    }
+    };
 
-      const automatedLogin = async () => {
-        
-        if (validateInput('login')) {
-          const user = {
-            email: userEmail,
-            password: psw
-          }
-    
-          // const res = await axios.post('http://localhost:5000/api/auth/login', user)
-    
-          const res = {status : 200, data:{id:2}} // Mock response
-          
-          if (res.status === 200) {
-           //localStorage.setItem('token', res.data.token)
-
-            return res?.data?.id
-          }else{
-            return false
-          }
-        }
-      }
     
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -149,18 +131,21 @@ export default function Register() {
                 password: psw
             }
 
-            // const res = await axios.post('http://localhost:5000/api/auth/register', user)
+            const res = await axiosInstance.post('/auth/register', user)
 
-            const res = { status: 200 } // Mock response
+            //const res = { status: 200 } // Mock response
 
             if (res.status === 200) {
-                // localStorage.setItem('token', res.data.token)
+                localStorage.setItem('accessToken', res?.data?.accessToken)
+                localStorage.setItem('refreshToken', res?.data?.refreshToken)
 
                 toast.success('Registration Successful!')
+                
                 setTimeout(async() => {
-                    const id = await automatedLogin()
-                    if(id){
-                        window.location.href = `/dashboard/${id}`
+                    const userId = JSON.parse(atob(res?.data?.accessToken.split('.')[1]))?.userId;
+                     
+                    if(userId){
+                        window.location.href = `/dashboard/${userId}`
                     }else{
                         window.location.href = '/login'
                     }
