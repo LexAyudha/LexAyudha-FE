@@ -56,10 +56,12 @@ export default function Login() {
         email: userEmail,
         password: psw
       }
-
-      const res = await axiosInstance.post('/auth/login', user)
-
-      if (res.status === 200) {
+     
+      const res = await axiosInstance.post('/auth/login', user,{
+        validateStatus: (status) => status < 500, // Accept any status under 500
+      });
+      
+      if (res?.status === 200) {
         localStorage.setItem('accessToken', res?.data?.accessToken)
         localStorage.setItem('refreshToken', res?.data?.refreshToken)
 
@@ -69,8 +71,11 @@ export default function Login() {
           window.location.href = `/dashboard/${userId}`
         }, 5000)
 
+      }else if (res.status === 401) {
+        // Handle unauthorized error gracefully
+        toast.error('Unauthorized! Please check your credentials.');
       } else {
-        toast.error('Login Failed!')
+        toast.error('Login Failed!');
       }
     }
   }

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import EmotionDetectionButton from "./EmotionDetectionButton";
 
 export default function DashTraining({ userData }) {
+
   const res = {
     status: 200,
     data: {
@@ -86,7 +87,7 @@ export default function DashTraining({ userData }) {
           type="primary"
           className="w-[200px]"
           onClick={() => {
-            window.location = "/training";
+            window.location = `/training?new=${userData?.isFirstTimeUser}`;
           }}
         >
           Start Training

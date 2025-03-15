@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useEffect, useState, } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 import { Image, Modal, Button, message, Upload } from 'antd'
 import { InboxOutlined } from '@ant-design/icons';
 import logo from '../assets/lexLogo.png'
@@ -10,14 +10,11 @@ import DashBilling from '../components/dashBilling.jsx'
 import DashPerformance from '../components/dashPerfRecords.jsx'
 import DashCustomize from '../components/dashCustLesson.jsx'
 import axiosInstance from '../api/axiosInstance.js';
+import useVerifyLoginState from '../utils/validateLogin.js';
 
 const { Dragger } = Upload;
 
 export default function Dashboard() {
-  // Add states, hooks, and other functions
-  // Example: const [state, setState] = useState(initialState)
-  // Example: useEffect(() => { /* effect logic */ }, [dependencies])
-  // Example: const handleChange = () => { /* handle change logic */ }
 
   const [userData, setUserData] = useState({})
   const [panel, setPanel] = useState('training')
@@ -26,12 +23,24 @@ export default function Dashboard() {
   const { id } = useParams()
   const [updatedUserName, setUpdatedUserName] = useState('')
   const [loadingScreen, setLoadingScreen] = useState(true)
+  
 
   //proPic modal
   const [proPicOpen, setProPicOpen] = useState(false);
   const [confirmProPicLoading, setConfirmProPicLoading] = useState(false);
   const [proPicModalText, setProPicModalText] = useState('');
 
+  //coverPic modal
+  const [coverPicOpen, setCoverPicOpen] = useState(false);
+  const [confirmCoverPicLoading, setConfirmCoverPicLoading] = useState(false);
+  const [coverPicModalText, setCoverPicModalText] = useState('');
+
+  //update user name modal
+  const [UNOpen, setUNOpen] = useState(false);
+  const [confirmUNLoading, setConfirmUNLoading] = useState(false);
+  const [UNModalText, setUNModalText] = useState('');
+
+  //profile picture modal functions
   const showProPicModal = () => {
     setProPicOpen(true);
   };
@@ -68,11 +77,7 @@ export default function Dashboard() {
   };
 
 
-  //coverPic modal
-  const [coverPicOpen, setCoverPicOpen] = useState(false);
-  const [confirmCoverPicLoading, setConfirmCoverPicLoading] = useState(false);
-  const [coverPicModalText, setCoverPicModalText] = useState('');
-
+  //cover picture modal functions
   const showCoverPicModal = () => {
     setCoverPicOpen(true);
   };
@@ -108,11 +113,8 @@ export default function Dashboard() {
     setCoverPicModalText('');
   };
 
-  //update user name modal
-  const [UNOpen, setUNOpen] = useState(false);
-  const [confirmUNLoading, setConfirmUNLoading] = useState(false);
-  const [UNModalText, setUNModalText] = useState('');
 
+  //update userName modal functions
   const showUNModal = () => {
     setUpdatedUserName(userData?.userName)
     setUNOpen(true);
@@ -173,7 +175,7 @@ export default function Dashboard() {
 
   };
 
-  // proPic upload component
+  // CoverPic upload component
   const coverPicUplaodProps = {
     name: 'profileImage',
     multiple: false,
@@ -198,8 +200,11 @@ export default function Dashboard() {
 
   };
 
+  //Validate the login
+  useVerifyLoginState()
+
   useEffect(() => {
-    fetchUserData(); //Get all user data
+    fetchUserData(); //Get all user data 
   }, [])
 
   const fetchUserData = async () => {
@@ -341,7 +346,7 @@ export default function Dashboard() {
         <div className='w-full p-[14px] h-[calc(100vh-320px)] flex items-center justify-center'>
           <div className='primary-color-bg w-full h-full  bottom-0 px-10 py-5 z-[5]   rounded-md '>
             {panel === 'training' && (
-              <DashTraining />
+              <DashTraining userData={userData} />
             )}
             {panel === 'performance' && (
               <DashPerformance />
