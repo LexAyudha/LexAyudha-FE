@@ -1,6 +1,5 @@
 import { Button } from "antd";
-import React, { useEffect, useState } from "react";
-import EmotionDetectionButton from "./EmotionDetectionButton";
+import React from "react";
 
 export default function DashTraining({ userData }) {
   const res = {
@@ -91,9 +90,6 @@ export default function DashTraining({ userData }) {
         >
           Start Training
         </Button>
-        <div className="flex justify-center mt-5">
-          <EmotionDetectionButton />
-        </div>
       </div>
     </div>
   );
