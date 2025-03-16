@@ -1,17 +1,16 @@
-import React, { useEffect, useState, } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { Image, Modal, Button, message, Upload } from 'antd'
+import React, { useEffect, useState, } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Image, Modal, Button, message, Upload } from "antd";
 import { InboxOutlined } from '@ant-design/icons';
-import logo from '../assets/lexLogo.png'
-import DashTraining from '../components/dashTraining.jsx'
-import DashSettings from '../components/dashSettings.jsx'
-import DashAchievements from '../components/dashAchive.jsx'
-import DashBilling from '../components/dashBilling.jsx'
-import DashPerformance from '../components/dashPerfRecords.jsx'
-import DashCustomize from '../components/dashCustLesson.jsx'
-import axiosInstance from '../api/axiosInstance.js';
-import useVerifyLoginState from '../utils/validateLogin.js';
-
+import logo from "../assets/lexLogo.png";
+import DashTraining from "../components/dashTraining.jsx";
+import DashSettings from "../components/dashSettings.jsx";
+import DashAchievements from "../components/dashAchive.jsx";
+import DashBilling from "../components/dashBilling.jsx";
+import DashPerformance from "../components/dashPerfRecords.jsx";
+import DashCustomize from "../components/dashCustLesson.jsx";
+import axiosInstance from "../api/axiosInstance.js';
+import useVerifyLoginState from '../utils/validateLogin.js";
 const { Dragger } = Upload;
 
 export default function Dashboard() {
@@ -218,9 +217,9 @@ export default function Dashboard() {
         setLoadingScreen(false)
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const handlelogout = () => {
     localStorage.removeItem('accessToken')
@@ -230,27 +229,27 @@ export default function Dashboard() {
 
   const togglePanel = (panelProp) => {
     switch (panelProp) {
-      case 'training':
-        setPanel('training')
+      case "training":
+        setPanel("training");
         break;
-      case 'performance':
-        setPanel('performance')
+      case "performance":
+        setPanel("performance");
         break;
-      case 'achievements':
-        setPanel('achievements')
+      case "achievements":
+        setPanel("achievements");
         break;
-      case 'billings':
-        setPanel('billings')
+      case "billings":
+        setPanel("billings");
         break;
-      case 'customize':
-        setPanel('customize')
+      case "customize":
+        setPanel("customize");
         break;
-      case 'settings':
-        setPanel('settings')
+      case "settings":
+        setPanel("settings");
         break;
 
       default:
-        setPanel('training')
+        setPanel("training");
         break;
     }
   }
@@ -274,7 +273,7 @@ export default function Dashboard() {
           <div className='w-[50px] h-[50px] mr-2'>
             <img src={logo} alt='LexAyudha logo' />
           </div>
-          <h2 className='h-fit m-0'>LexAyudha</h2>
+          <h2 className="h-fit m-0">LexAyudha</h2>
         </div>
         <div className='flex flex-col items-center h-[calc(100%-90px)] justify-between'>
           <div className='w-full flex flex-col items-center'>
@@ -283,58 +282,85 @@ export default function Dashboard() {
                 <i className="fas fa-pencil-alt rounded-full p-1.5 primary-color-bg main-border-color shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] border-2 absolute right-1 bottom-1 z-20 cursor-pointer" onClick={showProPicModal}></i>
                 <Image src={userData.proPic ? userData.proPic : ''} alt='profile picture' />
               </div>
-
             </div>
             <div className='flex flex-col items-center justify-between w-full'>
               <div className='flex items-center group cursor-pointer w-full justify-center'>
                 <h2 className='mb-0.8 text-center'>{userData?.userName}</h2>
                 <i className="fas fa-pencil-alt ml-5 mt-3 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-300" onClick={showUNModal}></i>
               </div>
-              <div className='flex'>
-                <h4 className='m-0 text-gray-500'>{userData?.email}</h4>
+              <div className="flex">
+                <h4 className="m-0 text-gray-500">{userData?.email}</h4>
               </div>
-
             </div>
           </div>
-          <div className='w-full h-full mt-[32px] flex flex-col justify-between '>
-            <div className='flex flex-col items-start mb-5 w-full'>
-              <div className={`pl-4 flex flex-row items-center py-2 cursor-pointer w-full ${panel === 'training' ? 'bg-gray-200' : 'hover:bg-gray-200'}`} onClick={() => togglePanel('training')}>
+          <div className="w-full h-full mt-[32px] flex flex-col justify-between ">
+            <div className="flex flex-col items-start mb-5 w-full">
+              <div
+                className={`pl-4 flex flex-row items-center py-2 cursor-pointer w-full ${
+                  panel === "training" ? "bg-gray-200" : "hover:bg-gray-200"
+                }`}
+                onClick={() => togglePanel("training")}
+              >
                 <i className="fas fa-chalkboard-user mr-2"></i>
-                <p className='m-0 pl-2'>Training</p>
+                <p className="m-0 pl-2">Training</p>
               </div>
-              <div className={`pl-4 flex flex-row items-center py-2 cursor-pointer w-full ${panel === 'performance' ? 'bg-gray-200' : 'hover:bg-gray-200'}`} onClick={() => togglePanel('performance')}>
+              <div
+                className={`pl-4 flex flex-row items-center py-2 cursor-pointer w-full ${
+                  panel === "performance" ? "bg-gray-200" : "hover:bg-gray-200"
+                }`}
+                onClick={() => togglePanel("performance")}
+              >
                 <i className="fas fa-chart-column mr-2"></i>
-                <p className='m-0 pl-2'>Performance Records</p>
+                <p className="m-0 pl-2">Performance Records</p>
               </div>
-              <div className={`pl-4 flex flex-row items-center py-2 cursor-pointer w-full ${panel === 'achievements' ? 'bg-gray-200' : 'hover:bg-gray-200'}`} onClick={() => togglePanel('achievements')}>
+              <div
+                className={`pl-4 flex flex-row items-center py-2 cursor-pointer w-full ${
+                  panel === "achievements" ? "bg-gray-200" : "hover:bg-gray-200"
+                }`}
+                onClick={() => togglePanel("achievements")}
+              >
                 <i className="fas fa-trophy mr-2"></i>
-                <p className='m-0 pl-2'>Achievements</p>
+                <p className="m-0 pl-2">Achievements</p>
               </div>
-              <div className={`pl-4 flex flex-row items-center py-2 cursor-pointer w-full ${panel === 'billings' ? 'bg-gray-200' : 'hover:bg-gray-200'}`} onClick={() => togglePanel('billings')}>
+              <div
+                className={`pl-4 flex flex-row items-center py-2 cursor-pointer w-full ${
+                  panel === "billings" ? "bg-gray-200" : "hover:bg-gray-200"
+                }`}
+                onClick={() => togglePanel("billings")}
+              >
                 <i className="fas fa-wallet mr-2"></i>
-                <p className='m-0 pl-2'>Billings</p>
+                <p className="m-0 pl-2">Billings</p>
               </div>
-              <div className={`pl-4 flex flex-row items-center py-2 cursor-pointer w-full ${panel === 'customize' ? 'bg-gray-200' : 'hover:bg-gray-200'}`} onClick={() => togglePanel('customize')}>
+              <div
+                className={`pl-4 flex flex-row items-center py-2 cursor-pointer w-full ${
+                  panel === "customize" ? "bg-gray-200" : "hover:bg-gray-200"
+                }`}
+                onClick={() => togglePanel("customize")}
+              >
                 <i className="fas fa-pen-ruler mr-2"></i>
-                <p className='m-0 pl-2'>Customize Lessons</p>
+                <p className="m-0 pl-2">Customize Lessons</p>
               </div>
-              <div className={`pl-4 flex flex-row items-center py-2 cursor-pointer w-full ${panel === 'settings' ? 'bg-gray-200' : 'hover:bg-gray-200'}`} onClick={() => togglePanel('settings')}>
+              <div
+                className={`pl-4 flex flex-row items-center py-2 cursor-pointer w-full ${
+                  panel === "settings" ? "bg-gray-200" : "hover:bg-gray-200"
+                }`}
+                onClick={() => togglePanel("settings")}
+              >
                 <i className="fas fa-cog mr-2"></i>
-                <p className='m-0 pl-2'>Settings</p>
+                <p className="m-0 pl-2">Settings</p>
               </div>
-
             </div>
-            <div className='py-[20px]'>
-              <div className='flex w-full justify-center  flex-row items-center text-red-500 self-center py-2 cursor-pointer' onClick={handlelogout}>
+            <div className="py-[20px]">
+              <div
+                className="flex w-full justify-center  flex-row items-center text-red-500 self-center py-2 cursor-pointer"
+                onClick={handlelogout}
+              >
                 <i className="fas fa-sign-out-alt mr-2"></i>
-                <p className='m-0'>Logout</p>
+                <p className="m-0">Logout</p>
               </div>
             </div>
-
           </div>
-
         </div>
-
       </div>
       <div className=' w-full relative bg-gray-200 flex flex-col items-center justify-center'>
         <div className='w-full h-[320px] z-[0] group relative'>
@@ -364,9 +390,7 @@ export default function Dashboard() {
               <DashSettings />
             )}
           </div>
-
         </div>
-
       </div>
 
       {/* ProPic Model */}
@@ -424,5 +448,5 @@ export default function Dashboard() {
         <p>{UNModalText}</p>
       </Modal>
     </div>
-  )
+  );
 }
