@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import ChangeThemeFB from '../components/changeThemeFB'
 import { useVoiceVisualizer, VoiceVisualizer } from "react-voice-visualizer";
-import axios from 'axios';
+import { decodeToken } from '../utils/tokenUtils';
+import axiosInstance from '../api/axiosInstance';
 
 export default function SpeechCalibPage() {
     const [sentenceCount, setSentenceCount] = useState(2);
@@ -9,6 +10,7 @@ export default function SpeechCalibPage() {
     const [textColor, setTextColor] = useState('');
     const [progressContainerWidth, setProgressContainerWidth] = useState(0);
     const [isComplete, setIsComplete] = useState(false);
+    const [decodedToken, setDecodedToken] = useState()
     const progressContainerRef = useRef(null);
     const recorderControls = useVoiceVisualizer();
 
@@ -24,7 +26,7 @@ export default function SpeechCalibPage() {
         'How much wood would a woodchuck chuck if a woodchuck could chuck wood?',
         'Peter Piper picked a peck of pickled peppers.',
         'Betty Botter bought some butter but she said the butter’s bitter.',
-        
+
     ]
 
     const {
@@ -52,6 +54,8 @@ export default function SpeechCalibPage() {
     }, []);
 
     useEffect(() => {
+        setDecodedToken(decodeToken('accessToken'))
+
         setTextColor(getTextColor())
     }, []);
 
@@ -60,6 +64,7 @@ export default function SpeechCalibPage() {
         if (!recordedBlob) return;
 
         sendAudioToAPI(recordedBlob);
+
         //downloadAudio(recordedBlob);
     }, [recordedBlob, error]);
 
@@ -71,11 +76,11 @@ export default function SpeechCalibPage() {
     }, [error]);
 
     useEffect(() => {
-      
-            if (isProcessingRecordedAudio) {
-                handleNextStep();
-            }
-    
+
+        if (isProcessingRecordedAudio) {
+            handleNextStep();
+        }
+
     }, [isProcessingRecordedAudio]);
 
     const handleNextStep = () => {
@@ -102,8 +107,28 @@ export default function SpeechCalibPage() {
         }
     };
 
-    const handleFinish =()=>{
-        window.location.href = '/selectTraining'
+    const updateUserFirstTime = async () => {
+
+        try {
+            const payload = {
+                isFirstTimeUser: false
+            }
+
+            const res = await axiosInstance.patch(`/user/${decodedToken?.userId}`, payload);
+
+            if (res?.status === 200) {
+                window.location.href = '/selectTraining'
+            }else{
+                setTimeout(()=>{
+                    window.location.href = '/selectTraining'
+                },5000)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const handleFinish = () => {
+        updateUserFirstTime()
     }
     const downloadAudio = (blob) => {
         const url = URL.createObjectURL(blob);
@@ -149,14 +174,14 @@ export default function SpeechCalibPage() {
                         </div>
                     </div>
                     <div className='py-[10px] px-[10px] mt-[15px] primary-color-bg rounded-md'>
-                    
+
                         <h3 className={`${currentStep > sentenceCount ? 'hidden' : ''}`}>{sentencesList[currentStep - 1]}</h3>
-                        <h3 className={`${currentStep <= sentenceCount  ? 'hidden' : ''}`}>Hurray! You have done the test</h3>
+                        <h3 className={`${currentStep <= sentenceCount ? 'hidden' : ''}`}>Hurray! You have done the test</h3>
                     </div>
                     <div className={`flex justify-center ${currentStep > sentenceCount ? 'hidden' : ''}`}>
                         <VoiceVisualizer height='80' mainBarColor={textColor} defaultAudioWaveIconColor={textColor} isDefaultUIShown='false' onlyRecording='true' controls={recorderControls} ref={audioRef} />
                     </div>
-                    <div className={`flex justify-center mt-[20px] ${currentStep <= sentenceCount  ? 'hidden' : ''}`}>
+                    <div className={`flex justify-center mt-[20px] ${currentStep <= sentenceCount ? 'hidden' : ''}`}>
                         <button onClick={handleFinish} className='py-[10px] px-[20px] primary-color-bg rounded-md'>Finish</button>
                     </div>
                 </div>

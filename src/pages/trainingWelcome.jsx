@@ -1,33 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import readImage from '../assets/Read.png';
+import { useLocation, useNavigate } from 'react-router-dom';
 import numberImage from '../assets/Numbers.png';
 import ChangeThemeFB from '../components/changeThemeFB';
 
 export default function TrainingWelcome() {
   const [showWelcome, setShowWelcome] = useState(true);
   const [isFirstTime, setIsFirstTime] = useState(true);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => {
-      setShowWelcome(false);
-      checkFirstTime();
-      
-    }, 5000);
-  }, []);
 
-  const checkFirstTime = () =>{
-   if(isFirstTime){
-      window.location.href='/config-onboarding'
-   }
-  }
+    const queryParams = new URLSearchParams(location.search);
+    const newParam = queryParams.get('new');
+    const isFirstTimeValue = newParam === 'true'
+    setIsFirstTime(isFirstTimeValue);
+
+    setTimeout(() => {
+    setShowWelcome(false);
+    // Use the computed value instead of state
+    if (isFirstTimeValue) {
+      navigate('/config-onboarding');
+    } else {
+      navigate('/selectTraining');
+    }
+  }, 5000);
+  }, [location.search, navigate]);
+
 
   return (
     <div className='la-container '>
       <ChangeThemeFB initialThemeName={'theme3'} initialFontName={'OpenDyslexic'} />
       <div
-        className={`flex w-full flex-col justify-center absolute top-0 right-0 left-0 mt-[25px] z-20 transition-transform duration-1000 ${
-          showWelcome ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`flex w-full flex-col justify-center absolute top-0 right-0 left-0 mt-[25px] z-20 transition-transform duration-1000 ${showWelcome ? 'translate-x-0' : '-translate-x-full'
+          }`}
       >
         <div className='flex flex-col w-full  items-center justify-center py-[50px]'>
           <h1 className='text-center'>Welcome, GuestUser2112232</h1>
@@ -40,7 +47,7 @@ export default function TrainingWelcome() {
         <div className='flex justify-center'>
           <div className="custom-loader"></div>
         </div>
-       
+
       </div>
     </div>
   );
