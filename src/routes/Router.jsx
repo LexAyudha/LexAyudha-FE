@@ -33,6 +33,8 @@ import Addition from "../components/touch-math/Exercises/Addition.jsx";
 import Subtraction from "../components/touch-math/Exercises/Subtraction.jsx";
 import Addition2 from "../components/touch-math/Exercises/AdditionLevel2.jsx";
 import TAddition from "../components/touch-math/TeachingOperations/TeachingAddition.jsx";
+import TSubtraction from "../components/touch-math/TeachingOperations/TeachingSubtraction.jsx";
+import PTouchMath from "../components/touch-math/TouchMath/TochMathPractice.jsx";
 
 import TrainingWelcome from "../pages/trainingWelcome.jsx";
 import ConfigOnBoardingPage from "../pages/configOnBoarding.jsx";
@@ -137,6 +139,8 @@ const Router = () => {
       <Route path="/touch-math/teaching_number8" element={<TNumber8 />} />
       <Route path="/touch-math/teaching_number9" element={<TNumber9 />} />
 
+      <Route path="/touch-math-practice" element={<PTouchMath />} />
+
       <Route path="/touch-math/quiz_number/:id" element={<PNumber0 />} />
 
       {/* <Route path="/touch-math/quiz_number1" element={<PNumber1 />} />
@@ -153,6 +157,8 @@ const Router = () => {
       <Route path="/touch-math/quiz-number-sense" element={<NumberSenseQuiz />} />
 
       <Route path="/touch-math/teaching-addition" element={<TAddition />} />
+      <Route path="/touch-math/teaching-subtraction" element={<TSubtraction />} />
+      
       <Route path="/practice-addition" element={<Addition />} />
       <Route path="/practice-substraction" element={<Subtraction />} />
       <Route path="/addition_level2" element={<Addition2 />} />
