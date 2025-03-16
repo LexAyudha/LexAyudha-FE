@@ -3,8 +3,19 @@ import Swal from "sweetalert2"; // Import SweetAlert
 import { useNavigate, useParams } from "react-router-dom";
 import ChangeThemeFB from "../../changeThemeFB";
 import EmotionDetectionButton from "../../EmotionDetectionButton";
+import { Modal, Button, Row, Col } from "antd";
 
-import { FaCarrot } from "react-icons/fa";
+import {
+  FaApple,
+  FaCarrot,
+  FaFish,
+  FaLemon,
+  FaBreadSlice,
+  FaCheese,
+  FaIceCream,
+  FaDrumstickBite,
+  FaEgg,
+} from "react-icons/fa";
 
 const Number0 = () => {
   const navigate = useNavigate();
@@ -12,7 +23,8 @@ const Number0 = () => {
   const [numberId, setNumberId] = useState(0);
   const [touchPoints, setTouchPoints] = useState([]);
   const [isAppear, setIsAppear] = useState(false);
-
+  const [selectedIcon, setSelectedIcon] = useState(0);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   // Correct pattern for the single touch point
   const correctPattern = [
     [true], // 0
@@ -36,16 +48,28 @@ const Number0 = () => {
   useEffect(() => {
     setNumberId(id || 0);
     setTouchPoints(new Array(correctPattern[id]?.length || 0).fill(false));
+    const randomIconNumber = Math.floor(Math.random() * 9);
+    setSelectedIcon(randomIconNumber);
+    console.log("Selected Icon: ", randomIconNumber);
   }, [id]);
 
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   const handleNext = () => {
-    checkProgress();
+    setIsAppear(false);
     if (numberId < 9) {
       navigate(`/touch-math/quiz_number/${parseInt(numberId) + 1}`);
     }
   };
   const handleFinish = () => {
     navigate(`/dyscalculic-training`);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+    setIsAppear(true);
   };
   //Moved success msg firing to a separate function here.
   const firePopup = (text = null, isSucces) => {
@@ -88,6 +112,7 @@ const Number0 = () => {
   const handleExit = () => {
     navigate("/dyscalculic-training");
   };
+  const IconComponent = selectedIcon ? selectedIcon : FaCarrot;
 
   const svgSnippets = {
     0: (
@@ -553,7 +578,7 @@ const Number0 = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <ChangeThemeFB />
-      <button onClick={() => setIsAppear(!isAppear)}>change</button>
+      <button onClick={() => setIsModalVisible(true)}>open</button>
 
       <div className="flex justify-center mt-5">
         <EmotionDetectionButton />
@@ -566,14 +591,100 @@ const Number0 = () => {
               : `Mark the touchpoint for number ${numberId}`}
           </h2>
         </div>
-
-        <div className={`${isAppear && "grid grid-cols-3 gap-4"}`}>
+        <div
+          className={`${isAppear && numberId != 0 && "grid grid-cols-3 gap-4"}`}
+        >
           <div className="col-span-2">{svgSnippets[numberId]}</div>
+
           {isAppear && (
-            <div className="grid grid-cols-3 items-center gap-2 h-28  col-span-1  bg-green-500 max-w-[100px] p-2 rounded">
-              {Array.from({ length: numberId }).map((_, index) => (
-                <FaCarrot key={index} className="text-white text-xl" />
-              ))}
+            <div className="grid grid-cols-3 items-center gap-4 h-28 col-span-1 p-2 rounded">
+              {Array.from({ length: numberId }).map((_, index) => {
+                switch (selectedIcon) {
+                  case 0:
+                    return (
+                      <FaCarrot
+                        key={index}
+                        className="text-orange-500 text-4xl"
+                        color="orange"
+                        size={100}
+                      />
+                    );
+                  case 1:
+                    return (
+                      <FaApple
+                        key={index}
+                        className="text-red-500 text-4xl"
+                        color="orange"
+                        size={100}
+                      />
+                    );
+                  case 2:
+                    return (
+                      <FaLemon
+                        key={index}
+                        className="text-yellow-500 text-4xl"
+                        color="orange"
+                        size={100}
+                      />
+                    );
+                  case 3:
+                    return (
+                      <FaFish
+                        key={index}
+                        className="text-blue-500 text-4xl"
+                        color="orange"
+                        size={100}
+                      />
+                    );
+                  case 4:
+                    return (
+                      <FaBreadSlice
+                        key={index}
+                        className="text-brown-500 text-4xl"
+                        color="orange"
+                        size={100}
+                      />
+                    );
+                  case 5:
+                    return (
+                      <FaCheese
+                        key={index}
+                        className="text-yellow-600 text-4xl"
+                        color="orange"
+                        size={100}
+                      />
+                    );
+                  case 6:
+                    return (
+                      <FaDrumstickBite
+                        key={index}
+                        className="text-red-700 text-4xl"
+                        color="orange"
+                        size={100}
+                      />
+                    );
+                  case 7:
+                    return (
+                      <FaEgg
+                        key={index}
+                        className="text-gray-400 text-4xl"
+                        color="orange"
+                        size={100}
+                      />
+                    );
+                  case 8:
+                    return (
+                      <FaIceCream
+                        key={index}
+                        className="text-pink-500 text-4xl"
+                        color="orange"
+                        size={100}
+                      />
+                    );
+                  default:
+                    return null; // If `selectedIcon` is out of range
+                }
+              })}
             </div>
           )}
         </div>
@@ -605,6 +716,25 @@ const Number0 = () => {
           </button>
         </div>
       </div>
+      <Modal
+        title="You seems like bit frustrated"
+        open={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            Cancel
+          </Button>,
+          <Button key="hint" type="primary" onClick={handleOk}>
+            Just give me a hint
+          </Button>,
+          <Button key="learn" type="primary" onClick={() => alert("learn")}>
+            I want to learn
+          </Button>,
+        ]}
+      >
+        <p>Do you want to go and learn more or just want a hint?</p>
+      </Modal>
     </div>
   );
 };
