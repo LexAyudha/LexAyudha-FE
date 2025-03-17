@@ -1,26 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { Image, Modal, Button, message, Upload } from "antd";
-import { InboxOutlined } from "@ant-design/icons";
-import logo from "../assets/lexLogo.png";
-import DashTraining from "../components/dashTraining.jsx";
-import DashSettings from "../components/dashSettings.jsx";
-import DashAchievements from "../components/dashAchive.jsx";
-import DashBilling from "../components/dashBilling.jsx";
-import DashPerformance from "../components/dashPerfRecords.jsx";
-import DashCustomize from "../components/dashCustLesson.jsx";
-import axiosInstance from "../api/axiosInstance.js";
-import useVerifyLoginState from "../utils/validateLogin.js";
+import React, { useEffect, useState, } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { Image, Modal, Button, message, Upload } from 'antd'
+import { InboxOutlined } from '@ant-design/icons';
+import ScreenLoader from '../components/screenLoader.jsx';
+import logo from '../assets/lexLogo.png'
+import DashTraining from '../components/dashTraining.jsx'
+import DashSettings from '../components/dashSettings.jsx'
+import DashAchievements from '../components/dashAchive.jsx'
+import DashBilling from '../components/dashBilling.jsx'
+import DashPerformance from '../components/dashPerfRecords.jsx'
+import DashCustomize from '../components/dashCustLesson.jsx'
+import axiosInstance from '../api/axiosInstance.js';
+import useVerifyLoginState from '../utils/validateLogin.js';
+
 const { Dragger } = Upload;
 
 export default function Dashboard() {
-  const [userData, setUserData] = useState({});
-  const [panel, setPanel] = useState("training");
-  const [profileImage, setProfileImage] = useState(null);
-  const [coverImage, setCoverImage] = useState(null);
-  const { id } = useParams();
-  const [updatedUserName, setUpdatedUserName] = useState("");
-  const [loadingScreen, setLoadingScreen] = useState(true);
+
+  const [userData, setUserData] = useState({})
+  const [panel, setPanel] = useState('training')
+  const [profileImage, setProfileImage] = useState(null)
+  const [coverImage, setCoverImage] = useState(null)
+  const { id } = useParams()
+  const [updatedUserName, setUpdatedUserName] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
+  
 
   //proPic modal
   const [proPicOpen, setProPicOpen] = useState(false);
@@ -206,12 +210,12 @@ export default function Dashboard() {
   const fetchUserData = async () => {
     // Fetch user data from the server
     try {
-      setLoadingScreen(true);
-      const res = await axiosInstance.get(`/user/allDetails/${id}`);
+      
+      const res = await axiosInstance.get(`/user/allDetails/${id}`)
 
       if (res?.status === 200) {
-        setUserData(res?.data);
-        setLoadingScreen(false);
+        setUserData(res?.data)
+        setIsLoading(false)
       }
     } catch (error) {
       console.log(error);
@@ -256,25 +260,15 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="la-container flex relative">
-      <div
-        className={`absolute flex justify-center items-center z-50 w-full h-screen  ${
-          loadingScreen === true ? "block" : "hidden"
-        } bg-white`}
-      >
-        <div className="flex flex-col items-center justify-center">
-          <h2>Hang on. We are getting things ready for you.</h2>
-          <p>
-            (For Devs: if you're seeing this that means backend is not running
-            and data fetching has failed)
-          </p>
-          <div className="custom-loader mt-[50px]"></div>
-        </div>
-      </div>
-      <div className="w-[360px] h-screen primary-color-bg z-10 flex flex-col justify-between">
-        <div className="flex items-center justify-start px-2 py-2">
-          <div className="w-[50px] h-[50px] mr-2">
-            <img src={logo} alt="LexAyudha logo" />
+    <>{isLoading ? <ScreenLoader/>: ''}
+    
+    <div className='la-container flex relative'>
+      
+      <div className='w-[360px] h-screen primary-color-bg z-10 flex flex-col justify-between'>
+
+        <div className='flex items-center justify-start px-2 py-2'>
+          <div className='w-[50px] h-[50px] mr-2'>
+            <img src={logo} alt='LexAyudha logo' />
           </div>
           <h2 className="h-fit m-0">LexAyudha</h2>
         </div>
@@ -468,5 +462,6 @@ export default function Dashboard() {
         <p>{UNModalText}</p>
       </Modal>
     </div>
-  );
+    </>
+  )
 }
