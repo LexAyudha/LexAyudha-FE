@@ -21,6 +21,7 @@
 }
 
 .number {
+  font-family: Arial, sans-serif;
   font-size: 500px; /* Increased number size */
   font-weight: bold;
   color: var(--text-color);

@@ -16,7 +16,8 @@ export default function SpeechCalibPage() {
     const progressContainerRef = useRef(null);
     const recorderControls = useVoiceVisualizer();
     const [collectedBlobs, setCollectedBlobs] = useState([]);
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
+    const [apiError, setApiError] = useState(false)
 
     // Converts raw recorded blob into WAV format using audiobuffer-to-wav
     const processAudioBlob = async (blob) => {
@@ -65,7 +66,7 @@ export default function SpeechCalibPage() {
                 updateUserFirstTime()
             }
         } catch (error) {
-            
+            setApiError(true)
             console.log(error)
         }
     }
@@ -155,21 +156,19 @@ export default function SpeechCalibPage() {
 
             const res = await axiosInstance.patch(`/user/${decodedToken?.userId}`, payload);
 
-            if (res?.status !== 200) {
+            if (res?.status === 200) {
+                setIsLoading(false)
                 setIsComplete(true)
-                // window.location.href = '/selectTraining'
             } else {
-                setTimeout(() => {
-                    window.location.href = '/selectTraining'
-                }, 5000)
+                setApiError(true)
             }
         } catch (error) {
-            
-           
+            setApiError(true)
+           console.log(error)
         }
     }
     const handleFinish = async () => {
-
+        setIsLoading(true)
         await handleAudioSubmit()
     }
     const downloadAudio = (blob) => {
@@ -183,6 +182,10 @@ export default function SpeechCalibPage() {
         window.URL.revokeObjectURL(url);
     };
 
+    const handleErrorPop = () => {
+        window.location.href = '/selectTraining'
+    }
+
     return (
         <div className='la-container flex h-screen  flex-col justify-center items-center'>
            { isComplete ?  <ThankYouPopUp
@@ -191,6 +194,20 @@ export default function SpeechCalibPage() {
                     redirectDelay={5}
                     redirectUrl="/selectTraining"
             />: ''}
+            <div className={`w-screen h-screen absolute z-40 items-center justify-center bg-black bg-opacity-70 ${isLoading?'flex':'hidden'}`}>
+                <div className=' flex flex-col text-center items-center justify-center rounded-md p-[20px_30px] bg-[var(--background-color)]'>
+                    <h4 className='my-[20px]'>Please wait. Your voice is being analzed</h4>
+                    <div className='custom-loader my-[30px]'></div>
+                </div>
+            </div>
+            <div className={`w-screen h-screen absolute z-40 items-center justify-center bg-black bg-opacity-70 ${apiError?'flex':'hidden'}`}>
+                <div className=' flex flex-col text-center items-center justify-center rounded-md p-[20px_30px] bg-[var(--background-color)]'>
+                    <h4 className='my-[20px]'>Hmm... Something went wrong.</h4>
+                    <div className=' my-[10px]'>
+                        <button onClick={handleErrorPop} className='py-[10px] px-[20px] primary-color-bg rounded-md'>Okay</button>
+                    </div>
+                </div>
+            </div>
             <ChangeThemeFB />
             <div className='flex h-[650px] w-[1200px] text-wrap  flex-col justify-between relative'>
                 <div className='absolute flex right-0 top-0'>
