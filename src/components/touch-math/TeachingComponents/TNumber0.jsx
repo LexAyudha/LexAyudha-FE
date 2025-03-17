@@ -525,7 +525,7 @@ const Number0 = () => {
 
           <div className="number-container">
             {/* Styled Number */}
-            <div className="number">{numberList[currentNumberIndex]}</div>
+            <div className="number ">{numberList[currentNumberIndex]}</div>
             {numberPointsSnippets[numberList[currentNumberIndex]]}
           </div>
 

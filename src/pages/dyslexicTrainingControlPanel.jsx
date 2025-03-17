@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import ChangeThemeFB from '../components/changeThemeFB'
 import axios from 'axios';
 import ChromaticModel from '../components/chromaticModel';
+import AlternativeHeader from '../components/alternativeHeader';
 
 
 // const lessonList = [
@@ -217,7 +218,7 @@ export default function DyslexicTrainingControlPanel() {
   const [lessons, setLessons] = useState([]);
   const [selectedLesson, setSelectedLesson] = useState(lessonList[0])
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const [selectedChromaticTheme, setSelectedChromaticTheme] = useState(lessonList[0].chromaticTheme)
+  const [selectedChromaticTheme, setSelectedChromaticTheme] = useState(lessonList[0]?.chromaticTheme)
 
   const navigate = useNavigate()
 
@@ -274,7 +275,7 @@ export default function DyslexicTrainingControlPanel() {
     <div className='la-container relative flex flex-col h-screen justify-center items-center'>
       <ChangeThemeFB />
       <div className='flex justify-start w-full absolute top-0'>
-        <h2>Screen Reader</h2>
+        <AlternativeHeader title='Screen Reader'/>
       </div>
       <div className='flex flex-col w-full  min-w-full justify-center'>
         <h3 className='my-[20px]'>Lessons</h3>
