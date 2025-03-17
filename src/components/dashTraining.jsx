@@ -92,9 +92,7 @@ export default function DashTraining({ userData }) {
         >
           Start Training
         </Button>
-        <div className="flex justify-center mt-5">
-          <EmotionDetectionButton />
-        </div>
+        
       </div>
     </div>
   );

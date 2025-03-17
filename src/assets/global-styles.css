@@ -326,6 +326,19 @@ p {
     border: 4px solid #FEE2AF;
   }
 
+  /* Dropdown */
+  :where(.css-dev-only-do-not-override-nqoqt9).ant-dropdown .ant-dropdown-menu{
+    background-color: var(--primary-color);
+    color: var(--text-color);
+  }
+
+  :where(.css-dev-only-do-not-override-nqoqt9).ant-dropdown .ant-dropdown-menu .ant-dropdown-menu-item{
+    color: var(--text-color);
+  }
+  :where(.css-dev-only-do-not-override-nqoqt9).ant-dropdown .ant-dropdown-menu .ant-dropdown-menu-item.ant-dropdown-menu-item-danger:not(.ant-dropdown-menu-item-disabled){
+    background-color: rgb(131, 0, 0);
+    color: white;
+  }
   /* Your accounts css*/
   .your-account-bg{
     background-image: url(/src/assets/LexAyudha_logo.png);
