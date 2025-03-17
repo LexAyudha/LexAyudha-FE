@@ -18,7 +18,7 @@ export default function LearningActivity() {
     "Touch Math": {
       image: touchMathImg,
       options: ["Learn", "Practice", "Quiz"],
-      routes: ["/touch-math/teaching_number/", "/practice_number/0", "/touch-math/quiz_number/0"] // Routes for options
+      routes: ["/touch-math/teaching_number/", "/touch-math-practice", "/touch-math/quiz_number/0"] // Routes for options
     },
     "Number Sense": {
       image: numberSenseImg,
@@ -38,7 +38,7 @@ export default function LearningActivity() {
     Subtraction: {
       image: subtractionImg,
       options: ["Learn", "Practice", "Quiz"],
-      routes: ["/teach_subtraction", "/practice-substraction", "/quiz_subtraction"]
+      routes: ["/touch-math/teaching-subtraction", "/practice-substraction", "/quiz_subtraction"]
     },
   };
 
