@@ -18,7 +18,7 @@ export default function SelectTrainingPage() {
                     <a href='/dyslexic-training' target='' >
                         <div className='dyl-choose-training-bg w-[350px] h-[350px] flex justify-center items-center primary-color-bg rounded-lg '>
 
-                            <div className=' px-[16px] py-[8px] main-border-color rounded-md'>
+                            <div className=' px-[16px] py-[8px] bg-[var(--background-color)] rounded-md'>
 
                                 <p className='m-0'>Dyslexic training</p>
 
@@ -30,7 +30,7 @@ export default function SelectTrainingPage() {
                     <a href='/dyscalculic-training' target='' >
                         <div className='dysc-choose-training-bg w-[350px] h-[350px] flex justify-center items-center primary-color-bg align-middle rounded-lg'>
 
-                            <div className=' px-[16px] py-[8px] main-border-color rounded-md  '>
+                            <div className=' px-[16px] py-[8px] bg-[var(--background-color)] rounded-md  '>
 
                                 <p className='m-0'>Dyscalculia training</p>
 

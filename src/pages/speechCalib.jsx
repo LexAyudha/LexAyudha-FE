@@ -3,6 +3,8 @@ import ChangeThemeFB from '../components/changeThemeFB'
 import { useVoiceVisualizer, VoiceVisualizer } from "react-voice-visualizer";
 import { decodeToken } from '../utils/tokenUtils';
 import axiosInstance from '../api/axiosInstance';
+import toWav from 'audiobuffer-to-wav';
+import ThankYouPopUp from '../components/thankYouPopUp';
 
 export default function SpeechCalibPage() {
     const [sentenceCount, setSentenceCount] = useState(2);
@@ -13,6 +15,60 @@ export default function SpeechCalibPage() {
     const [decodedToken, setDecodedToken] = useState()
     const progressContainerRef = useRef(null);
     const recorderControls = useVoiceVisualizer();
+    const [collectedBlobs, setCollectedBlobs] = useState([]);
+    const [isLoading, setIsLoading] = useState(true)
+
+    // Converts raw recorded blob into WAV format using audiobuffer-to-wav
+    const processAudioBlob = async (blob) => {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const arrayBuffer = await blob.arrayBuffer();
+            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+            const wavArrayBuffer = toWav(audioBuffer); // Convert AudioBuffer to WAV format
+
+            return new Blob([wavArrayBuffer], { type: 'audio/wav' });
+        } catch (error) {
+            console.error('Error converting blob to WAV:', error);
+            return null;
+        }
+    };
+
+    // Collect and process recorded audio
+    const constructAudioForm = async (blob) => {
+        const wavBlob = await processAudioBlob(blob);
+        if (wavBlob) {
+            setCollectedBlobs((prevBlobs) => [...prevBlobs, wavBlob]);
+            console.log('Processed WAV blob added:', wavBlob);
+        }
+    };
+
+    const handleAudioSubmit = async () => {
+        try {
+            // Create FormData inside the submit function to ensure it's fresh
+            const formData = new FormData();
+            
+            // Add all your files to the FormData
+            collectedBlobs.forEach((blob, index) => {
+                // Convert Blob into File before appending to FormData
+                const file = new File([blob], `speechAudio_${index}.wav`, { type: 'audio/wav' });
+                formData.append('file', file);
+            });
+
+            // Send the request with all files
+            const res = await axiosInstance.post(`/speech/uploads/${decodedToken?.userId}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            if (res?.status === 200) {
+                updateUserFirstTime()
+            }
+        } catch (error) {
+            
+            console.log(error)
+        }
+    }
 
     const getTextColor = () => {
         const root = document.documentElement;
@@ -61,12 +117,10 @@ export default function SpeechCalibPage() {
 
     // Get the recorded audio blob and send it to Audio
     useEffect(() => {
-        if (!recordedBlob) return;
-
-        sendAudioToAPI(recordedBlob);
-
-        //downloadAudio(recordedBlob);
-    }, [recordedBlob, error]);
+        if (recorderControls.recordedBlob) {
+            constructAudioForm(recorderControls.recordedBlob);
+        }
+    }, [recorderControls.recordedBlob]);
 
     // Get the error when it occurs
     useEffect(() => {
@@ -86,26 +140,11 @@ export default function SpeechCalibPage() {
     const handleNextStep = () => {
         if (currentStep <= sentenceCount) {
             setCurrentStep(currentStep + 1);
-            console.log('Current step and sentence count: ', currentStep, sentenceCount)
+            
         }
     };
 
-    const sendAudioToAPI = async (blob) => {
-        const formData = new FormData();
-        formData.append('file', new File([blob], 'speechAudio.wav', { type: 'audio/wav' }));
 
-        try {
-            console.log('API call has been made to upload the audio file');
-            //   const response = await axios.post('/api/upload', formData, {
-            //     headers: {
-            //       'Content-Type': 'multipart/form-data',
-            //     },
-            //   });
-            //   console.log('File uploaded successfully:', response.data);
-        } catch (error) {
-            console.error('Error uploading file:', error);
-        }
-    };
 
     const updateUserFirstTime = async () => {
 
@@ -116,19 +155,22 @@ export default function SpeechCalibPage() {
 
             const res = await axiosInstance.patch(`/user/${decodedToken?.userId}`, payload);
 
-            if (res?.status === 200) {
-                window.location.href = '/selectTraining'
-            }else{
-                setTimeout(()=>{
+            if (res?.status !== 200) {
+                setIsComplete(true)
+                // window.location.href = '/selectTraining'
+            } else {
+                setTimeout(() => {
                     window.location.href = '/selectTraining'
-                },5000)
+                }, 5000)
             }
         } catch (error) {
-            console.log(error)
+            
+           
         }
     }
-    const handleFinish = () => {
-        updateUserFirstTime()
+    const handleFinish = async () => {
+
+        await handleAudioSubmit()
     }
     const downloadAudio = (blob) => {
         const url = URL.createObjectURL(blob);
@@ -143,6 +185,12 @@ export default function SpeechCalibPage() {
 
     return (
         <div className='la-container flex h-screen  flex-col justify-center items-center'>
+           { isComplete ?  <ThankYouPopUp
+                    message="Your speech sample has been submitted successfully."
+                    redirectMessage="You will be redirected to the training selection menu shortly."
+                    redirectDelay={5}
+                    redirectUrl="/selectTraining"
+            />: ''}
             <ChangeThemeFB />
             <div className='flex h-[650px] w-[1200px] text-wrap  flex-col justify-between relative'>
                 <div className='absolute flex right-0 top-0'>
