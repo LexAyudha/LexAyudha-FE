@@ -1,11 +1,38 @@
+// EmotionDetection.jsx
 import { useEffect, useRef, useState } from "react";
+import { Modal, Button } from "antd";
+import { useNavigate } from "react-router-dom";
 
-const EmotionDetection = ({ startDetection, onStopDetection }) => {
+const EmotionDetection = ({
+  startDetection,
+  onStopDetection,
+  onEmotionData,
+  onModalAction,
+}) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [dragging, setDragging] = useState(false);
   const [position, setPosition] = useState({ x: 50, y: 50 });
   const streamRef = useRef(null); // To hold the video stream
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isAppear, setIsAppear] = useState(false);
+  const navigate = useNavigate();
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+    setIsAppear(true);
+    onModalAction(true);
+  };
+
+  const handleLearn = () => {
+    navigate("/touch-math/teaching_number/");
+    onModalAction(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    onModalAction(false);
+  };
 
   useEffect(() => {
     let intervalId = null;
@@ -51,7 +78,20 @@ const EmotionDetection = ({ startDetection, onStopDetection }) => {
               body: formData,
             })
               .then((response) => response.json())
-              .then((data) => console.log("Emotion Prediction:", data))
+              .then((data) => {
+                console.log("Emotion Prediction:", data);
+                // Pass the emotion data to the parent component
+                if (onEmotionData) {
+                  onEmotionData(data);
+                }
+                const { engagement, distraction, frustration } =
+                  data?.prediction.percentages;
+                console.log(engagement, distraction, frustration);
+                if (distraction > 80) {
+                  console.log("modal on");
+                  setIsModalVisible(true);
+                }
+              })
               .catch((error) => console.error("Error sending frame:", error));
           }, "image/jpeg");
         }
@@ -68,7 +108,7 @@ const EmotionDetection = ({ startDetection, onStopDetection }) => {
         streamRef.current.getTracks().forEach((track) => track.stop());
       }
     };
-  }, [startDetection]);
+  }, [startDetection, onEmotionData]);
 
   // Dragging functionality
   const handleMouseDown = () => setDragging(true);
@@ -112,6 +152,62 @@ const EmotionDetection = ({ startDetection, onStopDetection }) => {
       <button onClick={onStopDetection} style={{ marginTop: 10 }}>
         Stop Detection
       </button>
+      <Modal
+        title="Oops! Feeling a bit stuck?"
+        open={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={[
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Button
+              key="back"
+              onClick={handleCancel}
+              style={{
+                backgroundColor: "#ff6347",
+                color: "black",
+                width: "30%",
+              }}
+            >
+              Noo, I got this!
+            </Button>
+            <Button
+              key="hint"
+              type="primary"
+              onClick={handleOk}
+              style={{
+                backgroundColor: "#90ee90",
+                color: "black",
+                width: "30%",
+              }}
+            >
+              Give me a Hint! 😊
+            </Button>
+            <Button
+              key="learn"
+              type="primary"
+              onClick={handleLearn}
+              style={{
+                backgroundColor: "#87ceeb",
+                color: "black",
+                width: "30%",
+              }}
+            >
+              Let’s Learn! 📚
+            </Button>
+          </div>,
+        ]}
+      >
+        <p className="text-md">
+          Looks like you're having a tough time! Don’t worry, we can either give
+          you a hint or jump into some cool learning! 😄
+        </p>
+      </Modal>
     </div>
   );
 };
