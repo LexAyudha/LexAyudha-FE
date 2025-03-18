@@ -73,16 +73,16 @@ const TouchMathPractice = () => {
     <div className="flex flex-col items-center p-4">
       <h2 className="text-5xl font-bold">Touch Math Practice</h2>
 
-      <div className="relative text-[30rem] font-bold mt-0 mb-2">
+      <div className="relative text-[25rem] font-bold mt-0 mb-2">
         {number}
         <div className="absolute top-0 left-8">
-            {currentPoint >= 1 && <span className="text-red-500 text-6xl">•</span>}
+            {currentPoint >= 1 && <span className="text-red-500 text-9xl">•</span>}
         </div>
         <div className="absolute top-4 left-16">
-            {currentPoint >= 2 && <span className="text-red-500 text-6xl">•</span>}
+            {currentPoint >= 2 && <span className="text-red-500 text-9xl">•</span>}
         </div>
         <div className="absolute top-8 left-24">
-            {currentPoint >= 3 && <span className="text-red-500 text-6xl">•</span>}
+            {currentPoint >= 3 && <span className="text-red-500 text-9xl">•</span>}
         </div>
       </div>
 
