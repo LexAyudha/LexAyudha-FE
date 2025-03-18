@@ -3,7 +3,6 @@ import Swal from "sweetalert2"; // Import SweetAlert
 import { useNavigate, useParams } from "react-router-dom";
 import ChangeThemeFB from "../../changeThemeFB";
 import EmotionDetectionButton from "../../EmotionDetectionButton";
-import { Modal, Button, Row, Col } from "antd";
 
 import {
   FaApple,
@@ -24,7 +23,8 @@ const Number0 = () => {
   const [touchPoints, setTouchPoints] = useState([]);
   const [isAppear, setIsAppear] = useState(false);
   const [selectedIcon, setSelectedIcon] = useState(0);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [emotionCategory, setEmotionCategory] = useState("");
+
   // Correct pattern for the single touch point
   const correctPattern = [
     [true], // 0
@@ -50,12 +50,8 @@ const Number0 = () => {
     setTouchPoints(new Array(correctPattern[id]?.length || 0).fill(false));
     const randomIconNumber = Math.floor(Math.random() * 9);
     setSelectedIcon(randomIconNumber);
-    console.log("Selected Icon: ", randomIconNumber);
+    setEmotionCategory("frustrated");
   }, [id]);
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
 
   const handleNext = () => {
     setIsAppear(false);
@@ -67,13 +63,6 @@ const Number0 = () => {
     navigate(`/dyscalculic-training`);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-    setIsAppear(true);
-  };
-  const handleLearn = () => {
-    navigate("/touch-math/teaching_number/");
-  };
   //Moved success msg firing to a separate function here.
   const firePopup = (text = null, isSucces) => {
     if (isSucces) {
@@ -115,7 +104,11 @@ const Number0 = () => {
   const handleExit = () => {
     navigate("/dyscalculic-training");
   };
-  const IconComponent = selectedIcon ? selectedIcon : FaCarrot;
+
+  const handleModalAction = (shouldAppear) => {
+    setIsAppear(shouldAppear); // Update the `isAppear` state based on the modal response
+  };
+  // const IconComponent = selectedIcon ? selectedIcon : FaCarrot;
 
   const svgSnippets = {
     0: (
@@ -581,10 +574,12 @@ const Number0 = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <ChangeThemeFB />
-      <button onClick={() => setIsModalVisible(true)}>open</button>
 
       <div className="flex justify-center mt-5">
-        <EmotionDetectionButton />
+        <EmotionDetectionButton
+          emotionCategory={emotionCategory}
+          onModalAction={handleModalAction}
+        />
       </div>
       <div className="flex w-full relative flex-col items-center justify-center">
         <div className="py-[20px]">
@@ -719,25 +714,6 @@ const Number0 = () => {
           </button>
         </div>
       </div>
-      <Modal
-        title="You seems like bit frustrated"
-        open={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        footer={[
-          <Button key="back" onClick={handleCancel}>
-            Cancel
-          </Button>,
-          <Button key="hint" type="primary" onClick={handleOk}>
-            Just give me a hint
-          </Button>,
-          <Button key="learn" type="primary" onClick={handleLearn}>
-            I want to learn
-          </Button>,
-        ]}
-      >
-        <p>Do you want to go and learn more or just want a hint?</p>
-      </Modal>
     </div>
   );
 };
