@@ -12,25 +12,30 @@ import number6Img from "../../../assets/6.png";
 import number7Img from "../../../assets/7.png";
 import number8Img from "../../../assets/8.png";
 import number9Img from "../../../assets/9.png";
+import AlternativeHeader from "../../alternativeHeader";
+import ChangeThemeFB from "../../changeThemeFB";
 
 export default function LearnNumberSense() {
   const navigate = useNavigate(); // Initialize navigate function
 
   // Define image sources and corresponding sizes
   const numberImages = [
-    { src: number1Img, size: 40 },
-    { src: number2Img, size: 65 },
-    { src: number3Img, size: 90 },
-    { src: number4Img, size: 115 },
-    { src: number5Img, size: 140 },
-    { src: number6Img, size: 165 },
-    { src: number7Img, size: 190 },
-    { src: number8Img, size: 215 },
-    { src: number9Img, size: 240 },
+    { src: number1Img, size: 30 },
+    { src: number2Img, size: 55 },
+    { src: number3Img, size: 80 },
+    { src: number4Img, size: 105 },
+    { src: number5Img, size: 130 },
+    { src: number6Img, size: 155 },
+    { src: number7Img, size: 180 },
+    { src: number8Img, size: 205 },
+    { src: number9Img, size: 230 },
   ];
 
   return (
-    <div className="full-screen">
+    <div className="la-container h-screen flex items-center justify-center relative">
+      <AlternativeHeader title="Number Sense"/>
+      <ChangeThemeFB/>
+      <div className="flex items-center justify-center w-full h-full flex-col">
       {/* Title */}
       <h2 className="title">Let's Learn Number Sense</h2>
 
@@ -56,5 +61,7 @@ export default function LearnNumberSense() {
       {/* Close Button */}
       <button className="close-button" onClick={() => navigate(-1)}>Close</button>
     </div>
+    </div>
+    
   );
 }

@@ -44,6 +44,9 @@ const Number0 = () => {
     }
   }, []);
 
+  useEffect(() => {
+    setVisiblePoints(0)
+  }, [currentNumberIndex]);
   const togglePanel = () => {
     setIsPanelOpen(!isPanelOpen);
   };
