@@ -9,7 +9,7 @@ const MixedSubtractionQuiz = () => {
   const [answer, setAnswer] = useState('');
   const [quizCount, setQuizCount] = useState(0);
   const [isTwoDigit, setIsTwoDigit] = useState(false);
-  const quizLimit = 20;
+  const quizLimit = 10;
 
   useEffect(() => {
     generateNewQuestion();
