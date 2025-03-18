@@ -26,7 +26,7 @@ export default function DashTraining({ userData }) {
     {
       name: "Word Master",
       desc: "Complete 50 words in a single session",
-      icon: "https://clipground.com/images/black-shield-clipart-19.jpg",
+      icon: "https://firebasestorage.googleapis.com/v0/b/lexayudha-71fc6.firebasestorage.app/o/uploads%2FwordMaster.png?alt=media&token=5a679522-7fe7-4b91-87b4-d7d10b40711c",
     },
     {
       name: "Number Master",

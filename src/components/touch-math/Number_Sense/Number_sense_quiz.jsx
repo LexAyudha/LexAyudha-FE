@@ -14,6 +14,8 @@ import number6Img from "../../../assets/6.png";
 import number7Img from "../../../assets/7.png";
 import number8Img from "../../../assets/8.png";
 import number9Img from "../../../assets/9.png";
+import ChangeThemeFB from "../../changeThemeFB";
+import AlternativeHeader from "../../alternativeHeader";
 
 const Quiz = () => {
   const [selectedNumber, setSelectedNumber] = useState(null);
@@ -23,8 +25,26 @@ const Quiz = () => {
   const [showHint, setShowHint] = useState(false);
   const totalQuizzes = 10;
   const popupRef = useRef(null);
+  const [windowDimensions, setWindowDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  });
 
-  const { width, height } = useWindowSize();
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    
+    // Clean up event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   // Effect to handle outside click
   useEffect(() => {
@@ -38,7 +58,7 @@ const Quiz = () => {
     if (showHint) {
       document.addEventListener("mousedown", handleClickOutside);
     }
-    
+
     // Cleanup event listener
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -82,7 +102,7 @@ const Quiz = () => {
     setSelectedNumber(num);
 
     if (num === currentQuiz.correct) {
-      setIsCorrect(true); 
+      setIsCorrect(true);
     } else {
       Swal.fire({
         title: "Wrong!",
@@ -136,93 +156,98 @@ const Quiz = () => {
   };
 
   return (
-    <div className="quiz-container">
-      {isCorrect && (
-        <div className="fireworks-container">
-          <Confetti
-            width={width}
-            height={height}
-            gravity={0.2}
-            numberOfPieces={300}
-            recycle={false}
-            initialVelocityX={1}
-            initialVelocityY={1}
-            colors={['#ff0000', '#00ff00', '#0000ff']}
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-            }}
-          />
-        </div>
-      )}
-
-      <div className="quiz-header">
-        <div className="quiz-counter">
-          Quiz {quizIndex} / {totalQuizzes}
-        </div>
-        <button 
-          className="hint-button" 
-          onClick={handleHintClick}
-          disabled={hintsRemaining <= 0}
-        >
-          Hint ({hintsRemaining} left)
-        </button>
-      </div>
-
-      <h1 className="quiz-title">Select the larger number</h1>
-      <div className="quiz-box">
-        {currentQuiz.options.map((num, index) => (
-          <div
-            key={index}
-            className={`number-box ${selectedNumber === num ? "selected" : ""} ${
-              isCorrect && num === currentQuiz.correct ? "correct-answer-highlight" : ""
-            }`}
-            onClick={() => handleNumberClick(num)}
-          >
-            {num}
+    <div className="la-container h-screen flex items-center justify-center relative">
+      <ChangeThemeFB />
+      <AlternativeHeader title="Number Sense" />
+      <div className="quiz-container flex justify-center items-center">
+        {isCorrect && (
+          <div className="">
+            <Confetti
+              width={windowDimensions.width - 50}
+              height={windowDimensions.height}
+              gravity={0.2}
+              numberOfPieces={300}
+              recycle={false}
+              initialVelocityX={1}
+              initialVelocityY={1}
+              colors={['#ff0000', '#00ff00', '#0000ff']}
+              style={{
+                position: 'fixed',
+                bottom: 0,
+                left: 0,
+                right: 0,
+              }}
+            />
           </div>
-        ))}
-      </div>
+        )}
 
-      {isCorrect && (
-        <button className="next-quiz" onClick={nextQuiz}>
-          Next
-        </button>
-      )}
+        <div className="quiz-header">
+          <button
+            className="hint-button"
+            onClick={handleHintClick}
+            disabled={hintsRemaining <= 0}
+          >
+            Hint ({hintsRemaining} left)
+          </button>
+          <div className="quiz-counter">
+            Quiz {quizIndex} / {totalQuizzes}
+          </div>
 
-      {/* Hint Popup */}
-      {showHint && (
-        <div className="hint-overlay">
-          <div className="hint-popup" ref={popupRef}>
-            {/* Close button positioned at top-right corner */}
-            <button className="close-button-corner" onClick={closeHint}>×</button>
-            
-            <h2 className="hint-title">Let's Learn Number Sense</h2>
-            
-            <div className="hint-description">
-              <p>Here, the size of the number shows its value. Larger numbers have bigger images.</p>
+        </div>
+
+        <h1 className="quiz-title">Select the larger number</h1>
+        <div className="quiz-box">
+          {currentQuiz.options.map((num, index) => (
+            <div
+              key={index}
+              className={`number-box ${selectedNumber === num ? "selected" : ""} ${isCorrect && num === currentQuiz.correct ? "correct-answer-highlight" : ""
+                }`}
+              onClick={() => handleNumberClick(num)}
+            >
+              {num}
             </div>
-            
-            <div className="number-container">
-              <div className="single-line-number-display">
-                {numberImages.map((item) => (
-                  <div key={item.number} className="number-item">
-                    <img
-                      src={item.src}
-                      alt={`Number ${item.number}`}
-                      style={{ width: `${item.size}px`, height: "auto" }}
-                      className="number-image"
-                    />
-                  </div>
-                ))}
+          ))}
+        </div>
+
+        {isCorrect && (
+          <button className="next-quiz absolute bottom-10" onClick={nextQuiz}>
+            Next
+          </button>
+        )}
+
+        {/* Hint Popup */}
+        {showHint && (
+          <div className="hint-overlay">
+            <div className="hint-popup" ref={popupRef}>
+              {/* Close button positioned at top-right corner */}
+              <button className="close-button-corner" onClick={closeHint}>×</button>
+
+              <h2 className="hint-title">Let's Learn Number Sense</h2>
+
+              <div className="hint-description">
+                <p>Here, the size of the number shows its value. Larger numbers have bigger images.</p>
+              </div>
+
+              <div className="number-container">
+                <div className="single-line-number-display">
+                  {numberImages.map((item) => (
+                    <div key={item.number} className="number-item">
+                      <img
+                        src={item.src}
+                        alt={`Number ${item.number}`}
+                        style={{ width: `${item.size}px`, height: "auto" }}
+                        className="number-image"
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
+
   );
 };
 
