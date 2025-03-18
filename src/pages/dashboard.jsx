@@ -224,7 +224,7 @@ export default function Dashboard() {
 
   const handlelogout = () => {
     localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
+    
     window.location.href = "/login";
   };
 
@@ -264,7 +264,7 @@ export default function Dashboard() {
     
     <div className='la-container flex relative'>
       
-      <div className='w-[360px] h-screen primary-color-bg z-10 flex flex-col justify-between'>
+      <div className='w-[360px] h-screen primary-color-bg z-10 flex flex-col shadow-[0px_0px_5px_1px_rgba(0,_0,_0,_0.1)] justify-between'>
 
         <div className='flex items-center justify-start px-2 py-2'>
           <div className='w-[50px] h-[50px] mr-2'>
@@ -368,14 +368,14 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-      <div className=" w-full relative bg-gray-200 flex flex-col items-center justify-center">
-        <div className="w-full h-[320px] z-[0] group relative">
+      <div className=" w-full relative  flex flex-col items-center justify-center">
+        <div className="w-[calc(100%-28px)]  h-[320px] z-[0] group relative">
           <img
             src={userData.coverPic ? userData.coverPic : ""}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover rounded-[0rem_0rem_0.5rem_0.5rem] shadow-[0px_0px_5px_1px_rgba(0,_0,_0,_0.1)]"
             alt="cover picture"
           />
-          <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-center items-center">
+          <div className="absolute inset-0 rounded-[0rem_0rem_0.5rem_0.5rem]  bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-center items-center">
             <button
               className="border border-white text-white px-4 py-2 rounded-md"
               onClick={showCoverPicModal}
@@ -385,7 +385,7 @@ export default function Dashboard() {
           </div>
         </div>
         <div className="w-full p-[14px] h-[calc(100vh-320px)] flex items-center justify-center">
-          <div className="primary-color-bg w-full h-full  bottom-0 px-10 py-5 z-[5]   rounded-md ">
+          <div className="primary-color-bg shadow-[0px_0px_5px_1px_rgba(0,_0,_0,_0.1)] w-full h-full  bottom-0 px-10 py-5 z-[5]   rounded-md ">
             {panel === "training" && <DashTraining userData={userData} />}
             {panel === "performance" && <DashPerformance />}
             {panel === "achievements" && <DashAchievements />}

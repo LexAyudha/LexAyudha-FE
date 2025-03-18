@@ -36,9 +36,11 @@ export default function YourAccounts() {
         }
       } else {
         setUserList([]);
+        setIsLoading(false)
       }
 
     } catch (error) {
+      setIsLoading(false)
       console.log(error)
     }
   }

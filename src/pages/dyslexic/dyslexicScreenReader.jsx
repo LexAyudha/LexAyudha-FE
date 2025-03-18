@@ -6,6 +6,7 @@ import chromaticThemes from '../../configs/chromaticThemes'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { decodeToken } from '../../utils/tokenUtils';
 import axiosInstance from '../../api/axiosInstance';
+import AlternativeHeader from '../../components/alternativeHeader';
 
 const lessonsList = [
     {
@@ -230,6 +231,9 @@ export default function DyslexicScreenReader() {
     const [personalizedRate, setPersonalizedRate] = useState(false)
     const [isPanelOpen, setIsPanelOpen] = useState(false);
     const [user, setUser] = useState()
+    const [totalMarks, setTotalMarks] = useState(0)
+    const [myMarks, setMyMarks] = useState(0)
+    const [currentTTS, setCurrentTTS] = useState(null)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -243,11 +247,23 @@ export default function DyslexicScreenReader() {
         // Small delay to ensure DOM is ready
         const timer = setTimeout(() => {
             applyChromaticThemes();
+
         }, 100);
 
         return () => clearTimeout(timer);
 
     }, []);
+
+    useEffect(() => {
+        calculateTotalAchievableMark();
+    }, [lesson]);
+    const calculateTotalAchievableMark = () => {
+        if (lesson) {
+            const fullMark = lesson?.chapters?.length * 10
+            setTotalMarks(fullMark);
+        }
+
+    }
 
     useEffect(() => {
         if (lesson) {
@@ -328,6 +344,11 @@ export default function DyslexicScreenReader() {
     }
 
     const handleNext = () => {
+        if (myMarks <= totalMarks) {
+            const chapterMark = calculateScoreForChapter()
+            setMyMarks(myMarks + chapterMark);
+        }
+
         if (currentChapterIndex < lesson?.chapters.length - 1) {
             setCurrentChapterIndex(currentChapterIndex + 1);
         }
@@ -347,15 +368,55 @@ export default function DyslexicScreenReader() {
     }
 
 
-    const handleSpeech = () => {
-        const utterance = new SpeechSynthesisUtterance(currentChapter);
-        utterance.rate = speechRate;
-        window.speechSynthesis.speak(utterance);
+    const handleSpeech = async () => {
+      
+        const payload = {
+            text: currentChapter,
+            speechRate: speechRate,
+            langCode: lesson?.langCode || 'en-US'
+        }
+        
+        try {
+            const res = await axiosInstance.post('/speech/tts', payload,{
+                responseType: 'arraybuffer'  // This is the key change
+            })
+
+            if (res?.status === 200) {
+                setCurrentTTS(res?.data)
+                
+                playAudio()
+            }
+        } catch (error) {
+            console.log(error)
+            const utterance = new SpeechSynthesisUtterance(currentChapter);
+            utterance.rate = speechRate;
+            window.speechSynthesis.speak(utterance);
+        }
+
+    };
+
+    const playAudio = () => {
+        
+
+        const blob = new Blob([currentTTS], { type: 'audio/mp3' });
+        const url = URL.createObjectURL(blob);
+        const audio = new Audio(url);
+        
+        audio.play();
+
+        audio.onended = () => {
+            URL.revokeObjectURL(url);
+          };
+
+          audio.onerror = (error) => {
+            console.error("Error playing audio:", error);
+            URL.revokeObjectURL(url);
+          };
     };
 
     const handlePersonalizedRate = () => {
         if (personalizedRate) {
-            console.log(user)
+            
             setSpeechRate(user?.speechRate)
         } else {
             setSpeechRate(1) //using default speech rate of 1
@@ -391,7 +452,26 @@ export default function DyslexicScreenReader() {
         }
     }
 
-    
+    const calculateScoreForChapter = () => {
+        const currentChapterWords = currentChapter?.split(' ');
+        const transcriptWords = transcript.split(' ');
+
+        const totalAchievableScore = currentChapterWords.length;
+        let matchingWordsCount = 0;
+
+        transcriptWords.forEach((word, index) => {
+            if (word === currentChapterWords[index]) {
+                matchingWordsCount++;
+            }
+        });
+
+        const score = Math.round((matchingWordsCount / totalAchievableScore) * 10); // Assuming full mark is 10
+        
+
+        resetTranscript();
+        return score;
+    };
+
     const {
         transcript,
         listening,
@@ -406,10 +486,9 @@ export default function DyslexicScreenReader() {
     }
     return (
         <div className='la-container overflow-x-hidden items-center h-screen flex flex-col relative'>
+            <AlternativeHeader title='Screen Reader' />
             <ChangeThemeFB />
-            <div className='flex justify-start w-full absolute top-0'>
-                <h2>Screen Reader</h2>
-            </div>
+
             <div className='flex flex-col w-full h-screen items-center justify-center pr-[50px] '>
                 <div>
                     <h2>{lesson?.name}</h2>
@@ -434,7 +513,7 @@ export default function DyslexicScreenReader() {
 
                             </div>
                             <div className={`cursor-pointer flex items-center  justify-end w-[100px] ${currentChapterIndex == lesson?.chapters.length - 1 ? 'hidden' : 'flex'} `}>
-                                <span className='relative group' onClick={() => { handleNext, stopListening }}>
+                                <span className='relative group' onClick={handleNext}>
                                     <p className=' m-0'>Next</p>
                                     <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"></span>
                                 </span>
@@ -451,6 +530,7 @@ export default function DyslexicScreenReader() {
                     <div className=' text-wrap overflow-x-hidden overflow-y-auto relative bg-black bg-opacity-5 w-full h-[300px] rounded-lg flex justify-center items-center'>
                         <p className={`p-[20px] m-0 ${selectedChromTheme} `} style={{ fontSize: `${fontSize}px` }} data-attribute="chromatic">{currentChapter || 'Sorry, No chapters in this lesson'}</p>
                         <span className=' absolute bottom-3 right-6' >{completedChapters}/{lesson?.chapters.length - 1}</span>
+                        <span className=' absolute top-3 right-6' >Score: {myMarks}/{totalMarks}</span>
                     </div>
                     <div className=' flex p-[15px_20px] w-full bg-black bg-opacity-5 rounded-lg mt-[20px]'>
                         <div className='flex flex-col items-center justify-center  p-[10px_20px]  w-full '>
@@ -466,15 +546,15 @@ export default function DyslexicScreenReader() {
                             </div>
 
                             <div className='w-full flex justify-evenly items-center'>
-                                <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded p-[5px_10px] hover:bg-black hover:bg-opacity-10 transition duration-200 ${transcript && !listening?'block':'hidden'}`} onClick={resetTranscript}>
+                                <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded p-[5px_10px] hover:bg-black hover:bg-opacity-10 transition duration-200 ${transcript && !listening ? 'block' : 'hidden'}`} onClick={resetTranscript}>
                                     <p className=' m-0'>Restart chapter</p>
-                                    
+
                                 </span>
-                                <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded p-[5px_10px] hover:bg-black hover:bg-opacity-10 transition duration-200 ${listening?'block':'hidden'}`} onClick={stopListening}>
+                                <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded p-[5px_10px] hover:bg-black hover:bg-opacity-10 transition duration-200 ${listening ? 'block' : 'hidden'}`} onClick={stopListening}>
                                     <p className=' m-0'>Finish chapter</p>
-                                    
+
                                 </span>
-                                <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded hover:bg-black hover:bg-opacity-10 transition duration-200 p-[5px_10px] ${!transcript && !listening? 'block':'hidden' }`} onClick={startListening}>
+                                <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded hover:bg-black hover:bg-opacity-10 transition duration-200 p-[5px_10px] ${!transcript && !listening ? 'block' : 'hidden'}`} onClick={startListening}>
                                     <p className=' m-0'>Start chapter</p>
 
                                 </span>
@@ -490,7 +570,7 @@ export default function DyslexicScreenReader() {
                                 <input
                                     type='range'
                                     id='speechRate'
-                                    min='0.1'
+                                    min='0.25'
                                     max='1.25'
                                     step='0.01'
                                     value={speechRate}
@@ -514,45 +594,80 @@ export default function DyslexicScreenReader() {
 
                 </div>
             </div>
-            <div className={`px-[20px] absolute z-20 right-0 top-1/2 transform -translate-y-1/2 rounded-[20px_0px_0px_20px] w-[400px] h-[500px] primary-color-bg transition-transform duration-300 ${isPanelOpen ? 'translate-x-0' : 'translate-x-[390px]'}`}>
+            <div className={` absolute z-20 right-0 top-1/2 transform -translate-y-1/2 rounded-[20px_0px_0px_20px] w-[400px] h-[550px] primary-color-bg transition-transform duration-300 ${isPanelOpen ? 'translate-x-0' : 'translate-x-[390px]'}`}>
+
                 <div id='side_panel' className={`cursor-pointer flex items-center justify-center absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-[20px] rounded-[5px] primary-color-bg px-[10px] py-[20px] transition-transform duration-300 ${isPanelOpen ? 'rotate-180' : ''}`} onClick={togglePanel}>
                     <i className="fa-solid fa-chevron-left"></i>
                 </div>
-                <div className='flex flex-col items-center mt-[20px]'>
-                    <div className=' w-full'><p>Adjsut font size: </p></div>
-                    <label htmlFor='FontSize' className='mb-[10px] text-sm'>Font Size: {fontSize}</label>
-                    <input
-                        type='range'
-                        id='speechRate'
-                        min='8'
-                        max='96'
-                        step='1'
-                        value={fontSize}
-                        onChange={(e) => setFontSize(e.target.value)}
-                        className='w-[200px]'
-                    />
+                {/* Header */}
+                <div className="bg-black bg-opacity-10 rounded-[20px_0px_0px_0px] p-4 mb-6">
+                    <h2 className=" text-xl font-bold">Accessibility Settings</h2>
                 </div>
-                <div className='flex flex-col mt-[40px]'>
-                    <div className=' w-full'><p>Read Aloud Feature settings: </p></div>
-                    <div className='flex justify-between w-[75%] mt-[10px]'>
-                        <label htmlFor='enableReadAloud' className='mb-[10px] text-sm'>Enable feature?</label>
+                {/* Main settings panel */}
+                <div className=" rounded-lg  flex flex-col items-center">
+
+
+                    {/* Font Size Section */}
+                    <div className="mb-8 px-[20px]">
+                        <div className="flex justify-between items-center mb-2">
+                            <div>
+                                <h3 className="text-lg font-semibold ">Font Size</h3>
+                                <p className="text-[12px] ">Adjust text size for better readability</p>
+                            </div>
+                            <div className="bg-black bg-opacity-15 rounded-full px-3 py-1 text-center min-w-[40px]">
+                                {fontSize}
+                            </div>
+                        </div>
+
                         <input
-                            type='checkbox'
-                            id='enableReadAloud'
-                            checked={isReadAloudEnabled}
-                            onChange={(e) => setIsReadAloudEnabled(e.target.checked)}
-                            className='mb-[10px]'
+                            type="range"
+                            id="fontSize"
+                            min="8"
+                            max="96"
+                            step="1"
+                            value={fontSize}
+                            onChange={(e) => setFontSize(e.target.value)}
+                            className="w-full h-2 bg-black bg-opacity-15 rounded-lg appearance-none cursor-pointer accent-[var(--text-color)]"
                         />
                     </div>
-                    <div className='flex justify-between w-[75%] mt-[10px]'>
-                        <label htmlFor='enableReadAloud' className='mb-[10px] text-sm'>Enable personalized speach rate?</label>
-                        <input
-                            type='checkbox'
-                            id='enableReadAloud'
-                            checked={personalizedRate}
-                            onChange={(e) => setPersonalizedRate(e.target.checked)}
-                            className='mb-[10px]'
-                        />
+
+                    {/* Divider */}
+                    <div className="border-b border-[var(--text-color)] mb-[18px] w-[calc(100%-40px)] "></div>
+
+                    {/* Read Aloud Section */}
+                    <div className='px-[20px]'>
+                        <h3 className="text-lg font-semibold  mb-2">Read Aloud Features</h3>
+                        <p className="text-[12px] mb-4">Configure text-to-speech settings</p>
+
+                        {/* Toggle for Enable Read Aloud */}
+                        <div className="flex justify-between items-center mt-[32px] mb-4">
+                            <label htmlFor="enableReadAloud" className="">Enable read aloud</label>
+                            <label className="relative inline-flex items-center cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    id="enableReadAloud"
+                                    className="sr-only peer"
+                                    checked={isReadAloudEnabled}
+                                    onChange={(e) => setIsReadAloudEnabled(e.target.checked)}
+                                />
+                                <div className="w-11 h-6 bg-black bg-opacity-5 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-[var(--text-color)] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[var(--background-color)] after:border-[var(--text-color)] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--text-color)]"></div>
+                            </label>
+                        </div>
+
+                        {/* Toggle for Speech Rate */}
+                        <div className="flex justify-between items-center">
+                            <label htmlFor="personalizedRate" className="">Enable personalized speech rate</label>
+                            <label className="relative inline-flex items-center cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    id="personalizedRate"
+                                    className="sr-only peer"
+                                    checked={personalizedRate}
+                                    onChange={(e) => setPersonalizedRate(e.target.checked)}
+                                />
+                                <div className="w-11 h-6 bg-black bg-opacity-5 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-[var(--text-color)] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[var(--background-color)] after:border-[var(--text-color)] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--text-color)]"></div>
+                            </label>
+                        </div>
                     </div>
 
                 </div>

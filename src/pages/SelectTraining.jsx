@@ -41,7 +41,7 @@ export default function SelectTrainingPage() {
                     </a>
                 </div>
 
-                <ChangeThemeFB />
+                <ChangeThemeFB initialFontName={'OpenDyslexic'}/>
 
             </div>
 

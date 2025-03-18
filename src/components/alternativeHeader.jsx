@@ -38,7 +38,7 @@ export default function AlternativeHeader({ title = 'LexAyudha' }) {
 
     const handleLogOut = () => {
         localStorage.removeItem('accessToken')
-        localStorage.removeItem('refreshToken')
+        
         window.location.href = '/login'
     }
     const items = [
