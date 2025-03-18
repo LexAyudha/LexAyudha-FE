@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import for navigation
 import "../../../assets/TeachNumber.css";
 import ChangeThemeFB from "../../changeThemeFB";
+import AlternativeHeader from "../../alternativeHeader";
 
 const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
@@ -524,6 +525,7 @@ const Number0 = () => {
 
   return (
     <div className="la-container relative  overflow-x-hidden overflow-y-hidden flex flex-col items-center justify-center h-screen">
+      <AlternativeHeader title="Touch Math"/>
       <ChangeThemeFB />
       <div className=" w-full justify-center items-center h-fit relative">
         <div className="flex flex-col items-center justify-center">
