@@ -88,7 +88,7 @@ const EmotionDetection = ({
                   data?.prediction.percentages;
                 console.log(engagement, distraction, frustration);
                 if (distraction > 80) {
-                  console.log("badu packet");
+                  console.log("modal on");
                   setIsModalVisible(true);
                 }
               })
