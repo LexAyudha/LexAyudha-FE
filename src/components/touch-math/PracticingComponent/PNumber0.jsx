@@ -71,6 +71,9 @@ const Number0 = () => {
     setIsModalVisible(false);
     setIsAppear(true);
   };
+  const handleLearn = () => {
+    navigate("/touch-math/teaching_number/");
+  };
   //Moved success msg firing to a separate function here.
   const firePopup = (text = null, isSucces) => {
     if (isSucces) {
@@ -728,7 +731,7 @@ const Number0 = () => {
           <Button key="hint" type="primary" onClick={handleOk}>
             Just give me a hint
           </Button>,
-          <Button key="learn" type="primary" onClick={() => alert("learn")}>
+          <Button key="learn" type="primary" onClick={handleLearn}>
             I want to learn
           </Button>,
         ]}
