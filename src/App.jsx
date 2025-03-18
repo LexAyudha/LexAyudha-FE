@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css'
 function App() {
   
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center ">
     <BrowserRouter>
       <Layouts />
     </BrowserRouter>

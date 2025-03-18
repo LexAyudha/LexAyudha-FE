@@ -31,7 +31,7 @@ export default function TrainingWelcome() {
 
   return (
     <div className='la-container '>
-      <ChangeThemeFB initialThemeName={'theme3'} initialFontName={'OpenDyslexic'} />
+      <ChangeThemeFB  initialFontName={'OpenDyslexic'} />
       <div
         className={`flex w-full flex-col justify-center absolute top-0 right-0 left-0 mt-[25px] z-20 transition-transform duration-1000 ${showWelcome ? 'translate-x-0' : '-translate-x-full'
           }`}
