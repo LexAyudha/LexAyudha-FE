@@ -12,6 +12,7 @@ const Number0 = () => {
   const navigate = useNavigate(); // Hook for navigation
   const [numberList, setNumberList] = useState(numbers)
   const [currentNumberIndex, setCurrentNumberIndex] = useState(0)
+  const [isPanelOpen, setIsPanelOpen] = useState(false)
 
   useEffect(() => {
     // Get voices when they are loaded
@@ -42,6 +43,9 @@ const Number0 = () => {
     }
   }, []);
 
+  const togglePanel = () => {
+    setIsPanelOpen(!isPanelOpen);
+  };
   const handleLearnClick = () => {
     if (numberList[currentNumberIndex] == 0) {
       speakNumber(numberList[currentNumberIndex]);
@@ -101,6 +105,10 @@ const Number0 = () => {
       console.warn("Text-to-Speech not supported or female voice is not loaded.");
     }
   };
+
+  const handleNumberChange = (num) => {
+    setCurrentNumberIndex(num )
+  }
 
   const numberPointsSnippets = {
     '0': (<div></div>),
@@ -515,7 +523,7 @@ const Number0 = () => {
   }
 
   return (
-    <div className="la-container relative flex flex-col items-center justify-center h-screen">
+    <div className="la-container relative  overflow-x-hidden overflow-y-hidden flex flex-col items-center justify-center h-screen">
       <ChangeThemeFB />
       <div className=" w-full justify-center items-center h-fit relative">
         <div className="flex flex-col items-center justify-center">
@@ -547,9 +555,32 @@ const Number0 = () => {
           <button className={`next-button ${currentNumberIndex + 1 < numberList.length ? 'hidden' : 'flex'}`} onClick={handleFinish}>
             Finish
           </button>
+
+          
         </div>
       </div>
+      <div className={` absolute z-50  right-[100px] top-1/2 transform -translate-y-1/2 rounded-[20px_0px_0px_20px] w-[300px] h-[550px] primary-color-bg transition-transform duration-300 ${isPanelOpen ? 'translate-x-[100px]' : 'translate-x-[390px]'}`}>
 
+            <div id='side_panel' className={`cursor-pointer flex items-center justify-center absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-[20px] rounded-[5px] primary-color-bg px-[10px] py-[20px] transition-transform duration-300 ${isPanelOpen ? 'rotate-180' : ''}`} onClick={togglePanel}>
+              <i className="fa-solid fa-chevron-left"></i>
+            </div>
+            {/* Header */}
+            <div className="bg-black bg-opacity-10 rounded-[20px_0px_0px_0px] p-4">
+              <h2 className=" text-xl font-bold">Number Quick Select</h2>
+            </div>
+            <div className="flex h-[400px] justify-center flex-wrap overflow-x-hidden overflow-y-scroll p-4">
+              
+              {numbers.map((num) => (
+                <div
+                  key={num}
+                  className="w-[100px] h-[100px] cursor-pointer rounded-md border-2 border-[var(--text-color)] flex items-center justify-center p-2 m-2"
+                  onClick={()=>handleNumberChange(num)}
+                >
+                  <p className="m-0 text-[32px]">{num}</p>
+                </div>
+              ))}
+            </div>
+      </div>
 
     </div>
   );
