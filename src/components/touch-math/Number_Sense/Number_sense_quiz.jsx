@@ -4,10 +4,23 @@ import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import "../../../assets/Styles.css";
 
+// Import number images (replace with actual paths)
+import number1Img from "../../../assets/1.png";
+import number2Img from "../../../assets/2.png";
+import number3Img from "../../../assets/3.png";
+import number4Img from "../../../assets/4.png";
+import number5Img from "../../../assets/5.png";
+import number6Img from "../../../assets/6.png";
+import number7Img from "../../../assets/7.png";
+import number8Img from "../../../assets/8.png";
+import number9Img from "../../../assets/9.png";
+
 const Quiz = () => {
   const [selectedNumber, setSelectedNumber] = useState(null);
   const [quizIndex, setQuizIndex] = useState(1);
   const [isCorrect, setIsCorrect] = useState(false);
+  const [hintsRemaining, setHintsRemaining] = useState(3); // Initialize with 3 hints
+  const [showHint, setShowHint] = useState(false);
   const totalQuizzes = 10;
 
   const { width, height } = useWindowSize();
@@ -32,6 +45,19 @@ const Quiz = () => {
 
   const [currentQuiz, setCurrentQuiz] = useState(generateQuiz());
 
+  // Number images for the hint popup - with adjusted sizes
+  const numberImages = [
+    { number: 1, src: number1Img, size: 25 },
+    { number: 2, src: number2Img, size: 35 },
+    { number: 3, src: number3Img, size: 45 },
+    { number: 4, src: number4Img, size: 55 },
+    { number: 5, src: number5Img, size: 65 },
+    { number: 6, src: number6Img, size: 75 },
+    { number: 7, src: number7Img, size: 85 },
+    { number: 8, src: number8Img, size: 95 },
+    { number: 9, src: number9Img, size: 105 },
+  ];
+
   const handleNumberClick = (num) => {
     setSelectedNumber(num);
 
@@ -47,6 +73,24 @@ const Quiz = () => {
         setSelectedNumber(null);
       });
     }
+  };
+
+  const handleHintClick = () => {
+    if (hintsRemaining > 0) {
+      setShowHint(true);
+      setHintsRemaining(hintsRemaining - 1);
+    } else {
+      Swal.fire({
+        title: "No Hints Left!",
+        text: "You've used all your hints for this session.",
+        icon: "warning",
+        confirmButtonText: "OK",
+      });
+    }
+  };
+
+  const closeHint = () => {
+    setShowHint(false);
   };
 
   const nextQuiz = () => {
@@ -66,6 +110,7 @@ const Quiz = () => {
         setSelectedNumber(null);
         setIsCorrect(false);
         setCurrentQuiz(generateQuiz());
+        setHintsRemaining(3); // Reset hints when restarting the quiz
       });
     }
   };
@@ -85,7 +130,7 @@ const Quiz = () => {
             colors={['#ff0000', '#00ff00', '#0000ff']}
             style={{
               position: 'absolute',
-              bottom: 0, // Start from the bottom of the screen
+              bottom: 0,
               left: 0,
               right: 0,
             }}
@@ -93,8 +138,17 @@ const Quiz = () => {
         </div>
       )}
 
-      <div className="quiz-counter">
-        Quiz {quizIndex} / {totalQuizzes}
+      <div className="quiz-header">
+        <div className="quiz-counter">
+          Quiz {quizIndex} / {totalQuizzes}
+        </div>
+        <button 
+          className="hint-button" 
+          onClick={handleHintClick}
+          disabled={hintsRemaining <= 0}
+        >
+          Hint ({hintsRemaining} left)
+        </button>
       </div>
 
       <h1 className="quiz-title">Select the larger number</h1>
@@ -116,6 +170,38 @@ const Quiz = () => {
         <button className="next-quiz" onClick={nextQuiz}>
           Next
         </button>
+      )}
+
+      {/* Hint Popup */}
+      {showHint && (
+        <div className="hint-overlay">
+          <div className="hint-popup">
+            <button className="close-button" onClick={closeHint}>
+              ×
+            </button>
+            
+            <h2 className="hint-title">Let's Learn Number Sense</h2>
+            
+            <div className="hint-description">
+              <p>Here, the size of the number shows its value. Larger numbers have bigger images.</p>
+            </div>
+            
+            <div className="number-container">
+              <div className="single-line-number-display">
+                {numberImages.map((item) => (
+                  <div key={item.number} className="number-item">
+                    <img
+                      src={item.src}
+                      alt={`Number ${item.number}`}
+                      style={{ width: `${item.size}px`, height: "auto" }}
+                      className="number-image"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
