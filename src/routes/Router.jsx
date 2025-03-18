@@ -35,6 +35,8 @@ import Addition2 from "../components/touch-math/Exercises/AdditionLevel2.jsx";
 import TAddition from "../components/touch-math/TeachingOperations/TeachingAddition.jsx";
 import TSubtraction from "../components/touch-math/TeachingOperations/TeachingSubtraction.jsx";
 import PTouchMath from "../components/touch-math/TouchMath/TochMathPractice.jsx";
+import QAddition from "../components/touch-math/Quizzes/Addition_Quiz.jsx";
+import QSubtraction from "../components/touch-math/Quizzes/Subtraction_Quiz.jsx";
 
 import TrainingWelcome from "../pages/trainingWelcome.jsx";
 import ConfigOnBoardingPage from "../pages/configOnBoarding.jsx";
@@ -162,6 +164,9 @@ const Router = () => {
       <Route path="/practice-addition" element={<Addition />} />
       <Route path="/practice-substraction" element={<Subtraction />} />
       <Route path="/addition_level2" element={<Addition2 />} />
+
+      <Route path="/quiz_addition" element={<QAddition />} />
+      <Route path="/quiz_subtraction" element={<QSubtraction />} />
       
       {/* Catch-all route for 404 */}
       <Route path="*" element={<NotFound />} />
