@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
@@ -19,11 +19,31 @@ const Quiz = () => {
   const [selectedNumber, setSelectedNumber] = useState(null);
   const [quizIndex, setQuizIndex] = useState(1);
   const [isCorrect, setIsCorrect] = useState(false);
-  const [hintsRemaining, setHintsRemaining] = useState(3); // Initialize with 3 hints
+  const [hintsRemaining, setHintsRemaining] = useState(3);
   const [showHint, setShowHint] = useState(false);
   const totalQuizzes = 10;
+  const popupRef = useRef(null);
 
   const { width, height } = useWindowSize();
+
+  // Effect to handle outside click
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (showHint && popupRef.current && !popupRef.current.contains(event.target)) {
+        setShowHint(false);
+      }
+    }
+
+    // Add event listener when popup is shown
+    if (showHint) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    
+    // Cleanup event listener
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showHint]);
 
   const generateRandomNumber = () => Math.floor(Math.random() * 9) + 1;
 
@@ -45,7 +65,7 @@ const Quiz = () => {
 
   const [currentQuiz, setCurrentQuiz] = useState(generateQuiz());
 
-  // Number images for the hint popup - with adjusted sizes
+  // Number images for the hint popup
   const numberImages = [
     { number: 1, src: number1Img, size: 25 },
     { number: 2, src: number2Img, size: 35 },
@@ -175,10 +195,9 @@ const Quiz = () => {
       {/* Hint Popup */}
       {showHint && (
         <div className="hint-overlay">
-          <div className="hint-popup">
-            <button className="close-button" onClick={closeHint}>
-              ×
-            </button>
+          <div className="hint-popup" ref={popupRef}>
+            {/* Close button positioned at top-right corner */}
+            <button className="close-button-corner" onClick={closeHint}>×</button>
             
             <h2 className="hint-title">Let's Learn Number Sense</h2>
             

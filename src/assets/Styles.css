@@ -131,24 +131,17 @@
 }
 
 .close-button {
-    background-color: #dc3545;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #ff4d4d;
     color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    font-weight: bold;
     font-size: 16px;
-    transition: all 0.3s;
-    position: absolute;
-    top: -15px;
-    right: -15px;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 .close-button:hover {
@@ -383,3 +376,29 @@
     text-align: center;
   }
   
+  /* Close Button for Hint - Positioned outside the popup */
+  .close-button-corner {
+    background-color: #dc3545;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    transition: all 0.3s;
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  }
+  
+  .close-button-corner:hover {
+    background-color: #c82333;
+    transform: scale(1.1);
+  }
