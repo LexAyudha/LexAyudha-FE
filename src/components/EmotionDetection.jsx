@@ -7,7 +7,6 @@ const EmotionDetection = ({
   startDetection,
   onStopDetection,
   onEmotionData,
-  emotionCategory,
   onModalAction,
 }) => {
   const videoRef = useRef(null);
@@ -19,26 +18,20 @@ const EmotionDetection = ({
   const [isAppear, setIsAppear] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (emotionCategory === "frustrated" || emotionCategory === "distracted") {
-      setIsModalVisible(true);
-    }
-  }, [emotionCategory]);
-
   const handleOk = () => {
     setIsModalVisible(false);
     setIsAppear(true);
-    onModalAction(true); // Inform parent component to update the state
+    onModalAction(true);
   };
 
   const handleLearn = () => {
     navigate("/touch-math/teaching_number/");
-    onModalAction(true); // Inform parent component to update the state
+    onModalAction(true);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
-    onModalAction(false); // Inform parent component to update the state
+    onModalAction(false);
   };
 
   useEffect(() => {
@@ -90,6 +83,13 @@ const EmotionDetection = ({
                 // Pass the emotion data to the parent component
                 if (onEmotionData) {
                   onEmotionData(data);
+                }
+                const { engagement, distraction, frustration } =
+                  data?.prediction.percentages;
+                console.log(engagement, distraction, frustration);
+                if (distraction > 80) {
+                  console.log("badu packet");
+                  setIsModalVisible(true);
                 }
               })
               .catch((error) => console.error("Error sending frame:", error));

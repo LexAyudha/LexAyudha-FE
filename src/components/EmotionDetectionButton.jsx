@@ -2,10 +2,7 @@
 import React, { useState } from "react";
 import EmotionDetection from "./EmotionDetection";
 
-export default function EmotionDetectionButton({
-  emotionCategory,
-  onModalAction,
-}) {
+export default function EmotionDetectionButton({ onModalAction }) {
   const [startDetection, setStartDetection] = useState(false);
   const [emotionData, setEmotionData] = useState(null);
 
@@ -32,7 +29,6 @@ export default function EmotionDetectionButton({
           startDetection={startDetection}
           onStopDetection={handleStopDetection}
           onEmotionData={handleEmotionData}
-          emotionCategory={emotionCategory}
           onModalAction={onModalAction}
         />
       )}

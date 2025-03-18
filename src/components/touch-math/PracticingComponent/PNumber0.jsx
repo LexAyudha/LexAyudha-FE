@@ -23,7 +23,6 @@ const Number0 = () => {
   const [touchPoints, setTouchPoints] = useState([]);
   const [isAppear, setIsAppear] = useState(false);
   const [selectedIcon, setSelectedIcon] = useState(0);
-  const [emotionCategory, setEmotionCategory] = useState("");
 
   // Correct pattern for the single touch point
   const correctPattern = [
@@ -50,7 +49,6 @@ const Number0 = () => {
     setTouchPoints(new Array(correctPattern[id]?.length || 0).fill(false));
     const randomIconNumber = Math.floor(Math.random() * 9);
     setSelectedIcon(randomIconNumber);
-    setEmotionCategory("frustrated");
   }, [id]);
 
   const handleNext = () => {
@@ -576,10 +574,7 @@ const Number0 = () => {
       <ChangeThemeFB />
 
       <div className="flex justify-center mt-5">
-        <EmotionDetectionButton
-          emotionCategory={emotionCategory}
-          onModalAction={handleModalAction}
-        />
+        <EmotionDetectionButton onModalAction={handleModalAction} />
       </div>
       <div className="flex w-full relative flex-col items-center justify-center">
         <div className="py-[20px]">
