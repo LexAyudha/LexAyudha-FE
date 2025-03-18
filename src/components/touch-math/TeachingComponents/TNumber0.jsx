@@ -115,78 +115,78 @@ const Number0 = () => {
     '1': (
       <div
         className={`touchpoint ${visiblePoints > 0 ? "visible" : ""}`}
-        style={{ top: "18%", left: "57%", transform: "translate(-50%, -50%)" }}
+        style={{ top: "18%", left: "51.5%", transform: "translate(-50%, -50%)" }}
       ></div>),
     '2': (<><div
       className={`touchpoint ${visiblePoints > 0 ? "visible" : ""}`}
-      style={{ top: "31%", left: "29.5%", transform: "translate(-50%, -50%)", backgroundColor: "var(--main-ring-color)" }}
+      style={{ top: "30%", left: "45.45%", transform: "translate(-50%, -50%)", backgroundColor: "var(--main-ring-color)" }}
     ></div>
       <div
         className={`touchpoint ${visiblePoints > 1 ? "visible" : ""}`}
-        style={{ top: "78.3%", left: "72.5%", transform: "translate(-50%, -50%)" }}
+        style={{ top: "78.3%", left: "55%", transform: "translate(-50%, -50%)" }}
       ></div></>),
     '3': (<>
       <div
         className={`touchpoint ${visiblePoints > 0 ? "visible" : ""}`}
-        style={{ top: "28%", left: "30%", transform: "translate(-50%, -50%)" }}
+        style={{ top: "28%", left: "45.5%", transform: "translate(-50%, -50%)" }}
       ></div>
       <div
         className={`touchpoint ${visiblePoints > 1 ? "visible" : ""}`}
-        style={{ top: "47%", left: "45%", transform: "translate(-50%, -50%)" }}
+        style={{ top: "47%", left: "49%", transform: "translate(-50%, -50%)" }}
       ></div>
       <div
         className={`touchpoint ${visiblePoints > 2 ? "visible" : ""}`}
-        style={{ top: "68%", left: "29%", transform: "translate(-50%, -50%)" }}
+        style={{ top: "68%", left: "45.5%", transform: "translate(-50%, -50%)" }}
       ></div>
     </>),
     '4': (<>
       <div
         className={`touchpoint ${visiblePoints > 0 ? "visible" : ""}`}
-        style={{ top: "17%", left: "62.5%", transform: "translate(-50%, -50%)" }}
+        style={{ top: "16%", left: "52.8%", transform: "translate(-50%, -50%)" }}
       ></div>
       <div
         className={`touchpoint ${visiblePoints > 1 ? "visible" : ""}`}
-        style={{ top: "63.8%", left: "23.5%", transform: "translate(-50%, -50%)" }}
+        style={{ top: "63.8%", left: "44%", transform: "translate(-50%, -50%)" }}
       ></div>
       <div
         className={`touchpoint ${visiblePoints > 2 ? "visible" : ""}`}
-        style={{ top: "63.8%", left: "62.5%", transform: "translate(-50%, -50%)" }}
+        style={{ top: "63.8%", left: "52.8%", transform: "translate(-50%, -50%)" }}
       ></div>
       <div
         className={`touchpoint ${visiblePoints > 3 ? "visible" : ""}`}
-        style={{ top: "82%", left: "62.5%", transform: "translate(-50%, -50%)" }}
+        style={{ top: "84%", left: "52.8%", transform: "translate(-50%, -50%)" }}
       ></div>
     </>),
     '5': (<>
       <div
         className={`touchpoint ${visiblePoints > 0 ? "visible" : ""}`}
-        style={{ top: "20%", left: "72%", transform: "translate(-50%, -50%)" }}
+        style={{ top: "20%", left: "55%", transform: "translate(-50%, -50%)" }}
       ></div>
       <div
         className={`touchpoint ${visiblePoints > 1 ? "visible" : ""}`}
-        style={{ top: "20%", left: "38%", transform: "translate(-50%, -50%)" }}
+        style={{ top: "20%", left: "47.4%", transform: "translate(-50%, -50%)" }}
       ></div>
       <div
         className={`touchpoint ${visiblePoints > 2 ? "visible" : ""}`}
-        style={{ top: "47%", left: "31%", transform: "translate(-50%, -50%)" }}
+        style={{ top: "47%", left: "45.8%", transform: "translate(-50%, -50%)" }}
       ></div>
       <div
         className={`touchpoint ${visiblePoints > 3 ? "visible" : ""}`}
-        style={{ top: "63%", left: "72%", transform: "translate(-50%, -50%)" }}
+        style={{ top: "63%", left: "54.8%", transform: "translate(-50%, -50%)" }}
       ></div>
       <div
         className={`touchpoint ${visiblePoints > 4 ? "visible" : ""}`}
-        style={{ top: "69%", left: "30%", transform: "translate(-50%, -50%)" }}
+        style={{ top: "69%", left: "45.5%", transform: "translate(-50%, -50%)" }}
       ></div>
     </>),
     '6': (<>
       <div
         className={`touchpoint ${visiblePoints > 0 ? "visible" : ""}`}
         style={{
-          width: "80px",
-          height: "80px",
+          width: "65px",
+          height: "65px",
           top: "27%",
-          left: "70%",
+          left: "54.4%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--main-ring-color)", // var(--main-ring-color) color for the first three touchpoints
         }}
@@ -194,10 +194,10 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 1 ? "visible" : ""}`}
         style={{
-          width: "80px",
-          height: "80px",
+          width: "65px",
+          height: "65px",
           top: "53%",
-          left: "30%",
+          left: "45.7%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--main-ring-color)", // var(--main-ring-color) color for the first three touchpoints
         }}
@@ -205,10 +205,10 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 2 ? "visible" : ""}`}
         style={{
-          width: "80px",
-          height: "80px",
+          width: "65px",
+          height: "65px",
           top: "80%",
-          left: "53%",
+          left: "51%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--main-ring-color)", // var(--main-ring-color) color for the first three touchpoints
         }}
@@ -216,10 +216,10 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 3 ? "visible" : ""}`}
         style={{
-          width: "50px",
-          height: "50px",
+          width: "40px",
+          height: "40px",
           top: "27%",
-          left: "70%",
+          left: "54.4%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--secondary-ring-color)", // var(--secondary-ring-color) color for the last three touchpoints
         }}
@@ -227,10 +227,10 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 4 ? "visible" : ""}`}
         style={{
-          width: "50px",
-          height: "50px",
+          width: "40px",
+          height: "40px",
           top: "53%",
-          left: "30%",
+          left: "45.7%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--secondary-ring-color)", // var(--secondary-ring-color) color for the last three touchpoints
         }}
@@ -238,10 +238,10 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 5 ? "visible" : ""}`}
         style={{
-          width: "50px",
-          height: "50px",
+          width: "40px",
+          height: "40px",
           top: "80%",
-          left: "53%",
+          left: "51%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--secondary-ring-color)", // var(--secondary-ring-color) color for the last three touchpoints
         }}
@@ -251,10 +251,10 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 0 ? "visible" : ""}`}
         style={{
-          width: "80px",
-          height: "80px",
+          width: "65px",
+          height: "65px",
           top: "20%",
-          left: "25%",
+          left: "44%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--main-ring-color)", // var(--main-ring-color) color for the first four touchpoints
         }}
@@ -262,10 +262,10 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 1 ? "visible" : ""}`}
         style={{
-          width: "80px",
-          height: "80px",
+          width: "65px",
+          height: "65px",
           top: "20%",
-          left: "72.5%",
+          left: "55%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--main-ring-color)", // var(--main-ring-color) color for the first four touchpoints
         }}
@@ -273,8 +273,8 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 2 ? "visible" : ""}`}
         style={{
-          width: "80px",
-          height: "80px",
+          width: "65px",
+          height: "65px",
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
@@ -284,10 +284,10 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 3 ? "visible" : ""}`}
         style={{
-          width: "80px",
-          height: "80px",
+          width: "65px",
+          height: "65px",
           top: "80%",
-          left: "40.8%",
+          left: "48%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--main-ring-color)", // var(--main-ring-color) color for the first four touchpoints
         }}
@@ -297,10 +297,10 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 4 ? "visible" : ""}`}
         style={{
-          width: "50px",
-          height: "50px",
+          width: "40px",
+          height: "40px",
           top: "20%",
-          left: "72.5%",
+          left: "55%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--secondary-ring-color)", // var(--secondary-ring-color) color for the last three touchpoints
         }}
@@ -308,8 +308,8 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 5 ? "visible" : ""}`}
         style={{
-          width: "50px",
-          height: "50px",
+          width: "40px",
+          height: "40px",
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
@@ -319,10 +319,10 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 6 ? "visible" : ""}`}
         style={{
-          width: "50px",
-          height: "50px",
+          width: "40px",
+          height: "40px",
           top: "80%",
-          left: "40.8%",
+          left: "48%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--secondary-ring-color)", // var(--secondary-ring-color) color for the last three touchpoints
         }}
@@ -332,10 +332,10 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 0 ? "visible" : ""}`}
         style={{
-          width: "80px",
-          height: "80px",
+          width: "65px",
+          height: "65px",
           top: "32%",
-          left: "31.5%",
+          left: "45.7%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--main-ring-color)", // var(--main-ring-color) color for the first four touchpoints
         }}
@@ -343,10 +343,10 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 1 ? "visible" : ""}`}
         style={{
-          width: "80px",
-          height: "80px",
+          width: "65px",
+          height: "65px",
           top: "32%",
-          left: "67%",
+          left: "54%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--main-ring-color)", // var(--main-ring-color) color for the first four touchpoints
         }}
@@ -354,10 +354,10 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 2 ? "visible" : ""}`}
         style={{
-          width: "80px",
-          height: "80px",
+          width: "65px",
+          height: "65px",
           top: "64%",
-          left: "29.5%",
+          left: "45.4%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--main-ring-color)", // var(--main-ring-color) color for the first four touchpoints
         }}
@@ -365,10 +365,10 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 3 ? "visible" : ""}`}
         style={{
-          width: "80px",
-          height: "80px",
+          width: "65px",
+          height: "65px",
           top: "64%",
-          left: "70%",
+          left: "54.5%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--main-ring-color)", // var(--main-ring-color) color for the first four touchpoints
         }}
@@ -376,10 +376,10 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 4 ? "visible" : ""}`}
         style={{
-          width: "50px",
-          height: "50px",
+          width: "40px",
+          height: "40px",
           top: "32%",
-          left: "31.5%",
+          left: "45.7%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--secondary-ring-color)", // var(--secondary-ring-color) color for the last four touchpoints
         }}
@@ -387,10 +387,10 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 5 ? "visible" : ""}`}
         style={{
-          width: "50px",
-          height: "50px",
+          width: "40px",
+          height: "40px",
           top: "32%",
-          left: "67%",
+          left: "54%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--secondary-ring-color)", // var(--secondary-ring-color) color for the last four touchpoints
         }}
@@ -398,10 +398,10 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 6 ? "visible" : ""}`}
         style={{
-          width: "50px",
-          height: "50px",
+          width: "40px",
+          height: "40px",
           top: "64%",
-          left: "29.5%",
+          left: "45.4%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--secondary-ring-color)", // var(--secondary-ring-color) color for the last four touchpoints
         }}
@@ -409,10 +409,10 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 7 ? "visible" : ""}`}
         style={{
-          width: "50px",
-          height: "50px",
+          width: "40px",
+          height: "40px",
           top: "64%",
-          left: "70%",
+          left: "54.5%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--secondary-ring-color)", // var(--secondary-ring-color) color for the last four touchpoints
         }}
@@ -422,10 +422,10 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 0 ? "visible" : ""}`}
         style={{
-          width: "80px",
-          height: "80px",
-          top: "45%",
-          left: "30%",
+          width: "65px",
+          height: "65px",
+          top: "44%",
+          left: "45.4%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--main-ring-color)", // var(--main-ring-color) color for the first five touchpoints
         }}
@@ -433,43 +433,10 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 1 ? "visible" : ""}`}
         style={{
-          width: "80px",
-          height: "80px",
-          top: "20%",
-          left: "45%",
-          transform: "translate(-50%, -50%)",
-          backgroundColor: "var(--main-ring-color)", // var(--main-ring-color) color for the first five touchpoints
-        }}
-      ></div>
-      <div
-        className={`touchpoint ${visiblePoints > 3 ? "visible" : ""}`}
-        style={{
-          width: "80px",
-          height: "80px",
-          top: "40%",
-          left: "69%",
-          transform: "translate(-50%, -50%)",
-          backgroundColor: "var(--main-ring-color)", // var(--main-ring-color) color for the first five touchpoints
-        }}
-      ></div>
-      <div
-        className={`touchpoint ${visiblePoints > 5 ? "visible" : ""}`}
-        style={{
-          width: "80px",
-          height: "80px",
-          top: "73%",
-          left: "65%",
-          transform: "translate(-50%, -50%)",
-          backgroundColor: "var(--main-ring-color)", // var(--main-ring-color) color for the first five touchpoints
-        }}
-      ></div>
-      <div
-        className={`touchpoint ${visiblePoints > 7 ? "visible" : ""}`}
-        style={{
-          width: "80px",
-          height: "80px",
-          top: "71.5%",
-          left: "29.5%",
+          width: "65px",
+          height: "65px",
+          top: "19%",
+          left: "49.4%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--main-ring-color)", // var(--main-ring-color) color for the first five touchpoints
         }}
@@ -477,21 +444,43 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 2 ? "visible" : ""}`}
         style={{
-          width: "50px",
-          height: "50px",
-          top: "20%",
-          left: "45%",
+          width: "65px",
+          height: "65px",
+          top: "40%",
+          left: "54.2%",
           transform: "translate(-50%, -50%)",
-          backgroundColor: "var(--secondary-ring-color)", // var(--secondary-ring-color) color for the last four touchpoints
+          backgroundColor: "var(--main-ring-color)", // var(--main-ring-color) color for the first five touchpoints
+        }}
+      ></div>
+      <div
+        className={`touchpoint ${visiblePoints > 3 ? "visible" : ""}`}
+        style={{
+          width: "65px",
+          height: "65px",
+          top: "71%",
+          left: "53.3%",
+          transform: "translate(-50%, -50%)",
+          backgroundColor: "var(--main-ring-color)", // var(--main-ring-color) color for the first five touchpoints
         }}
       ></div>
       <div
         className={`touchpoint ${visiblePoints > 4 ? "visible" : ""}`}
         style={{
-          width: "50px",
-          height: "50px",
-          top: "40%",
-          left: "69%",
+          width: "65px",
+          height: "65px",
+          top: "71.5%",
+          left: "45.5%",
+          transform: "translate(-50%, -50%)",
+          backgroundColor: "var(--main-ring-color)", // var(--main-ring-color) color for the first five touchpoints
+        }}
+      ></div>
+      <div
+        className={`touchpoint ${visiblePoints > 5 ? "visible" : ""}`}
+        style={{
+          width: "40px",
+          height: "40px",
+          top: "19%",
+          left: "49.4%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--secondary-ring-color)", // var(--secondary-ring-color) color for the last four touchpoints
         }}
@@ -499,10 +488,21 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 6 ? "visible" : ""}`}
         style={{
-          width: "50px",
-          height: "50px",
-          top: "73%",
-          left: "65%",
+          width: "40px",
+          height: "40px",
+          top: "40%",
+          left: "54.2%",
+          transform: "translate(-50%, -50%)",
+          backgroundColor: "var(--secondary-ring-color)", // var(--secondary-ring-color) color for the last four touchpoints
+        }}
+      ></div>
+      <div
+        className={`touchpoint ${visiblePoints > 7 ? "visible" : ""}`}
+        style={{
+          width: "40px",
+          height: "40px",
+          top: "71%",
+          left: "53.3%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--secondary-ring-color)", // var(--secondary-ring-color) color for the last four touchpoints
         }}
@@ -510,10 +510,10 @@ const Number0 = () => {
       <div
         className={`touchpoint ${visiblePoints > 8 ? "visible" : ""}`}
         style={{
-          width: "50px",
-          height: "50px",
+          width: "40px",
+          height: "40px",
           top: "71.5%",
-          left: "29.5%",
+          left: "45.5%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "var(--secondary-ring-color)", // var(--secondary-ring-color) color for the last four touchpoints
         }}
