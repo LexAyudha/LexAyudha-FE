@@ -310,7 +310,7 @@ const TouchMathPractice = () => {
         <h1 className="font-bold">Touch Math Practice</h1>
 
         {/* Current Number Display */}
-        <div className="text-2xl font-bold mt-2 mb-4">
+        <div className="text-xl font-bold mt-2 mb-4">
           Currently practicing: Number {number}
         </div>
 
@@ -331,7 +331,7 @@ const TouchMathPractice = () => {
           ))}
         </div>
 
-        <div className="relative text-[400px] leading-[400px] font-bold mt-0 mb-0">
+        <div className="relative text-[370px] leading-[370px] font-bold mt-0 mb-0">
           <p className="arial-font h-fit">{number}</p>
           {/* Touch points with different colors and sizes based on type */}
           {digitConfigurations[number].positions.map((position, index) => (
