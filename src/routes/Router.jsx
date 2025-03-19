@@ -8,9 +8,7 @@ import NotFound from "../components/notFoundPage.jsx";
 
 //touch-math
 import PNumber0 from "../components/touch-math/PracticingComponent/PNumber0.jsx";
-
 import TNumber0 from "../components/touch-math/TeachingComponents/TNumber0.jsx";
-
 import TNumberSense from "../components/touch-math/Number_Sense/Teaching_Number_Sense.jsx"
 import NumberSenseQuiz from "../components/touch-math/Number_Sense/Number_sense_quiz.jsx"
 import Addition from "../components/touch-math/Exercises/Addition.jsx";

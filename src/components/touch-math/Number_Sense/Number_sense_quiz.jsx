@@ -189,7 +189,7 @@ const Quiz = () => {
           >
             Hint ({hintsRemaining} left)
           </button>
-          <div className="quiz-counter">
+          <div className="quiz-counter-ns">
             Quiz {quizIndex} / {totalQuizzes}
           </div>
 
