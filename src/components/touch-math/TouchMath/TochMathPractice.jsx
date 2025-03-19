@@ -15,91 +15,93 @@ const TouchMathPractice = () => {
     1: {
       touchPoints: 1,
       positions: [
-        { top: "1rem", left: "50%" }
+        { top: "-58%", left: "50%", type: "primary" }
       ]
     },
     2: {
       touchPoints: 2,
       positions: [
-        { top: "1rem", left: "1rem" },
-        { top: "1rem", right: "1rem" }
+        { top: "-48%", left: "10%", type: "primary" },
+        { top: "1%", left: "70%", type: "primary" }
+        
       ]
     },
     3: {
       touchPoints: 3,
       positions: [
-        { top: "0", left: "8" },
-        { top: "4", left: "16" },
-        { top: "8", left: "24" }
+        { top: "-48%", left: "12%", type: "primary" },
+        { top: "-30%", left: "38%", type: "primary" },
+        { top: "-8%", left: "10%", type: "primary" }
       ]
     },
     4: {
       touchPoints: 4,
       positions: [
-        { top: "1rem", left: "1rem" },
-        { top: "1rem", right: "1rem" },
-        { top: "50%", left: "1rem" },
-        { top: "50%", right: "1rem" }
+        { top: "-58%", left: "57%", type: "primary" },
+        { top: "-13%", left: "3%", type: "primary" },
+        { top: "-13%", left: "57%", type: "primary" },
+        { top: "2%", left: "57%", type: "primary" }
       ]
     },
     5: {
       touchPoints: 5,
       positions: [
-        { top: "1rem", left: "1rem" },
-        { top: "1rem", right: "1rem" },
-        { top: "50%", left: "50%" },
-        { bottom: "1rem", left: "1rem" },
-        { bottom: "1rem", right: "1rem" }
+        { top: "-56%", left: "70%", type: "primary" },
+        { top: "-56%", left: "23%", type: "primary" },
+        { top: "-30%", left: "14%", type: "primary" },
+        { top: "-15%", left: "70%", type: "primary" },
+        { top: "-7%", left: "12%", type: "primary" }
       ]
     },
     6: {
       touchPoints: 6,
       positions: [
-        { top: "1rem", left: "1rem" },
-        { top: "1rem", right: "1rem" },
-        { top: "50%", left: "1rem" },
-        { top: "50%", right: "1rem" },
-        { bottom: "1rem", left: "1rem" },
-        { bottom: "1rem", right: "1rem" }
+        { top: "-50%", left: "67%", type: "primary" },
+        { top: "-27%", left: "10%", type: "primary" },
+        { top: "2%", left: "44%", type: "primary" },
+        { top: "-52%", left: "70%", type: "secondary" },
+        { top: "-27%", left: "12%", type: "secondary" },
+        { top: "0%", left: "45%", type: "secondary" }
       ]
     },
     7: {
       touchPoints: 7,
       positions: [
-        { top: "1rem", left: "1rem" },
-        { top: "1rem", left: "50%" },
-        { top: "1rem", right: "1rem" },
-        { top: "33%", right: "1rem" },
-        { top: "50%", right: "1rem" },
-        { top: "66%", right: "1rem" },
-        { bottom: "1rem", right: "1rem" }
+        { top: "-56%", left: "7%", type: "primary" },
+        { top: "-56%", left: "70%", type: "primary" },
+        { top: "-25%", left: "40%", type: "primary" },
+        { top: "2%", left: "28%", type: "primary" },
+        { top: "-59%", left: "75%", type: "secondary" },
+        { top: "-25%", left: "40%", type: "secondary" },
+        { top: "0%", left: "30%", type: "secondary" }
+
       ]
     },
     8: {
       touchPoints: 8,
       positions: [
-        { top: "1rem", left: "1rem" },
-        { top: "1rem", right: "1rem" },
-        { top: "33%", left: "1rem" },
-        { top: "33%", right: "1rem" },
-        { top: "66%", left: "1rem" },
-        { top: "66%", right: "1rem" },
-        { bottom: "1rem", left: "1rem" },
-        { bottom: "1rem", right: "1rem" }
+        { top: "-45%", left: "13%", type: "primary" },
+        { top: "-45%", left: "65%", type: "primary" },
+        { top: "-13%", left: "10%", type: "primary" },
+        { top: "-13%", left: "70%", type: "primary" },
+        { top: "-47%", left: "15%", type: "secondary" },
+        { top: "-47%", left: "67%", type: "secondary" },
+        { top: "-15%", left: "12%", type: "secondary" },
+        { top: "-15%", left: "70%", type: "secondary" }
       ]
     },
     9: {
       touchPoints: 9,
       positions: [
-        { top: "1rem", left: "1rem" },
-        { top: "1rem", left: "50%" },
-        { top: "1rem", right: "1rem" },
-        { top: "33%", left: "1rem" },
-        { top: "33%", right: "1rem" },
-        { top: "66%", left: "1rem" },
-        { top: "66%", right: "1rem" },
-        { bottom: "1rem", left: "1rem" },
-        { bottom: "1rem", right: "1rem" }
+        { top: "-30%", left: "13%", type: "primary" },
+        { top: "-58%", left: "35%", type: "primary" },
+        { top: "-33%", left: "68%", type: "primary" },
+        { top: "-8%", left: "63%", type: "primary" },
+        { top: "-5%", left: "12%", type: "primary" },
+        { top: "-60%", left: "35%", type: "secondary" },
+        { top: "-35%", left: "68%", type: "secondary" },
+        { top: "-10%", left: "65%", type: "secondary" },
+        { top: "-9%", left: "14%", type: "secondary" }
       ]
     }
   };
@@ -248,7 +250,7 @@ const TouchMathPractice = () => {
   const handleNextNumber = () => {
     // Move to the next number (0-9)
     const nextNumber = (number + 1) % 10;
-    setNumber(nextNumber);
+    setNumber(nextNumber === 0 ? 1 : nextNumber); // Skip 0, go to 1 instead
     setCompleted(false);
   };
 
@@ -284,9 +286,20 @@ const TouchMathPractice = () => {
   const getPositionStyle = (position) => {
     const style = {};
     for (const [key, value] of Object.entries(position)) {
-      style[key] = typeof value === 'number' ? `${value}px` : value;
+      if (key !== 'type') { // Skip the 'type' property
+        style[key] = typeof value === 'number' ? `${value}px` : value;
+      }
     }
     return style;
+  };
+
+  // Helper to get point class based on type
+  const getPointClass = (type) => {
+    if (type === "primary") {
+      return "text-red-500 text-9xl arial-font";
+    } else {
+      return "text-blue-500 text-8xl arial-font"; // Secondary points are blue and smaller
+    }
   };
 
   return (
@@ -320,33 +333,18 @@ const TouchMathPractice = () => {
 
         <div className="relative text-[400px] leading-[400px] font-bold mt-0 mb-2">
           <p className="arial-font h-fit">{number}</p>
-          {/* Touch points - default for number 3 */}
-          {number === 3 ? (
-            <>
-              <div className="absolute top-0 left-8">
-                {currentPoint >= 1 && <span className="text-red-500 text-9xl arial-font">•</span>}
-              </div>
-              <div className="absolute top-4 left-16">
-                {currentPoint >= 2 && <span className="text-red-500 text-9xl arial-font">•</span>}
-              </div>
-              <div className="absolute top-8 left-24">
-                {currentPoint >= 3 && <span className="text-red-500 text-9xl arial-font">•</span>}
-              </div>
-            </>
-          ) : (
-            // Dynamic touch points for other numbers
-            digitConfigurations[number].positions.map((position, index) => (
-              <div 
-                key={index} 
-                className="absolute" 
-                style={getPositionStyle(position)}
-              >
-                {currentPoint > index && (
-                  <span className="text-red-500 text-9xl arial-font">•</span>
-                )}
-              </div>
-            ))
-          )}
+          {/* Touch points with different colors and sizes based on type */}
+          {digitConfigurations[number].positions.map((position, index) => (
+            <div 
+              key={index} 
+              className="absolute" 
+              style={getPositionStyle(position)}
+            >
+              {currentPoint > index && (
+                <span className={getPointClass(position.type)}>•</span>
+              )}
+            </div>
+          ))}
         </div>
 
         {!completed ? (
@@ -400,7 +398,7 @@ const TouchMathPractice = () => {
                 onClick={handleNextNumber}
                 className="mt-2 py-2 px-6 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
               >
-                Next Number ({(number + 1) % 10})
+                Next Number ({(number + 1) % 10 === 0 ? 1 : (number + 1) % 10})
               </button>
             </div>
           </div>
