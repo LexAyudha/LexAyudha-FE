@@ -18,7 +18,7 @@ export default function EmotionDetectionButton({ onModalAction }) {
   return (
     <div>
       <button
-        className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4"
+        className="hover:bg-[var(--background-color)] bg-[var(--primary-color)] duration-300 transition border-2 border-[var(--text-color)] px-4 py-2 rounded-md mt-4"
         onClick={() => setStartDetection((prev) => !prev)}
       >
         {startDetection ? "Stop Emotion Detection" : "Start Emotion Detection"}
