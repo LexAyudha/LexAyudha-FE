@@ -15,6 +15,7 @@ const lessonsList = [
         description: 'A simple start with two-word sentences.',
         example: 'Cat sleeps.',
         chromaticTheme: 'chromTheme_1',
+        langCode:'en-US',
         chapters: [
             'Cat runs.',
             'Dog barks.',
@@ -35,6 +36,7 @@ const lessonsList = [
         description: 'Slightly longer sentences with three words.',
         example: 'The dog barks.',
         chromaticTheme: 'chromTheme_2',
+        langCode:'en-US',
         chapters: [
             'The cat sleeps.',
             'She runs fast.',
@@ -55,6 +57,7 @@ const lessonsList = [
         description: 'Building up complexity with four-word sentences.',
         example: 'She quickly ran away.',
         chromaticTheme: 'chromTheme_3',
+        langCode:'en-US',
         chapters: [
             'The boy runs fast.',
             'She drinks warm tea.',
@@ -75,6 +78,7 @@ const lessonsList = [
         description: 'Introducing five-word sentence structures.',
         example: 'The flowers bloom in spring.',
         chromaticTheme: 'chromTheme_4',
+        langCode:'en-US',
         chapters: [
             'The bird sings every morning.',
             'She walks to school daily.',
@@ -95,6 +99,7 @@ const lessonsList = [
         description: 'Challenging six-word sentence patterns.',
         example: 'He carefully placed the books neatly.',
         chromaticTheme: 'chromTheme_5',
+        langCode:'en-US',
         chapters: [
             'She happily danced in the rain.',
             'The birds chirped in the trees.',
@@ -108,7 +113,28 @@ const lessonsList = [
             'A train passed through the tunnel.',
             'The waves crashed against the rocks.'
         ]
-    }
+    },
+    {
+        id: '06',
+        name: 'Lesson 6',
+        description: 'Challenging six-word sentence patterns.',
+        example: 'ඇය සතුටින් වැස්සේ නැටුවාය.',
+        chromaticTheme: 'chromTheme_3',
+        langCode:'en-US',
+        chapters: [
+          'ඇය සතුටින් වැස්සේ නැටුවාය.',
+          'කුරුල්ලෝ ගස්වල කිචි බිචි ගෑවෝය.',
+          'ඔහු වේගයෙන් බස් එක දෙසට දිව්වේය.',
+          'පූසෙක් සෝෆාව මතට පැන්නේය.',
+          'කොළ සරත් සුළඟේ සළිත වූවාය.',
+          'ඉර සෙමින් වලාකුළු පිටුපස නැති වුණි.',
+          'ඇය නිදාගැනීමට පෙර පොතක් කියවීය.',
+          'බල්ලා සතුටින් වලිගය වනන්නට විය.',
+          'දරුවෝ උද්යානයේ සතුටින් සෙල්ලම් කළහ.',
+          'දුම්රියක් උමඟ හරහා ගමන් කළේය.',
+          'රළ පර්වත මත හැපී ගියේය.'
+        ]
+      }
 ];
 
 // const lessonsList  = [

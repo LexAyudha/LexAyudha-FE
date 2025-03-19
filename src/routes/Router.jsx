@@ -8,25 +8,9 @@ import NotFound from "../components/notFoundPage.jsx";
 
 //touch-math
 import PNumber0 from "../components/touch-math/PracticingComponent/PNumber0.jsx";
-import PNumber1 from "../components/touch-math/PracticingComponent/PNumber1.jsx";
-import PNumber2 from "../components/touch-math/PracticingComponent/PNumber2.jsx";
-import PNumber3 from "../components/touch-math/PracticingComponent/PNumber3.jsx";
-import PNumber4 from "../components/touch-math/PracticingComponent/PNumber4.jsx";
-import PNumber5 from "../components/touch-math/PracticingComponent/PNumber5.jsx";
-import PNumber6 from "../components/touch-math/PracticingComponent/PNumber6.jsx";
-import PNumber7 from "../components/touch-math/PracticingComponent/PNumber7.jsx";
-import PNumber8 from "../components/touch-math/PracticingComponent/PNumber8.jsx";
-import PNumber9 from "../components/touch-math/PracticingComponent/PNumber9.jsx";
+
 import TNumber0 from "../components/touch-math/TeachingComponents/TNumber0.jsx";
-import TNumber1 from "../components/touch-math/TeachingComponents/TNumber1.jsx";
-import TNumber2 from "../components/touch-math/TeachingComponents/TNumber2.jsx";
-import TNumber3 from "../components/touch-math/TeachingComponents/TNumber3.jsx";
-import TNumber4 from "../components/touch-math/TeachingComponents/TNumber4.jsx";
-import TNumber5 from "../components/touch-math/TeachingComponents/TNumber5.jsx";
-import TNumber6 from "../components/touch-math/TeachingComponents/TNumber6.jsx";
-import TNumber7 from "../components/touch-math/TeachingComponents/TNumber7.jsx";
-import TNumber8 from "../components/touch-math/TeachingComponents/TNumber8.jsx";
-import TNumber9 from "../components/touch-math/TeachingComponents/TNumber9.jsx";
+
 import TNumberSense from "../components/touch-math/Number_Sense/Teaching_Number_Sense.jsx"
 import NumberSenseQuiz from "../components/touch-math/Number_Sense/Number_sense_quiz.jsx"
 import Addition from "../components/touch-math/Exercises/Addition.jsx";
