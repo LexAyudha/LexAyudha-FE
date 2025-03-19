@@ -315,7 +315,7 @@ const TouchMathPractice = () => {
         </div>
 
         {/* Number Selection */}
-        <div className="flex flex-wrap justify-center gap-2 mb-4">
+        <div className="flex flex-wrap justify-center gap-2 mb-2">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
             <button 
               key={num}
@@ -331,7 +331,7 @@ const TouchMathPractice = () => {
           ))}
         </div>
 
-        <div className="relative text-[400px] leading-[400px] font-bold mt-0 mb-2">
+        <div className="relative text-[400px] leading-[400px] font-bold mt-0 mb-0">
           <p className="arial-font h-fit">{number}</p>
           {/* Touch points with different colors and sizes based on type */}
           {digitConfigurations[number].positions.map((position, index) => (
@@ -350,7 +350,7 @@ const TouchMathPractice = () => {
         {!completed ? (
           <>
             {/* Say this prompt */}
-            <p className="mb-2">Say: <strong>{expectedPronunciations[currentPoint - 1]}</strong></p>
+            <p className="mb-0">Say: <strong>{expectedPronunciations[currentPoint - 1]}</strong></p>
             <p>{listening && !transcript ? 'Capturing your voice...':''}</p>
             <p>{transcript ?  `You said ${transcript}` : ''}</p>
             {/* Mic Button */}
