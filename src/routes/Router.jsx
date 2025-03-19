@@ -130,30 +130,10 @@ const Router = () => {
       
       {/* touch maths */}
       <Route path="/touch-math/teaching_number" element={<TNumber0 />} />
-      {/* Following TNumber routes should be deleted */}
-      <Route path="/touch-math/teaching_number1" element={<TNumber1 />} /> 
-      <Route path="/touch-math/teaching_number2" element={<TNumber2 />} />
-      <Route path="/touch-math/teaching_number3" element={<TNumber3 />} />
-      <Route path="/touch-math/teaching_number4" element={<TNumber4 />} />
-      <Route path="/touch-math/teaching_number5" element={<TNumber5 />} />
-      <Route path="/touch-math/teaching_number6" element={<TNumber6 />} />
-      <Route path="/touch-math/teaching_number7" element={<TNumber7 />} />
-      <Route path="/touch-math/teaching_number8" element={<TNumber8 />} />
-      <Route path="/touch-math/teaching_number9" element={<TNumber9 />} />
 
       <Route path="/touch-math-practice" element={<PTouchMath />} />
 
       <Route path="/touch-math/quiz_number/:id" element={<PNumber0 />} />
-
-      {/* <Route path="/touch-math/quiz_number1" element={<PNumber1 />} />
-      <Route path="/touch-math/quiz_number2" element={<PNumber2 />} />
-      <Route path="/touch-math/quiz_number3" element={<PNumber3 />} />
-      <Route path="/touch-math/quiz_number4" element={<PNumber4 />} />
-      <Route path="/touch-math/quiz_number5" element={<PNumber5 />} />
-      <Route path="/touch-math/quiz_number6" element={<PNumber6 />} />
-      <Route path="/touch-math/quiz_number7" element={<PNumber7 />} />
-      <Route path="/touch-math/quiz_number8" element={<PNumber8 />} />
-      <Route path="/touch-math/quiz_number9" element={<PNumber9 />} /> */}
 
       <Route path="/touch-math/teaching-number-sense" element={<TNumberSense />} />
       <Route path="/touch-math/quiz-number-sense" element={<NumberSenseQuiz />} />

@@ -67,9 +67,9 @@ const AdditionExerciseWithTouchPoints = () => {
         Quiz {quizCount + 1} / 10
       </div>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px' }}>
-        <div style={{ fontSize: '250px' }}>{numberComponents[num1]}</div>
-        <span style={{ fontSize: '250px', color: '#0041c2' }}>+</span>
-        <div style={{ fontSize: '250px' }}>{numberComponents[num2]}</div>
+        <div style={{ fontSize: '250px', marginTop: '50px' }}>{numberComponents[num1]}</div>
+        <span style={{ fontSize: '250px', marginLeft: '40px', color: '#0041c2' }}>+</span>
+        <div style={{ fontSize: '250px', marginTop: '50px' }}>{numberComponents[num2]}</div>
         <span style={{ fontSize: '250px', marginRight: '50px', color: '#0041c2' }}>=</span>
         <input
           type="text"
@@ -78,7 +78,7 @@ const AdditionExerciseWithTouchPoints = () => {
           style={{
             fontSize: '250px',
             padding: '10px',
-            marginBottom: '50px',
+            marginBottom: '20px',
             borderRadius: '5px',
             border: '1px solid #0041c2',
             width: '280px',
