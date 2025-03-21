@@ -168,7 +168,8 @@
   border-radius: 8px;
   border: 2px solid; 
   width: 200px;
-  position: absolute
+  position: absolute;
+  margin-top: 50px;
 }
 
 .quiz-counter-ns { 

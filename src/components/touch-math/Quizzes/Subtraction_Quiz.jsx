@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2'; // Feedback
 import ChangeThemeFB from '../../changeThemeFB';
+import AlternativeHeader from "../../alternativeHeader";
 
 const MixedSubtractionQuiz = () => {
   const [num1, setNum1] = useState(0);
@@ -69,19 +70,21 @@ const MixedSubtractionQuiz = () => {
   };
 
   return (
+    <div className="la-container h-screen flex items-center justify-center relative">
+      <AlternativeHeader title="Number Sense"/>
     <div style={{ textAlign: 'center', fontFamily: 'Arial', padding: '20px' }}>
       <ChangeThemeFB />
-      <h2 style={{ fontSize: '36px', marginBottom: '30px' }}>Subtraction Quizzes</h2>
-      <div className="quiz-counter" style={{ marginBottom: '5px', fontSize: '18px', color: '#555' }}>
+      <h2 style={{ fontSize: '36px', marginBottom: '0px' }}>Subtraction Quizzes</h2>
+      <div className="quiz-counter" style={{ marginBottom: '5px', fontSize: '18px', color: '#555', marginTop: '50px' }}>
         Question {quizCount + 1} / {quizLimit}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '30px' }}>
-        <div style={{ fontSize: isTwoDigit ? '130px' : '130px', marginBottom: '1px' }}>{num1}</div>
+        <div style={{ fontSize: isTwoDigit ? '130px' : '130px', marginBottom: '0px' }}>{num1}</div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <span style={{ fontSize: isTwoDigit ? '130px' : '130px', marginRight: '5px' }}>-</span>
-          <div style={{ fontSize: isTwoDigit ? '130px' : '130px', marginBottom: '1px', marginRight: '47px' }}>{num2}</div>
+          <div style={{ fontSize: isTwoDigit ? '130px' : '130px', marginBottom: '0px', marginRight: '47px' }}>{num2}</div>
         </div>
-        <hr style={{ width: '100%', borderTop: '4px solid #ccc', marginBottom: '20px' }} />
+        <hr style={{ width: '100%', borderTop: '4px solid #ccc', marginBottom: '10px' }} />
         <input
           type="text"
           value={answer}
@@ -118,6 +121,7 @@ const MixedSubtractionQuiz = () => {
       >
         Submit
       </button>
+    </div>
     </div>
   );
 };
