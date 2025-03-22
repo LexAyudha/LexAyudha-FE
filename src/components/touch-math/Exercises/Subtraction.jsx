@@ -11,6 +11,8 @@ import Number8 from '../Numbers/Number8';
 import Number9 from '../Numbers/Number9';
 import Number0 from '../Numbers/Number0';
 import ChangeThemeFB from '../../changeThemeFB';
+import AlternativeHeader from "../../alternativeHeader";
+
 
 const SubtractionExerciseWithTouchPoints = () => {
   const [num1, setNum1] = useState(Math.floor(Math.random() * 9) + 1);
@@ -59,10 +61,14 @@ const SubtractionExerciseWithTouchPoints = () => {
   };
 
   return (
+    <div className="la-container h-screen flex items-center justify-center relative">
+    <AlternativeHeader title="Number Sense"/>
     <div style={{ textAlign: 'center', fontFamily: 'Arial', padding: '10px' }}>
       <ChangeThemeFB />
-      <h2 style={{ fontSize: '50px', marginBottom: '100px' }}>Touch Math Subtraction Practice</h2>
-      <div className="quiz-counter">Quiz {quizCount + 1} / 10</div>
+      <h2 style={{ fontSize: '50px', marginBottom: '80px' }}>Touch Math Subtraction Practice</h2>
+      <div className="quiz-counter">
+        Quiz {quizCount + 1} / 10
+      </div>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px' }}>
         <div style={{ fontSize: '250px', marginTop: '50px' }}>{numberComponents[num1]}</div>
         <span style={{ fontSize: '250px', marginLeft: '40px', marginBottom: '57px', color: '#0041c2' }}>-</span>
@@ -104,6 +110,7 @@ const SubtractionExerciseWithTouchPoints = () => {
       >
         Submit Answer
       </button>
+    </div>
     </div>
   );
 };

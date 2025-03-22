@@ -10,6 +10,8 @@ import Number7 from '../Numbers/Number7';
 import Number8 from '../Numbers/Number8';
 import Number9 from '../Numbers/Number9';
 import Number0 from '../Numbers/Number0';
+import ChangeThemeFB from '../../changeThemeFB';
+import AlternativeHeader from "../../alternativeHeader";
 
 const TeachingAddition = () => {
   const [num1, setNum1] = useState(Math.floor(Math.random() * 9) + 1);
@@ -76,7 +78,10 @@ const TeachingAddition = () => {
   };
 
   return (
+    <div className="la-container h-screen flex items-center justify-center relative">
+    <AlternativeHeader title="Number Sense"/>
     <div style={{ textAlign: 'center', fontFamily: 'Arial', padding: '10px' }}>
+      <ChangeThemeFB/>
       <h2 style={{ fontSize: '50px', marginBottom: '100px' }}>Touch Math Addition Teaching</h2>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px' }}>
         <div>{numberComponents[num1]}</div>
@@ -142,6 +147,7 @@ const TeachingAddition = () => {
         Next Lesson
       </button>
     </div>
+  </div>
   );
 };
 
