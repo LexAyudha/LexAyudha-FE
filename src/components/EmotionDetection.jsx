@@ -8,6 +8,8 @@ const EmotionDetection = ({
   onStopDetection,
   onEmotionData,
   onModalAction,
+  disablePopup,
+  number,
 }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -38,18 +40,19 @@ const EmotionDetection = ({
   }, []);
 
   const handleLearn = useCallback(() => {
+    localStorage.setItem("selectedNumber", number);
     navigate("/touch-math/teaching_number/");
-    onModalActionRef.current?.(true);
+    onModalAction?.(true);
   }, [navigate]);
 
   const handleCancel = useCallback(() => {
     setIsModalVisible(false);
-    onModalActionRef.current?.(false);
-  }, []);
+    onModalAction?.(true); // Prevent modal from appearing again
+  }, [onModalAction]);
 
   // Process frame and send to API without causing re-renders
   const processFrame = useCallback(() => {
-    if (!videoRef.current || !canvasRef.current) return;
+    if (!videoRef.current || !canvasRef.current || disablePopup) return;
 
     const context = canvasRef.current.getContext("2d");
     canvasRef.current.width = videoRef.current.videoWidth;
@@ -82,14 +85,13 @@ const EmotionDetection = ({
           const { engagement, distraction, frustration } =
             data?.prediction.percentages;
           console.log(engagement, distraction, frustration);
-          if (distraction > 50 || engagement < 10 || frustration > 60) {
-            console.log("modal on");
+          if (distraction > 80 || engagement < 10 || frustration > 80) {
             setIsModalVisible(true);
           }
         })
         .catch((error) => console.error("Error sending frame:", error));
     }, "image/jpeg");
-  }, []);
+  }, [disablePopup]);
 
   useEffect(() => {
     const startVideoCapture = async () => {

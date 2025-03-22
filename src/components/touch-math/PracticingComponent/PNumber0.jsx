@@ -24,8 +24,7 @@ const Number0 = () => {
   const [touchPoints, setTouchPoints] = useState([]);
   const [isAppear, setIsAppear] = useState(false);
   const [selectedIcon, setSelectedIcon] = useState(0);
-  const [isPanelOpen, setIsPanelOpen] = useState(false)
-
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
 
   // Correct pattern for the single touch point
   const correctPattern = [
@@ -148,8 +147,9 @@ const Number0 = () => {
             cx={102} // Position the touch point in the center of the number
             cy={18} // Adjust to align with "1"
             r={14} // Radius of the touch point
-            className={`cursor-pointer transition-colors duration-200 ${active ? "fill-yellow-400" : "fill-current"
-              }`}
+            className={`cursor-pointer transition-colors duration-200 ${
+              active ? "fill-yellow-400" : "fill-current"
+            }`}
             onClick={() => handleTouch(index)}
           />
         ))}
@@ -209,15 +209,15 @@ const Number0 = () => {
               index === 0
                 ? 55 // Top curve of 3
                 : index === 1
-                  ? 90 // Middle curve
-                  : 55 // Bottom curve of 3
+                ? 90 // Middle curve
+                : 55 // Bottom curve of 3
             }
             cy={
               index === 0
                 ? 40 // Top curve
                 : index === 1
-                  ? 75 // Middle curve
-                  : 120 // Bottom curve
+                ? 75 // Middle curve
+                : 120 // Bottom curve
             }
             r={14} // Radius of the touch point
             fill={active ? "#FFD700" : "var(--text-color)"} // Golden when active
@@ -246,19 +246,19 @@ const Number0 = () => {
               index === 0
                 ? 108.5 // Top left vertical line of 4
                 : index === 1
-                  ? 108.5 // Top right horizontal line of 4
-                  : index === 2
-                    ? 46.5 // Middle left vertical line of 4
-                    : 108.5 // Bottom right of 4
+                ? 108.5 // Top right horizontal line of 4
+                : index === 2
+                ? 46.5 // Middle left vertical line of 4
+                : 108.5 // Bottom right of 4
             }
             cy={
               index === 0
                 ? 18 // Top vertical line
                 : index === 1
-                  ? 107 // Top horizontal line
-                  : index === 2
-                    ? 105 // Bottom vertical line
-                    : 139 // Bottom horizontal line
+                ? 107 // Top horizontal line
+                : index === 2
+                ? 105 // Bottom vertical line
+                : 139 // Bottom horizontal line
             }
             r={14} // Radius of the touch point
             fill={active ? "#FFD700" : "var(--text-color)"} // Golden when active
@@ -287,23 +287,23 @@ const Number0 = () => {
               index === 0
                 ? 142 // First touch point (top curve)
                 : index === 1
-                  ? 83 // Second touch point (upper middle line)
-                  : index === 2
-                    ? 71 // Third touch point (middle curve)
-                    : index === 3
-                      ? 143 // Fourth touch point (lower line)
-                      : 68 // Fifth touch point (bottom curve)
+                ? 83 // Second touch point (upper middle line)
+                : index === 2
+                ? 71 // Third touch point (middle curve)
+                : index === 3
+                ? 143 // Fourth touch point (lower line)
+                : 68 // Fifth touch point (bottom curve)
             }
             cy={
               index === 0
                 ? 17 // Adjust the y-coordinate for the top curve
                 : index === 1
-                  ? 17 // Upper middle line
-                  : index === 2
-                    ? 75 // Middle curve
-                    : index === 3
-                      ? 105 // Lower line
-                      : 119 // Bottom curve
+                ? 17 // Upper middle line
+                : index === 2
+                ? 75 // Middle curve
+                : index === 3
+                ? 105 // Lower line
+                : 119 // Bottom curve
             }
             r="12"
             fill={active ? "#FFD700" : "var(--text-color)"}
@@ -332,27 +332,27 @@ const Number0 = () => {
               index === 0
                 ? 125
                 : index === 1
-                  ? 53
-                  : index === 2
-                    ? 92
-                    : index === 3
-                      ? 125
-                      : index === 4
-                        ? 53
-                        : 92
+                ? 53
+                : index === 2
+                ? 92
+                : index === 3
+                ? 125
+                : index === 4
+                ? 53
+                : 92
             }
             cy={
               index === 0
                 ? 33
                 : index === 1
-                  ? 90
-                  : index === 2
-                    ? 144
-                    : index === 3
-                      ? 33
-                      : index === 4
-                        ? 90
-                        : 144
+                ? 90
+                : index === 2
+                ? 144
+                : index === 3
+                ? 33
+                : index === 4
+                ? 90
+                : 144
             }
             r={
               index < 3 ? 13 : 8 // 4 points with radius 13, 3 points with radius 9
@@ -363,8 +363,8 @@ const Number0 = () => {
                   ? "#FFD700"
                   : "var(--text-color)"
                 : active
-                  ? "red"
-                  : "var(--text-color)" // Different colors for two point types #FFD700 #008000
+                ? "red"
+                : "var(--text-color)" // Different colors for two point types #FFD700 #008000
             }
             onClick={() => handleTouch(index)}
           />
@@ -391,31 +391,31 @@ const Number0 = () => {
               index === 0
                 ? 69 // First touch point (top line)
                 : index === 1
-                  ? 142 // Second touch point (top line middle)
-                  : index === 2
-                    ? 89 // Third touch point (top line left)
-                    : index === 3
-                      ? 107 // Fourth touch point (middle line right)
-                      : index === 4
-                        ? 107 // Fifth touch point (middle line left)
-                        : index === 5
-                          ? 142 // Sixth touch point (bottom line left)
-                          : 89 // Seventh touch point (bottom line)
+                ? 142 // Second touch point (top line middle)
+                : index === 2
+                ? 89 // Third touch point (top line left)
+                : index === 3
+                ? 107 // Fourth touch point (middle line right)
+                : index === 4
+                ? 107 // Fifth touch point (middle line left)
+                : index === 5
+                ? 142 // Sixth touch point (bottom line left)
+                : 89 // Seventh touch point (bottom line)
             }
             cy={
               index === 0
                 ? 17 // Top right corner
                 : index === 1
-                  ? 17 // Top line middle
-                  : index === 2
-                    ? 141 // Top line left
-                    : index === 3
-                      ? 76 // Middle line right
-                      : index === 4
-                        ? 76 // Middle line left
-                        : index === 5
-                          ? 17 // Bottom left
-                          : 141 // Bottom right
+                ? 17 // Top line middle
+                : index === 2
+                ? 141 // Top line left
+                : index === 3
+                ? 76 // Middle line right
+                : index === 4
+                ? 76 // Middle line left
+                : index === 5
+                ? 17 // Bottom left
+                : 141 // Bottom right
             }
             r={
               index < 4 ? 13 : 8 // 4 points with radius 13, 3 points with radius 9
@@ -426,8 +426,8 @@ const Number0 = () => {
                   ? "#FFD700"
                   : "var(--text-color)"
                 : active
-                  ? "red"
-                  : "var(--text-color)" // Different colors for two point types #FFD700 #008000
+                ? "red"
+                : "var(--text-color)" // Different colors for two point types #FFD700 #008000
             }
             onClick={() => handleTouch(index)}
           />
@@ -454,35 +454,35 @@ const Number0 = () => {
               index === 0
                 ? 73 // First touch point (top line)
                 : index === 1
-                  ? 135 // Second touch point (top line middle)
-                  : index === 2
-                    ? 67 // Third touch point (top line left)
-                    : index === 3
-                      ? 142 // Fourth touch point (middle line right)
-                      : index === 4
-                        ? 73 // Fifth touch point (middle line left)
-                        : index === 5
-                          ? 135 // Sixth touch point (bottom line left)
-                          : index === 6
-                            ? 67
-                            : 142 // Seventh touch point (bottom line)
+                ? 135 // Second touch point (top line middle)
+                : index === 2
+                ? 67 // Third touch point (top line left)
+                : index === 3
+                ? 142 // Fourth touch point (middle line right)
+                : index === 4
+                ? 73 // Fifth touch point (middle line left)
+                : index === 5
+                ? 135 // Sixth touch point (bottom line left)
+                : index === 6
+                ? 67
+                : 142 // Seventh touch point (bottom line)
             }
             cy={
               index === 0
                 ? 40 // Top right corner
                 : index === 1
-                  ? 40 // Top line middle
-                  : index === 2
-                    ? 110 // Top line left
-                    : index === 3
-                      ? 110 // Middle line right
-                      : index === 4
-                        ? 40 // Middle line left
-                        : index === 5
-                          ? 40 // Bottom left
-                          : index === 6
-                            ? 110
-                            : 110 // Bottom right
+                ? 40 // Top line middle
+                : index === 2
+                ? 110 // Top line left
+                : index === 3
+                ? 110 // Middle line right
+                : index === 4
+                ? 40 // Middle line left
+                : index === 5
+                ? 40 // Bottom left
+                : index === 6
+                ? 110
+                : 110 // Bottom right
             }
             r={
               index < 4 ? 13 : 8 // 4 points with radius 13, 3 points with radius 9
@@ -493,8 +493,8 @@ const Number0 = () => {
                   ? "#FFD700"
                   : "var(--text-color)"
                 : active
-                  ? "red"
-                  : "var(--text-color)" // Different colors for two point types #FFD700 #008000
+                ? "red"
+                : "var(--text-color)" // Different colors for two point types #FFD700 #008000
             }
             onClick={() => handleTouch(index)}
           />
@@ -521,39 +521,39 @@ const Number0 = () => {
               index === 0
                 ? 70 // First touch point (top line)
                 : index === 1
-                  ? 100 // Second touch point (top line middle)
-                  : index === 2
-                    ? 140 // Third touch point (top line left)
-                    : index === 3
-                      ? 136 // Fourth touch point (middle line right)
-                      : index === 4
-                        ? 70 // Fifth touch point (middle line left)
-                        : index === 5
-                          ? 100 // Sixth touch point (bottom line left)
-                          : index === 6
-                            ? 140
-                            : index === 7
-                              ? 70
-                              : 136 // Seventh touch point (bottom line)
+                ? 100 // Second touch point (top line middle)
+                : index === 2
+                ? 140 // Third touch point (top line left)
+                : index === 3
+                ? 136 // Fourth touch point (middle line right)
+                : index === 4
+                ? 70 // Fifth touch point (middle line left)
+                : index === 5
+                ? 100 // Sixth touch point (bottom line left)
+                : index === 6
+                ? 140
+                : index === 7
+                ? 70
+                : 136 // Seventh touch point (bottom line)
             }
             cy={
               index === 0
                 ? 70
                 : index === 1
-                  ? 15
-                  : index === 2
-                    ? 50
-                    : index === 3
-                      ? 122
-                      : index === 4
-                        ? 125
-                        : index === 5
-                          ? 15
-                          : index === 6
-                            ? 50
-                            : index === 7
-                              ? 125
-                              : 122
+                ? 15
+                : index === 2
+                ? 50
+                : index === 3
+                ? 122
+                : index === 4
+                ? 125
+                : index === 5
+                ? 15
+                : index === 6
+                ? 50
+                : index === 7
+                ? 125
+                : 122
             }
             r={
               index < 5 ? 13 : 8 // 4 points with radius 13, 3 points with radius 9
@@ -564,8 +564,8 @@ const Number0 = () => {
                   ? "#FFD700"
                   : "var(--text-color)"
                 : active
-                  ? "red"
-                  : "var(--text-color)" // Different colors for two point types #FFD700 #008000
+                ? "red"
+                : "var(--text-color)" // Different colors for two point types #FFD700 #008000
             }
             onClick={() => handleTouch(index)}
           />
@@ -590,7 +590,9 @@ const Number0 = () => {
               </h2>
             </div>
             <div
-              className={`${isAppear && numberId != 0 && "grid grid-cols-3 gap-4"}`}
+              className={`${
+                isAppear && numberId != 0 && "grid grid-cols-3 gap-4"
+              }`}
             >
               <div className="col-span-2">{svgSnippets[numberId]}</div>
 
@@ -691,7 +693,12 @@ const Number0 = () => {
               Check Answer
             </button>
           </div>
-          <EmotionDetectionButton onModalAction={handleModalAction} />
+          {numberId != 0 && (
+            <EmotionDetectionButton
+              onModalAction={handleModalAction}
+              number={numberId}
+            />
+          )}
         </div>
         {/* buttons */}
         <div className="mx-10 flex items-center  justify-center">
@@ -704,7 +711,9 @@ const Number0 = () => {
 
           <button
             onClick={handleNext}
-            className={`pnext-button absolute ${numberId == 9 ? "hidden" : "block"}`}
+            className={`pnext-button absolute ${
+              numberId == 9 ? "hidden" : "block"
+            }`}
           >
             Next
           </button>
@@ -716,10 +725,7 @@ const Number0 = () => {
           </button>
         </div>
       </div>
-
-      
     </div>
-
   );
 };
 
