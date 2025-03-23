@@ -1,3 +1,4 @@
+// Customizable lesson dashboard
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../api/axiosInstance';
 import chromaticThemes from '../configs/chromaticThemes';
