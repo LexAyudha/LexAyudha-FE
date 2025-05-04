@@ -20,6 +20,7 @@ const EmotionDetection = ({
   const [isAppear, setIsAppear] = useState(false);
   const intervalIdRef = useRef(null); // Ref to store interval ID
   const navigate = useNavigate();
+  const [showVideo, setShowVideo] = useState(true);
 
   // Store the latest onEmotionData callback in a ref to avoid re-renders
   const onEmotionDataRef = useRef(onEmotionData);
@@ -37,6 +38,7 @@ const EmotionDetection = ({
     setIsModalVisible(false);
     setIsAppear(true);
     onModalActionRef.current?.(true);
+    onStopDetection();
   }, []);
 
   const handleLearn = useCallback(() => {
@@ -47,7 +49,7 @@ const EmotionDetection = ({
 
   const handleCancel = useCallback(() => {
     setIsModalVisible(false);
-    onModalAction?.(true); // Prevent modal from appearing again
+    onModalAction?.(false); // Prevent modal from appearing again
   }, [onModalAction]);
 
   // Process frame and send to API without causing re-renders
@@ -161,22 +163,29 @@ const EmotionDetection = ({
       }}
     >
       {startDetection && (
-        <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          onMouseDown={handleMouseDown}
-          style={{
-            width: 300,
-            borderRadius: 10,
-            boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-          }}
-        />
+        <>
+          <video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            onMouseDown={handleMouseDown}
+            style={{
+              width: 300,
+              borderRadius: 10,
+              boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+              display: showVideo ? "block" : "none",
+            }}
+          />
+          <button
+            onClick={() => setShowVideo((prev) => !prev)}
+            style={{ marginTop: 10, marginRight: 10 }}
+          >
+            {showVideo ? "Hide Video" : "Show Video"}
+          </button>
+        </>
       )}
       <canvas ref={canvasRef} style={{ display: "none" }} />
-      <button onClick={onStopDetection} style={{ marginTop: 10 }}>
-        Stop Detection
-      </button>
+
       <Modal
         title="Oops! Feeling a bit stuck?"
         open={isModalVisible}
