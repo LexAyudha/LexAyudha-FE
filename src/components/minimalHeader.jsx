@@ -6,7 +6,7 @@ export default function MinimalHeader() {
     <div className='w-full z-40 absolute top-0  flex h-20  items-center justify-center'>
       <div className='items-center justify-start la-container flex'>
         <div className='w-[50px] h-[50px] mr-2'>
-          <img src={logo} alt='LexAyudha logo' />
+          <img src={logo} loading="lazy" alt='LexAyudha logo' />
         </div>
         <h2 className='h-fit m-0'>LexAyudha</h2>
       </div>

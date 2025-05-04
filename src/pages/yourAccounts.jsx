@@ -36,14 +36,18 @@ export default function YourAccounts() {
         }
       } else {
         setUserList([]);
-        setIsLoading(false)
+        setIsLoading(false);
+        
       }
 
     } catch (error) {
       setIsLoading(false)
+      setError("Unable to connect to server. Please try again in a few moments")
       console.log(error)
     }
   }
+
+
 
   const handleLoginPane = (index) => {
     setUserIndex(index)
@@ -110,6 +114,13 @@ export default function YourAccounts() {
     }
   }
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit(e);
+    }
+  };
+
+  
   return (
     <><MinimalHeader />
        {isLoading ? <ScreenLoader/>:'' } 
@@ -133,7 +144,7 @@ export default function YourAccounts() {
           {userList.length === 0 ? (
             <div className=' flex flex-col p-5 primary-color-bg rounded-xl shadow-[0px_0px_6px_0px_rgba(0,_0,_0,_0.1)]  w-[400px] '>
               <h2 className='mt-1'>Hmm..,</h2>
-              <p className='m-0'>Looks like it's your first time here.</p>
+              <p className='m-0'>{error || "Looks like it's your first time here."}</p>
 
               <div className='flex justify-evenly items-center mt-10'>
                 <a className='m-0 py-[5px] px-[16px] rounded-[6px] border border-[var(--primary-color)] hover:border-[#0066cc] text-[#0066cc] cursor-pointer transition duration-300' href='/login'>
@@ -149,15 +160,15 @@ export default function YourAccounts() {
               {loginPane ? (
                 <div className='flex flex-col items-center w-full'>
                   <h1 className='mb-[25px]'>Sign In</h1>
-                  <img src={userList[userIndex]?.proPic} alt='' className=' w-[150px] h-[150px] object-cover rounded-full'></img>
+                  <img src={userList[userIndex]?.proPic} loading="lazy" alt='' className=' w-[150px] h-[150px] object-cover rounded-full'></img>
                   <p className='mt-[10px] text-lg'>{userList[userIndex]?.userName}</p>
                   <div className='flex flex-col items-center w-full mt-[25px]'>
-                    <input type='password' placeholder='password' onChange={handlePsw} required className=' p-2 shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] w-[80%] rounded-md px-4' />
+                    <input type='password' placeholder='password' onKeyDown={handleKeyDown} onChange={handlePsw} required className=' p-2 shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] w-[80%] rounded-md px-4' />
                     <div className='error-div'>
                       <p className='m-0 text-red-500'>{error}</p>
                     </div>
                     <div className=' flex justify-center w-[80%]'>
-                      <button type='submit' onClick={handleSubmit} className=' w-full m-0 px-4 py-2 rounded-md text-center mt-5 bg-blue-600 text-white w-[200px] hover:bg-blue-700 '>Sign in</button>
+                      <button type='submit' onClick={handleSubmit}  className=' w-full m-0 px-4 py-2 rounded-md text-center mt-5 bg-blue-600 text-white w-[200px] hover:bg-blue-700 '>Sign in</button>
                     </div>
                     
                   </div>
@@ -178,7 +189,7 @@ export default function YourAccounts() {
                         <div onClick={() => handleLoginPane(index)} >
                           <div key={index} className='flex flex-row justify-between align-middle   '>
                             <div className='flex flex-row items-center shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] px-2 w-[98%] m-1 rounded-md cursor-pointer hover:bg-[#00000010] transition duration-300'>
-                              <img src={user.proPic} alt='profile-pic' className=' w-12 h-12 rounded-md mr-5' />
+                              <img src={user?.proPic} alt='profile-pic' className=' w-12 h-12 rounded-md mr-5' />
                               <div className='flex flex-col justify-around py-2'>
                                 <p className='m-0 text-lg'>{user.userName}</p>
                                 <p className='m-0 text-sm'>{user.email}</p>
