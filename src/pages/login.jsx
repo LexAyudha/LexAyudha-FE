@@ -12,11 +12,7 @@ export default function Login() {
   const [userEmail, setUserEmail] = useState('');
   const [psw, setPsw] = useState('');
   const [error, setError] = useState('')
-
-  useEffect(() => {
-
-
-  }, []);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleEmail = (e) => {
     setUserEmail(e.target.value.trim())
@@ -56,11 +52,11 @@ export default function Login() {
         email: userEmail,
         password: psw
       }
-     
-      const res = await axiosInstance.post('/auth/login', user,{
+
+      const res = await axiosInstance.post('/auth/login', user, {
         validateStatus: (status) => status < 500, // Accept any status under 500
       });
-      
+
       if (res?.status === 200) {
         localStorage.setItem('accessToken', res?.data?.accessToken)
         localStorage.setItem('refreshToken', res?.data?.refreshToken)
@@ -71,7 +67,7 @@ export default function Login() {
           window.location.href = `/dashboard/${userId}`
         }, 5000)
 
-      }else if (res.status === 401) {
+      } else if (res.status === 401) {
         // Handle unauthorized error gracefully
         toast.error('Unauthorized! Please check your credentials.');
       } else {
@@ -80,6 +76,12 @@ export default function Login() {
     }
   }
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit(e)
+    }
+  }
+  
   return (
     <><MinimalHeader />
       <div className='la-container h-[calc(100vh-80px)] flex-col'>
@@ -104,7 +106,28 @@ export default function Login() {
               <h1 className=' font-bold'>Hi there,</h1>
               <p className=''>Welcome back to LexAyudha</p>
               <input type='email' placeholder='email' onChange={handleEmail} required className='my-2 p-2 shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] rounded-full px-4' />
-              <input type='password' placeholder='password' onChange={handlePsw} required className='my-2 p-2 shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] rounded-full px-4' />
+              <div className="relative w-full">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder='password'
+                  onChange={handlePsw}
+                  required
+                  onKeyDown={handleKeyDown}
+                  className='w-full my-2 p-2 shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] rounded-full px-4'
+                />
+                <button
+                  type="button"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <i className="fas fa-eye"></i>
+                  ) : (
+                    <i className="fas fa-eye-slash"></i>
+                    
+                  )}
+                </button>
+              </div>
               <div>
                 <a href='/forgotPassword' className='text-sm underline'>Forgot Password?</a>
               </div>
@@ -112,18 +135,18 @@ export default function Login() {
                 <p className='m-0 text-red-500'>{error}</p>
               </div>
               <div>
-                <div className=' flex justify-center'>
+                <div className=' flex justify-center pt-6'>
                   <button type='submit' onClick={handleSubmit} className='btn btn-primary m-0 px-4 py-2 rounded-[4px] text-center mt-5 bg-blue-600 text-white w-[200px] hover:bg-blue-700 '>Sign in</button>
                 </div>
-                <div className='flex items-center justify-evenly py-2'>
+                {/* <div className='flex items-center justify-evenly py-2'>
                   <div className='w-[35%] h-[2px] bg-slate-900'></div>
                   <p className='m-0'>or</p>
                   <div className='w-[35%] h-[2px] bg-slate-900'></div>
                 </div>
                 <div className=' flex justify-center py-2'>
                   <SignInWithGoogleBtn />
-                </div>
-                <div className=' flex justify-center pt-10'>
+                </div> */}
+                <div className=' flex justify-center pt-4'>
                   <p >Don't have an account? <a href='/register' className=' underline hover:text-blue-700'>Sign up</a></p>
                 </div>
               </div>

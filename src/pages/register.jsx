@@ -17,11 +17,8 @@ export default function Register() {
     const [otp, setOtp] = useState();
     const [userOtp, setUserOtp] = useState();
     const [stepCompleted, setStepCompleted] = useState(false);
-
-    useEffect(() => {
-
-
-    }, []);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleEmail = (e) => {
         setUserEmail(e.target.value.trim())
@@ -54,19 +51,19 @@ export default function Register() {
             return false;
         }
 
-        if(param === null){
+        if (param === null) {
             if (rePsw !== psw) {
                 setError('Passwords do not match');
                 return false;
             }
         }
-        
+
         setError(''); // Clear any previous error messages
         return true;
     };
 
     const generateOTP = async () => {
-        
+
 
         const res = await axiosInstance.get('/auth/otp')
 
@@ -79,7 +76,7 @@ export default function Register() {
 
         if (res?.status === 200) {
             toast.success('OTP code sent!')
-            console.log('otp: ',res?.data?.otp);
+            console.log('otp: ', res?.data?.otp);
             setOtp(res?.data?.otp);
             return true
 
@@ -89,11 +86,11 @@ export default function Register() {
         }
     }
 
-    const handleStepCompleted = async() => {
+    const handleStepCompleted = async () => {
         if (validateInput()) {
-            if( await generateOTP()){
+            if (await generateOTP()) {
                 setStepCompleted(true);
-            } 
+            }
         }
     }
     const handleVerifyOTP = async (e) => {
@@ -103,7 +100,7 @@ export default function Register() {
     }
 
     const handleOtpInput = (e) => {
-        setUserOtp(parseInt(e.target.value,10));
+        setUserOtp(parseInt(e.target.value, 10));
     }
 
     const verifyOTP = (e) => {
@@ -122,7 +119,7 @@ export default function Register() {
         }
     };
 
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (validateInput()) {
@@ -140,13 +137,13 @@ export default function Register() {
                 localStorage.setItem('refreshToken', res?.data?.refreshToken)
 
                 toast.success('Registration Successful!')
-                
-                setTimeout(async() => {
+
+                setTimeout(async () => {
                     const userId = JSON.parse(atob(res?.data?.accessToken.split('.')[1]))?.userId;
-                     
-                    if(userId){
+
+                    if (userId) {
                         window.location.href = `/dashboard/${userId}`
-                    }else{
+                    } else {
                         window.location.href = '/login'
                     }
                 }, 5000)
@@ -157,72 +154,127 @@ export default function Register() {
         }
     }
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            handleStepCompleted()
+        }
+    }
+
+    const handleKeyDownVerify = (e) => {
+        if (e.key === 'Enter') {
+            handleVerifyOTP(e)
+        }
+    }
+  
+      
     return (
         <> <MinimalHeader />
             <div className='w-screen la-container h-[calc(100vh-80px)] flex-col'>
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick={false}
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-                transition={Bounce}
-            />
-           
-            {/* <ChangeThemeFB /> */}
-            <div className='flex h-screen w-full  justify-center'>
-                <div className='  w-[50%] flex justify-center   items-center z-10 shadow-[8px_0px_10px_1px_rgba(0,_0,_0,_0.1)] '>
-                    <div className=' flex flex-col w-[400px] mt-[36px] shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] rounded-[20px] p-6'>
-                        
-                        {!stepCompleted ? (
-                            <>
-                            <h1 className=' font-bold'>Register Now!</h1>
-                            <p className=''>let's get you started...</p>
-                                <input type='email' placeholder='email' onChange={handleEmail} required className='my-2 p-2 shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] rounded-full px-4' />
-                                <input type='password' placeholder='password' onChange={handlePsw} required className='my-2 p-2 shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] rounded-full px-4' />
-                                <input type='password' placeholder='re-enter password' onChange={handleRePsw} required className='my-2 p-2 shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] rounded-full px-4' />
-                                <div className='error-div'>
-                                    <p className='m-0 text-red-500'>{error}</p>
-                                </div>
-                                <div className=' flex justify-center'>
-                                    <button type='submit' onClick={handleStepCompleted} className='btn btn-primary m-0 px-4 py-2 rounded-[4px] text-center mt-5 bg-blue-600 text-white w-[200px] hover:bg-blue-700 '>Sign up</button>
-                                </div>
-                            </>
-                        ) : (
-                            <>
-                            <h1 className=' font-bold'>Verify Account</h1>
-                            <p className=''>Please enter the OTP code sent to your email..</p>
-                                <input type='number' placeholder='Enter OTP' onChange={handleOtpInput} required className='my-2 p-2 shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] rounded-full px-4' />
-                                <div className='error-div'>
-                                    <p className='m-0 text-red-500'>{error}</p>
-                                </div>
-                                <div className=' flex justify-center'>
-                                    <button type='submit' onClick={handleVerifyOTP} className='btn btn-primary m-0 px-4 py-2 rounded-[4px] text-center mt-5 bg-blue-600 text-white w-[200px] hover:bg-blue-700 '>Verify</button>
-                                </div>
-                            </>
-                        )}
-                        <div className='flex items-center justify-evenly py-2'>
-                            <div className='w-[35%] h-[2px] bg-slate-900'></div>
-                            <p className='m-0'>or</p>
-                            <div className='w-[35%] h-[2px] bg-slate-900'></div>
-                        </div>
-                        <div className=' flex justify-center py-2'>
-                            <SignInWithGoogleBtn  />
-                        </div>
-                        <div className=' flex justify-center pt-10'>
-                            <p >Already have an account? <a href='/login' className=' underline hover:text-blue-600'>Sign in</a></p>
+                <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick={false}
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                    transition={Bounce}
+                />
+
+                {/* <ChangeThemeFB /> */}
+                <div className='flex h-screen w-full  justify-center'>
+                    <div className='  w-[50%] flex justify-center   items-center z-10 shadow-[8px_0px_10px_1px_rgba(0,_0,_0,_0.1)] '>
+                        <div className=' flex flex-col w-[400px] mt-[36px] shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] rounded-[20px] p-6'>
+
+                            {!stepCompleted ? (
+                                <>
+                                    <h1 className=' font-bold'>Register Now!</h1>
+                                    <p className=''>let's get you started...</p>
+                                    <input type='email' placeholder='email' onChange={handleEmail} required className='my-2 p-2 shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] rounded-full px-4' />
+                                    <div className="relative w-full">
+                                        <input
+                                            type={showPassword ? 'text' : 'password'}
+                                            placeholder='password'
+                                            onChange={handlePsw}
+                                            required
+                                            className='w-full my-2 p-2 shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] rounded-full px-4'
+                                        />
+                                        <button
+                                            type="button"
+                                            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                        >
+                                            {showPassword ? (
+                                                <i className="fas fa-eye"></i>
+                                            ) : (
+                                                <i className="fas fa-eye-slash"></i>
+                                                
+                                            )}
+                                        </button>
+                                    </div>
+
+                                    <div className="relative w-full">
+                                        <input
+                                            type={showConfirmPassword ? 'text' : 'password'}
+                                            placeholder='re-enter password'
+                                            onChange={handleRePsw}
+                                            required
+                                            onKeyDown={handleKeyDown}
+                                            className='w-full my-2 p-2 shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] rounded-full px-4'
+                                        />
+                                        <button
+                                            type="button"
+                                            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        >
+                                            {showConfirmPassword ? (
+                                                <i className="fas fa-eye"></i>
+                                                
+                                            ) : (
+                                                <i className="fas fa-eye-slash"></i>
+                                            )}
+                                        </button>
+                                    </div>
+                                    <div className='error-div'>
+                                        <p className='m-0 text-red-500'>{error}</p>
+                                    </div>
+                                    <div className=' flex justify-center pt-6'>
+                                        <button type='submit' onClick={handleStepCompleted} className='btn btn-primary m-0 px-4 py-2 rounded-[4px] text-center mt-5 bg-blue-600 text-white w-[200px] hover:bg-blue-700 '>Sign up</button>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <h1 className=' font-bold'>Verify Account</h1>
+                                    <p className=''>Please enter the OTP code sent to your email..</p>
+                                    <input type='number' placeholder='Enter OTP' onChange={handleOtpInput} onKeyDown={handleKeyDownVerify} required className='my-2 p-2 shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] rounded-full px-4' />
+                                    <div className='error-div'>
+                                        <p className='m-0 text-red-500'>{error}</p>
+                                    </div>
+                                    <div className=' flex justify-center'>
+                                        <button type='submit' onClick={handleVerifyOTP} className='btn btn-primary m-0 px-4 py-2 rounded-[4px] text-center mt-5 bg-blue-600 text-white w-[200px] hover:bg-blue-700 '>Verify</button>
+                                    </div>
+                                </>
+                            )}
+                            {/* <div className='flex items-center justify-evenly py-2'>
+                                <div className='w-[35%] h-[2px] bg-slate-900'></div>
+                                <p className='m-0'>or</p>
+                                <div className='w-[35%] h-[2px] bg-slate-900'></div>
+                            </div>
+                            <div className=' flex justify-center py-2'>
+                                <SignInWithGoogleBtn />
+                            </div> */}
+                            <div className=' flex justify-center pt-4'>
+                                <p >Already have an account? <a href='/login' className=' underline hover:text-blue-600'>Sign in</a></p>
+                            </div>
                         </div>
                     </div>
+                    <div className='  w-[50%]  la-login-right-panel'></div>
                 </div>
-                <div className='  w-[50%]  la-login-right-panel'></div>
             </div>
-        </div>
         </>
-        
+
     )
 }

@@ -109,7 +109,7 @@ export default function DashTraining({ userData }) {
           type="primary"
           className="w-[200px]"
           onClick={() => {
-            window.location = `/training?new=${userData?.isFirstTimeUser}`;
+            window.location = `/training?new=${userData?.isFirstTimeUser}&u=${userData?.userName}`;
           }}
         >
           Start Training

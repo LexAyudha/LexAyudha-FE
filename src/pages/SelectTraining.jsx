@@ -20,7 +20,7 @@ export default function SelectTrainingPage() {
 
                             <div className=' px-[16px] py-[8px] bg-[var(--background-color)] rounded-md'>
 
-                                <p className='m-0'>Dyslexic training</p>
+                                <p className='m-0'>Dyslexic Training</p>
 
 
                             </div>
@@ -32,7 +32,7 @@ export default function SelectTrainingPage() {
 
                             <div className=' px-[16px] py-[8px] bg-[var(--background-color)] rounded-md  '>
 
-                                <p className='m-0'>Dyscalculia training</p>
+                                <p className='m-0'>Dyscalculia Training</p>
 
 
                             </div>

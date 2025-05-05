@@ -14,6 +14,7 @@ export default function YourAccounts() {
   const [userEmail, setUserEmail] = useState('');
   const [psw, setPsw] = useState('');
   const [error, setError] = useState('')
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
 
@@ -37,7 +38,7 @@ export default function YourAccounts() {
       } else {
         setUserList([]);
         setIsLoading(false);
-        
+
       }
 
     } catch (error) {
@@ -51,7 +52,7 @@ export default function YourAccounts() {
 
   const handleLoginPane = (index) => {
     setUserIndex(index)
-    
+
     setLoginPane(true)
   }
 
@@ -120,10 +121,10 @@ export default function YourAccounts() {
     }
   };
 
-  
+
   return (
     <><MinimalHeader />
-       {isLoading ? <ScreenLoader/>:'' } 
+      {isLoading ? <ScreenLoader /> : ''}
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -163,22 +164,43 @@ export default function YourAccounts() {
                   <img src={userList[userIndex]?.proPic} loading="lazy" alt='' className=' w-[150px] h-[150px] object-cover rounded-full'></img>
                   <p className='mt-[10px] text-lg'>{userList[userIndex]?.userName}</p>
                   <div className='flex flex-col items-center w-full mt-[25px]'>
-                    <input type='password' placeholder='password' onKeyDown={handleKeyDown} onChange={handlePsw} required className=' p-2 shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] w-[80%] rounded-md px-4' />
+                    <div className="relative w-[80%]">
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder='password'
+                        onKeyDown={handleKeyDown}
+                        onChange={handlePsw}
+                        required
+                        className='p-2 shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] w-full rounded-md px-4'
+                      />
+                      <button
+                        type="button"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? (
+                          <i className="fas fa-eye"></i>
+                          
+                        ) : (
+                          <i className="fas fa-eye-slash"></i>
+                        )}
+                      </button>
+                    </div>
                     <div className='error-div'>
                       <p className='m-0 text-red-500'>{error}</p>
                     </div>
                     <div className=' flex justify-center w-[80%]'>
-                      <button type='submit' onClick={handleSubmit}  className=' w-full m-0 px-4 py-2 rounded-md text-center mt-5 bg-blue-600 text-white w-[200px] hover:bg-blue-700 '>Sign in</button>
+                      <button type='submit' onClick={handleSubmit} className=' w-full m-0 px-4 py-2 rounded-md text-center mt-5 bg-blue-600 text-white w-[200px] hover:bg-blue-700 '>Sign in</button>
                     </div>
-                    
+
                   </div>
 
                   <div className='mt-[10px]'>
                     <a href='/forgotPassword' className='text-sm underline'>Forgot Password?</a>
                   </div>
-                  <div className = 'pt-[25px]'>
-                      <p className='m-0 cursor-pointer hover:text-[#0066cc] transition duration-300' onClick={() =>setLoginPane(false)}>Go back</p>
-                    </div>
+                  <div className='pt-[25px]'>
+                    <p className='m-0 cursor-pointer hover:text-[#0066cc] transition duration-300' onClick={() => setLoginPane(false)}>Go back</p>
+                  </div>
                 </div>
               ) : (
                 < div className=' w-full'>
@@ -207,10 +229,10 @@ export default function YourAccounts() {
                   </div>
                   <div className='flex justify-evenly items-center'>
                     <a className='m-0 py-[5px] px-[16px] rounded-[6px] border  border-[var(--primary-color)] hover:border-[#0066cc] text-[#0066cc] cursor-pointer transition duration-300' href='/login'>
-                      login
+                      Login
                     </a>
                     <a className='m-0 bg-[#0066cc] hover:bg-[#0066cc99] text-white py-[8px] px-[16px] rounded-[6px] w-fit text-wrap text-center text-sm cursor-pointer transition duration-300' href='/register'>
-                      Create account
+                      Create Account
                     </a>
                   </div>
                 </div>
