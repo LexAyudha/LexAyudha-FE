@@ -16,7 +16,16 @@ import {
   Legend,
 } from "recharts";
 
-const COLORS = ["#00C49F", "#FF8042", "#0088FE"];
+// Colors for 7 emotions
+const COLORS = [
+  "#00C49F", // happy
+  "#FF8042", // angry
+  "#0088FE", // surprise
+  "#FFBB28", // sad
+  "#FF8042", // fear
+  "#8884D8", // disgust
+  "#82CA9D", // neutral
+];
 
 const EmotionAnalytics = () => {
   const [selectedDate, setSelectedDate] = useState("2025-05-15");
@@ -56,32 +65,58 @@ const EmotionAnalytics = () => {
   }, [selectedDate, selectedActivity]);
 
   // Transform data for pie chart
-  const allTimeEmotionData = analyticsData?.allTimeData
-    ? [
-        { name: "Engagement", value: analyticsData.allTimeData.engagement },
-        { name: "Frustration", value: analyticsData.allTimeData.frustration },
-        { name: "Distraction", value: analyticsData.allTimeData.distraction },
-      ]
+  const allTimeEmotionData = analyticsData?.dailyData
+    ? Object.entries(
+        analyticsData.dailyData.reduce((acc, curr) => {
+          acc[curr.Emotion] = (acc[curr.Emotion] || 0) + 1;
+          return acc;
+        }, {})
+      ).map(([emotion, count]) => ({
+        name: emotion.charAt(0).toUpperCase() + emotion.slice(1),
+        value: (count / analyticsData.dailyData.length) * 100,
+      }))
+    : [];
+
+  // Transform data for all-time bar chart
+  const allTimeBarData = analyticsData?.dailyData
+    ? Object.entries(
+        analyticsData.dailyData.reduce((acc, curr) => {
+          acc[curr.Emotion] = (acc[curr.Emotion] || 0) + 1;
+          return acc;
+        }, {})
+      ).map(([emotion, count], index) => ({
+        emotion: emotion.charAt(0).toUpperCase() + emotion.slice(1),
+        value: (count / analyticsData.dailyData.length) * 100,
+        fill: COLORS[index % COLORS.length],
+      }))
     : [];
 
   // Transform data for line chart
   const hourlyLineData = analyticsData?.hourlyData
-    ? analyticsData.hourlyData.map((item) => ({
-        time: `${item.hour}:00`,
-        engagement: item.percentages.engagement,
-        frustration: item.percentages.frustration,
-        distraction: item.percentages.distraction,
-      }))
+    ? analyticsData.hourlyData.map((item) => {
+        const hourData = {
+          time: `${item.hour}:00`,
+        };
+        // Add each emotion's percentage
+        Object.entries(item.percentages).forEach(([emotion, value]) => {
+          hourData[emotion] = value;
+        });
+        return hourData;
+      })
     : [];
 
   // Transform data for bar chart
   const hourlyBarData = analyticsData?.hourlyData
-    ? analyticsData.hourlyData.map((item) => ({
-        hour: `${item.hour}:00`,
-        engagement: item.percentages.engagement,
-        frustration: item.percentages.frustration,
-        distraction: item.percentages.distraction,
-      }))
+    ? analyticsData.hourlyData.map((item) => {
+        const hourData = {
+          hour: `${item.hour}:00`,
+        };
+        // Add each emotion's percentage
+        Object.entries(item.percentages).forEach(([emotion, value]) => {
+          hourData[emotion] = value;
+        });
+        return hourData;
+      })
     : [];
 
   return (
@@ -100,7 +135,7 @@ const EmotionAnalytics = () => {
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
           />
-          <select
+          <select 
             className="border px-4 py-2 rounded-md shadow-sm"
             value={selectedActivity}
             onChange={(e) => setSelectedActivity(e.target.value)}
@@ -114,25 +149,34 @@ const EmotionAnalytics = () => {
         </div>
 
         {/* Stats */}
-        <div className="flex justify-center gap-8 mb-6 text-center">
-          <div>
-            <p className="text-sm text-gray-500">Engagement</p>
-            <p className="text-xl font-semibold">
-              {analyticsData?.allTimeData?.engagement.toFixed(1)}%
-            </p>
-          </div>
-          <div>
-            <p className="text-sm text-gray-500">Frustration</p>
-            <p className="text-xl font-semibold">
-              {analyticsData?.allTimeData?.frustration.toFixed(1)}%
-            </p>
-          </div>
-          <div>
-            <p className="text-sm text-gray-500">Distraction</p>
-            <p className="text-xl font-semibold">
-              {analyticsData?.allTimeData?.distraction.toFixed(1)}%
-            </p>
-          </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          {allTimeBarData.map((item, index) => (
+            <div key={item.emotion} className="bg-white p-4 rounded-lg shadow text-center">
+              <p className="text-sm text-gray-500">{item.emotion}</p>
+              <p className="text-xl font-semibold">{item.value.toFixed(1)}%</p>
+            </div>
+          ))}
+        </div>
+
+        {/* All-time Bar Chart */}
+        <div className="bg-white p-4 rounded-lg shadow mb-6">
+          <h2 className="font-semibold mb-2 text-center">
+            All-Time Emotion Distribution
+          </h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={allTimeBarData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="emotion" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="value" fill="#8884d8">
+                {allTimeBarData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.fill} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
         </div>
 
         {/* Two charts side-by-side */}
@@ -161,6 +205,7 @@ const EmotionAnalytics = () => {
                   ))}
                 </Pie>
                 <Tooltip />
+                <Legend />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -175,9 +220,14 @@ const EmotionAnalytics = () => {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Line type="monotone" dataKey="engagement" stroke="#00C49F" />
-                <Line type="monotone" dataKey="frustration" stroke="#FF8042" />
-                <Line type="monotone" dataKey="distraction" stroke="#0088FE" />
+                {allTimeBarData.map((item, index) => (
+                  <Line
+                    key={item.emotion}
+                    type="monotone"
+                    dataKey={item.emotion.toLowerCase()}
+                    stroke={COLORS[index % COLORS.length]}
+                  />
+                ))}
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -195,9 +245,13 @@ const EmotionAnalytics = () => {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="engagement" fill="#00C49F" />
-              <Bar dataKey="frustration" fill="#FF8042" />
-              <Bar dataKey="distraction" fill="#0088FE" />
+              {allTimeBarData.map((item, index) => (
+                <Bar
+                  key={item.emotion}
+                  dataKey={item.emotion.toLowerCase()}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
             </BarChart>
           </ResponsiveContainer>
         </div>
