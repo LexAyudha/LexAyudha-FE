@@ -17,6 +17,7 @@ import {
 } from "recharts";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { Modal, Input, message } from "antd";
 
 // Colors for emotions and emotion classes
 const EMOTION_COLORS = [
@@ -41,6 +42,9 @@ const EmotionAnalytics = () => {
   const [analyticsData, setAnalyticsData] = useState(null);
   const [loading, setLoading] = useState(false);
   const reportRef = useRef(null);
+  const [isEmailModalVisible, setIsEmailModalVisible] = useState(false);
+  const [email, setEmail] = useState("");
+  const [sendingEmail, setSendingEmail] = useState(false);
 
   // Mock activities - replace with actual data from your backend
   const activities = [
@@ -192,25 +196,113 @@ const EmotionAnalytics = () => {
     }
   };
 
+  const handleSendEmail = async () => {
+    if (!email || !reportRef.current) return;
+
+    try {
+      setSendingEmail(true);
+      const canvas = await html2canvas(reportRef.current, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+      });
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      const imgX = (pdfWidth - imgWidth * ratio) / 2;
+      const imgY = 30;
+
+      pdf.addImage(imgData, "PNG", imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+
+      // Add header
+      pdf.setFontSize(20);
+      pdf.text("Student Emotion Analytics Report", pdfWidth / 2, 20, { align: "center" });
+
+      // Add footer
+      const footerText = `Generated on ${new Date().toLocaleDateString()}`;
+      pdf.setFontSize(10);
+      pdf.text(footerText, pdfWidth / 2, pdfHeight - 10, { align: "center" });
+
+      const pdfData = pdf.output('datauristring');
+
+      // Prepare report data
+      const reportData = {
+        date: selectedDate,
+        activity_name: activities.find(a => a.id === selectedActivity)?.name || "Unknown Activity",
+        total_sessions: analyticsData?.allTimeData?.total || 0,
+        summary: analyticsData?.studentSummary || "No summary available"
+      };
+
+      // Send email
+      const response = await fetch("http://localhost:8005/emotion/send-report", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          reportData,
+          pdfData
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send email");
+      }
+
+      message.success("Report sent successfully!");
+      setIsEmailModalVisible(false);
+      setEmail("");
+    } catch (error) {
+      console.error("Error sending email:", error);
+      message.error("Failed to send report. Please try again.");
+    } finally {
+      setSendingEmail(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
-        {/* Title and Download Button */}
+        {/* Title and Buttons */}
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-center">
             Student Emotion Analytics by Activity
           </h1>
-          <button
-            onClick={generatePDF}
-            disabled={loading || !analyticsData}
-            className={`px-4 py-2 rounded-md text-white font-medium ${
-              loading || !analyticsData
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
-            }`}
-          >
-            {loading ? "Generating PDF..." : "Download Report"}
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setIsEmailModalVisible(true)}
+              disabled={loading || !analyticsData}
+              className={`px-4 py-2 rounded-md text-white font-medium ${
+                loading || !analyticsData
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-green-600 hover:bg-green-700"
+              }`}
+            >
+              Send Report
+            </button>
+            <button
+              onClick={generatePDF}
+              disabled={loading || !analyticsData}
+              className={`px-4 py-2 rounded-md text-white font-medium ${
+                loading || !analyticsData
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-700"
+              }`}
+            >
+              {loading ? "Generating PDF..." : "Download Report"}
+            </button>
+          </div>
         </div>
 
         {/* Date & Activity Selectors */}
@@ -412,6 +504,29 @@ const EmotionAnalytics = () => {
             )}
           </div>
         </div>
+
+        {/* Email Modal */}
+        <Modal
+          title="Send Report via Email"
+          open={isEmailModalVisible}
+          onOk={handleSendEmail}
+          onCancel={() => {
+            setIsEmailModalVisible(false);
+            setEmail("");
+          }}
+          confirmLoading={sendingEmail}
+        >
+          <div className="p-4">
+            <p className="mb-4">Enter the recipient's email address:</p>
+            <Input
+              type="email"
+              placeholder="Enter email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full"
+            />
+          </div>
+        </Modal>
       </div>
     </div>
   );
