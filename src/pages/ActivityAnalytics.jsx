@@ -150,12 +150,26 @@ const EmotionAnalytics = () => {
           </select>
         </div>
 
+        {/* Student Summary */}
+        {analyticsData?.studentSummary && (
+          <div className="bg-white p-6 rounded-lg shadow mb-6">
+            <h2 className="text-xl font-semibold mb-4">Student Progress Summary</h2>
+            <div className="prose max-w-none">
+              {analyticsData.studentSummary.split('\n').map((paragraph, index) => (
+                <p key={index} className="mb-4 text-gray-700">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Stats */}
         <div className="grid grid-cols-3 gap-4 mb-6">
           {emotionClassData.map((item) => (
             <div key={item.name} className="bg-white p-4 rounded-lg shadow text-center">
               <p className="text-sm text-gray-500">{item.name}</p>
-              <p className="text-xl font-semibold">{item.value.toFixed(1)}%</p>
+              <p className="text-xl font-semibold">{item.value.toFixed(2)}%</p>
             </div>
           ))}
         </div>
