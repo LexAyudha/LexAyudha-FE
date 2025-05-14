@@ -30,7 +30,7 @@ const EMOTION_COLORS = [
 const CLASS_COLORS = {
   engagement: "#00C49F",
   frustration: "#FF8042",
-  distraction: "#0088FE"
+  distraction: "#0088FE",
 };
 
 const EmotionAnalytics = () => {
@@ -72,11 +72,13 @@ const EmotionAnalytics = () => {
 
   // Transform data for all-time emotion distribution bar chart
   const allTimeEmotionData = analyticsData?.allTimeData?.emotions
-    ? Object.entries(analyticsData.allTimeData.emotions).map(([emotion, count], index) => ({
-        emotion: emotion.charAt(0).toUpperCase() + emotion.slice(1),
-        value: (count / analyticsData.allTimeData.total) * 100,
-        fill: EMOTION_COLORS[index % EMOTION_COLORS.length],
-      }))
+    ? Object.entries(analyticsData.allTimeData.emotions).map(
+        ([emotion, count], index) => ({
+          emotion: emotion.charAt(0).toUpperCase() + emotion.slice(1),
+          value: (count / analyticsData.allTimeData.total) * 100,
+          fill: EMOTION_COLORS[index % EMOTION_COLORS.length],
+        })
+      )
     : [];
 
   // Transform data for emotion class pie chart
@@ -90,14 +92,19 @@ const EmotionAnalytics = () => {
 
   // Transform data for all-time emotion trend line chart
   const allTimeTrendData = analyticsData?.allTimeData?.dailyTrend
-    ? Object.entries(analyticsData.allTimeData.dailyTrend).map(([date, emotions]) => {
-        const total = Object.values(emotions).reduce((sum, count) => sum + count, 0);
-        const data = { date };
-        Object.entries(emotions).forEach(([emotion, count]) => {
-          data[emotion] = (count / total) * 100;
-        });
-        return data;
-      })
+    ? Object.entries(analyticsData.allTimeData.dailyTrend).map(
+        ([date, emotions]) => {
+          const total = Object.values(emotions).reduce(
+            (sum, count) => sum + count,
+            0
+          );
+          const data = { date };
+          Object.entries(emotions).forEach(([emotion, count]) => {
+            data[emotion] = (count / total) * 100;
+          });
+          return data;
+        }
+      )
     : [];
 
   // Transform data for emotion class bar chart
@@ -150,24 +157,13 @@ const EmotionAnalytics = () => {
           </select>
         </div>
 
-        {/* Student Summary */}
-        {analyticsData?.studentSummary && (
-          <div className="bg-white p-6 rounded-lg shadow mb-6">
-            <h2 className="text-xl font-semibold mb-4">Student Progress Summary</h2>
-            <div className="prose max-w-none">
-              {analyticsData.studentSummary.split('\n').map((paragraph, index) => (
-                <p key={index} className="mb-4 text-gray-700">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* Stats */}
         <div className="grid grid-cols-3 gap-4 mb-6">
           {emotionClassData.map((item) => (
-            <div key={item.name} className="bg-white p-4 rounded-lg shadow text-center">
+            <div
+              key={item.name}
+              className="bg-white p-4 rounded-lg shadow text-center"
+            >
               <p className="text-sm text-gray-500">{item.name}</p>
               <p className="text-xl font-semibold">{item.value.toFixed(2)}%</p>
             </div>
@@ -268,6 +264,62 @@ const EmotionAnalytics = () => {
               </Bar>
             </BarChart>
           </ResponsiveContainer>
+        </div>
+
+        {/* Student Summary */}
+        <div className="mt-5">
+          {" "}
+          {analyticsData?.studentSummary && (
+            <div className="bg-white p-6 rounded-lg shadow mb-6">
+              <h2 className="text-xl font-semibold mb-4 text-gray-800">
+                Student Progress Summary
+              </h2>
+              <div className="prose max-w-none">
+                {analyticsData.studentSummary
+                  .split("\n")
+                  .map((paragraph, index) => {
+                    // Check if paragraph is a section header
+                    if (
+                      paragraph.startsWith("1. **Summary:**") ||
+                      paragraph.startsWith(
+                        "2. **Key Areas of Improvement:**"
+                      ) ||
+                      paragraph.startsWith(
+                        "3. **Recommendations for Better Engagement:**"
+                      )
+                    ) {
+                      return (
+                        <h3
+                          key={index}
+                          className="text-lg font-semibold text-gray-700 mt-4 mb-2"
+                        >
+                          {paragraph.replace(/^\d+\.\s+\*\*|\*\*:$/g, "")}
+                        </h3>
+                      );
+                    }
+                    // Check if paragraph is a bullet point
+                    else if (paragraph.trim().startsWith("*")) {
+                      return (
+                        <ul key={index} className="list-disc pl-6 mb-4">
+                          <li className="text-gray-600 mb-2">
+                            {paragraph.replace(/^\*\s+/, "")}
+                          </li>
+                        </ul>
+                      );
+                    }
+                    // Regular paragraph
+                    else if (paragraph.trim()) {
+                      return (
+                        <p key={index} className="text-gray-600 mb-4">
+                          {paragraph}
+                        </p>
+                      );
+                    }
+                    return null;
+                  })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
