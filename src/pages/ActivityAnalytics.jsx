@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   PieChart,
   Pie,
@@ -18,25 +18,72 @@ import {
 
 const COLORS = ["#00C49F", "#FF8042", "#0088FE"];
 
-const allTimeEmotionData = [
-  { name: "Engagement", value: 33.3 },
-  { name: "Frustration", value: 66.7 },
-  { name: "Distraction", value: 0 },
-];
-
-const hourlyLineData = [
-  { time: "0:00", engagement: 30, frustration: 70 },
-  { time: "1:00", engagement: 45, frustration: 55 },
-  { time: "2:00", engagement: 60, frustration: 40 },
-];
-
-const hourlyBarData = [
-  { hour: "0:00", engagement: 30, frustration: 70, distraction: 0 },
-  { hour: "1:00", engagement: 45, frustration: 45, distraction: 10 },
-  { hour: "2:00", engagement: 50, frustration: 30, distraction: 20 },
-];
-
 const EmotionAnalytics = () => {
+  const [selectedDate, setSelectedDate] = useState("2025-05-15");
+  const [selectedActivity, setSelectedActivity] = useState("2468");
+  const [analyticsData, setAnalyticsData] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  // Mock activities - replace with actual data from your backend
+  const activities = [
+    { id: "2468", name: "Number Recognition" },
+    { id: "2", name: "Addition Practice" },
+    { id: "3", name: "Subtraction Practice" },
+  ];
+
+  const fetchAnalyticsData = async () => {
+    if (!selectedDate || !selectedActivity) return;
+
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `http://localhost:8005/emotion/analytics?date=${selectedDate}&activityId=${selectedActivity}&studentId=12345678`
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log("Received data:", data);
+      setAnalyticsData(data);
+    } catch (error) {
+      console.error("Error fetching analytics:", error);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchAnalyticsData();
+  }, [selectedDate, selectedActivity]);
+
+  // Transform data for pie chart
+  const allTimeEmotionData = analyticsData?.allTimeData
+    ? [
+        { name: "Engagement", value: analyticsData.allTimeData.engagement },
+        { name: "Frustration", value: analyticsData.allTimeData.frustration },
+        { name: "Distraction", value: analyticsData.allTimeData.distraction },
+      ]
+    : [];
+
+  // Transform data for line chart
+  const hourlyLineData = analyticsData?.hourlyData
+    ? analyticsData.hourlyData.map((item) => ({
+        time: `${item.hour}:00`,
+        engagement: item.percentages.engagement,
+        frustration: item.percentages.frustration,
+        distraction: item.percentages.distraction,
+      }))
+    : [];
+
+  // Transform data for bar chart
+  const hourlyBarData = analyticsData?.hourlyData
+    ? analyticsData.hourlyData.map((item) => ({
+        hour: `${item.hour}:00`,
+        engagement: item.percentages.engagement,
+        frustration: item.percentages.frustration,
+        distraction: item.percentages.distraction,
+      }))
+    : [];
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
@@ -50,10 +97,19 @@ const EmotionAnalytics = () => {
           <input
             type="date"
             className="border px-4 py-2 rounded-md shadow-sm"
-            defaultValue="2025-05-15"
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
           />
-          <select className="border px-4 py-2 rounded-md shadow-sm">
-            <option>Number Recognition</option>
+          <select
+            className="border px-4 py-2 rounded-md shadow-sm"
+            value={selectedActivity}
+            onChange={(e) => setSelectedActivity(e.target.value)}
+          >
+            {activities.map((activity) => (
+              <option key={activity.id} value={activity.id}>
+                {activity.name}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -61,15 +117,21 @@ const EmotionAnalytics = () => {
         <div className="flex justify-center gap-8 mb-6 text-center">
           <div>
             <p className="text-sm text-gray-500">Engagement</p>
-            <p className="text-xl font-semibold">33.3%</p>
+            <p className="text-xl font-semibold">
+              {analyticsData?.allTimeData?.engagement.toFixed(1)}%
+            </p>
           </div>
           <div>
             <p className="text-sm text-gray-500">Frustration</p>
-            <p className="text-xl font-semibold">66.7%</p>
+            <p className="text-xl font-semibold">
+              {analyticsData?.allTimeData?.frustration.toFixed(1)}%
+            </p>
           </div>
           <div>
             <p className="text-sm text-gray-500">Distraction</p>
-            <p className="text-xl font-semibold">0%</p>
+            <p className="text-xl font-semibold">
+              {analyticsData?.allTimeData?.distraction.toFixed(1)}%
+            </p>
           </div>
         </div>
 
@@ -115,6 +177,7 @@ const EmotionAnalytics = () => {
                 <Legend />
                 <Line type="monotone" dataKey="engagement" stroke="#00C49F" />
                 <Line type="monotone" dataKey="frustration" stroke="#FF8042" />
+                <Line type="monotone" dataKey="distraction" stroke="#0088FE" />
               </LineChart>
             </ResponsiveContainer>
           </div>
