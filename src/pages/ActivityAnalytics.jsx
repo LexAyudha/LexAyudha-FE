@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   PieChart,
   Pie,
@@ -15,6 +15,8 @@ import {
   CartesianGrid,
   Legend,
 } from "recharts";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 // Colors for emotions and emotion classes
 const EMOTION_COLORS = [
@@ -38,6 +40,7 @@ const EmotionAnalytics = () => {
   const [selectedActivity, setSelectedActivity] = useState("2468");
   const [analyticsData, setAnalyticsData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const reportRef = useRef(null);
 
   // Mock activities - replace with actual data from your backend
   const activities = [
@@ -128,15 +131,74 @@ const EmotionAnalytics = () => {
       ]
     : [];
 
+  const generatePDF = async () => {
+    if (!reportRef.current) return;
+
+    try {
+      setLoading(true);
+      const canvas = await html2canvas(reportRef.current, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+      });
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      const imgX = (pdfWidth - imgWidth * ratio) / 2;
+      const imgY = 30;
+
+      pdf.addImage(imgData, "PNG", imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+
+      // Add header
+      pdf.setFontSize(20);
+      pdf.text("Student Emotion Analytics Report", pdfWidth / 2, 20, { align: "center" });
+
+      // Add footer
+      const footerText = `Generated on ${new Date().toLocaleDateString()}`;
+      pdf.setFontSize(10);
+      pdf.text(footerText, pdfWidth / 2, pdfHeight - 10, { align: "center" });
+
+      // Save the PDF
+      pdf.save(`emotion-analytics-report-${selectedDate}.pdf`);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
-        {/* Title */}
-        <h1 className="text-2xl font-bold text-center mb-6">
-          Student Emotion Analytics by Activity
-        </h1>
+        {/* Title and Download Button */}
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold text-center">
+            Student Emotion Analytics by Activity
+          </h1>
+          <button
+            onClick={generatePDF}
+            disabled={loading || !analyticsData}
+            className={`px-4 py-2 rounded-md text-white font-medium ${
+              loading || !analyticsData
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700"
+            }`}
+          >
+            {loading ? "Generating PDF..." : "Download Report"}
+          </button>
+        </div>
 
-        {/* Date & Activity */}
+        {/* Date & Activity Selectors */}
         <div className="flex flex-col md:flex-row justify-center gap-4 mb-6">
           <input
             type="date"
@@ -157,169 +219,162 @@ const EmotionAnalytics = () => {
           </select>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
-          {emotionClassData.map((item) => (
-            <div
-              key={item.name}
-              className="bg-white p-4 rounded-lg shadow text-center"
-            >
-              <p className="text-sm text-gray-500">{item.name}</p>
-              <p className="text-xl font-semibold">{item.value.toFixed(2)}%</p>
-            </div>
-          ))}
-        </div>
-
-        {/* All-time Emotion Distribution Bar Chart */}
-        <div className="bg-white p-4 rounded-lg shadow mb-6">
-          <h2 className="font-semibold mb-2 text-center">
-            All-Time Emotion Distribution
-          </h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={allTimeEmotionData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="emotion" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="value" fill="#8884d8">
-                {allTimeEmotionData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.fill} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Two charts side-by-side */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          {/* Emotion Class Pie Chart */}
-          <div className="bg-white p-4 rounded-lg shadow">
-            <h2 className="font-semibold mb-2">
-              All-Time Emotion Class Distribution
-            </h2>
-            <ResponsiveContainer width="100%" height={250}>
-              <PieChart>
-                <Pie
-                  data={emotionClassData}
-                  cx="50%"
-                  cy="50%"
-                  label
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {emotionClassData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={Object.values(CLASS_COLORS)[index]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
+        {/* Report Content */}
+        <div ref={reportRef} className="bg-white p-6 rounded-lg shadow">
+          {/* Stats */}
+          <div className="grid grid-cols-3 gap-4 mb-6">
+            {emotionClassData.map((item) => (
+              <div
+                key={item.name}
+                className="bg-white p-4 rounded-lg shadow text-center"
+              >
+                <p className="text-sm text-gray-500">{item.name}</p>
+                <p className="text-xl font-semibold">{item.value.toFixed(2)}%</p>
+              </div>
+            ))}
           </div>
 
-          {/* All-time Emotion Trend Line Chart */}
-          <div className="bg-white p-4 rounded-lg shadow">
-            <h2 className="font-semibold mb-2">All-Time Emotion Trend</h2>
-            <ResponsiveContainer width="100%" height={250}>
-              <LineChart data={allTimeTrendData}>
+          {/* All-time Emotion Distribution Bar Chart */}
+          <div className="bg-white p-4 rounded-lg shadow mb-6">
+            <h2 className="font-semibold mb-2 text-center">
+              All-Time Emotion Distribution
+            </h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={allTimeEmotionData}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
+                <XAxis dataKey="emotion" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                {allTimeEmotionData.map((item, index) => (
-                  <Line
-                    key={item.emotion}
-                    type="monotone"
-                    dataKey={item.emotion.toLowerCase()}
-                    stroke={EMOTION_COLORS[index % EMOTION_COLORS.length]}
-                  />
-                ))}
-              </LineChart>
+                <Bar dataKey="value" fill="#8884d8">
+                  {allTimeEmotionData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.fill} />
+                  ))}
+                </Bar>
+              </BarChart>
             </ResponsiveContainer>
           </div>
-        </div>
 
-        {/* Emotion Class Bar Chart */}
-        <div className="bg-white p-4 rounded-lg shadow max-w-3xl mx-auto">
-          <h2 className="font-semibold mb-2 text-center">
-            All-Time Emotion Class Distribution
-          </h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={emotionClassBarData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="class" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="value" fill="#8884d8">
-                {emotionClassBarData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.fill} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Student Summary */}
-        <div className="mt-5">
-          {" "}
-          {analyticsData?.studentSummary && (
-            <div className="bg-white p-6 rounded-lg shadow mb-6">
-              <h2 className="text-xl font-semibold mb-4 text-gray-800">
-                Student Progress Summary
+          {/* Two charts side-by-side */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            {/* Emotion Class Pie Chart */}
+            <div className="bg-white p-4 rounded-lg shadow">
+              <h2 className="font-semibold mb-2">
+                All-Time Emotion Class Distribution
               </h2>
-              <div className="prose max-w-none">
-                {analyticsData.studentSummary
-                  .split("\n")
-                  .map((paragraph, index) => {
-                    // Check if paragraph is a section header
-                    if (
-                      paragraph.startsWith("1. **Summary:**") ||
-                      paragraph.startsWith(
-                        "2. **Key Areas of Improvement:**"
-                      ) ||
-                      paragraph.startsWith(
-                        "3. **Recommendations for Better Engagement:**"
-                      )
-                    ) {
-                      return (
-                        <h3
-                          key={index}
-                          className="text-lg font-semibold text-gray-700 mt-4 mb-2"
-                        >
-                          {paragraph.replace(/^\d+\.\s+\*\*|\*\*:$/g, "")}
-                        </h3>
-                      );
-                    }
-                    // Check if paragraph is a bullet point
-                    else if (paragraph.trim().startsWith("*")) {
-                      return (
-                        <ul key={index} className="list-disc pl-6 mb-4">
-                          <li className="text-gray-600 mb-2">
-                            {paragraph.replace(/^\*\s+/, "")}
-                          </li>
-                        </ul>
-                      );
-                    }
-                    // Regular paragraph
-                    else if (paragraph.trim()) {
-                      return (
-                        <p key={index} className="text-gray-600 mb-4">
-                          {paragraph}
-                        </p>
-                      );
-                    }
-                    return null;
-                  })}
-              </div>
+              <ResponsiveContainer width="100%" height={250}>
+                <PieChart>
+                  <Pie
+                    data={emotionClassData}
+                    cx="50%"
+                    cy="50%"
+                    label
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {emotionClassData.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={Object.values(CLASS_COLORS)[index]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
-          )}
+
+            {/* All-time Emotion Trend Line Chart */}
+            <div className="bg-white p-4 rounded-lg shadow">
+              <h2 className="font-semibold mb-2">All-Time Emotion Trend</h2>
+              <ResponsiveContainer width="100%" height={250}>
+                <LineChart data={allTimeTrendData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  {allTimeEmotionData.map((item, index) => (
+                    <Line
+                      key={item.emotion}
+                      type="monotone"
+                      dataKey={item.emotion.toLowerCase()}
+                      stroke={EMOTION_COLORS[index % EMOTION_COLORS.length]}
+                    />
+                  ))}
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Emotion Class Bar Chart */}
+          <div className="bg-white p-4 rounded-lg shadow max-w-3xl mx-auto">
+            <h2 className="font-semibold mb-2 text-center">
+              All-Time Emotion Class Distribution
+            </h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={emotionClassBarData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="class" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="value" fill="#8884d8">
+                  {emotionClassBarData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.fill} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Student Summary */}
+          <div className="mt-5">
+            {analyticsData?.studentSummary && (
+              <div className="bg-white p-6 rounded-lg shadow mb-6">
+                <h2 className="text-xl font-semibold mb-4 text-gray-800">
+                  Student Progress Summary
+                </h2>
+                <div className="prose max-w-none">
+                  {analyticsData.studentSummary
+                    .split("\n")
+                    .map((paragraph, index) => {
+                      if (
+                        paragraph.startsWith("1. **Summary:**") ||
+                        paragraph.startsWith("2. **Key Areas of Improvement:**") ||
+                        paragraph.startsWith("3. **Recommendations for Better Engagement:**")
+                      ) {
+                        return (
+                          <h3
+                            key={index}
+                            className="text-lg font-semibold text-gray-700 mt-4 mb-2"
+                          >
+                            {paragraph.replace(/^\d+\.\s+\*\*|\*\*:$/g, "")}
+                          </h3>
+                        );
+                      } else if (paragraph.trim().startsWith("*")) {
+                        return (
+                          <ul key={index} className="list-disc pl-6 mb-4">
+                            <li className="text-gray-600 mb-2">
+                              {paragraph.replace(/^\*\s+/, "")}
+                            </li>
+                          </ul>
+                        );
+                      } else if (paragraph.trim()) {
+                        return (
+                          <p key={index} className="text-gray-600 mb-4">
+                            {paragraph}
+                          </p>
+                        );
+                      }
+                      return null;
+                    })}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
