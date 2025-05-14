@@ -1,148 +1,146 @@
-import React, { useState, useEffect } from "react";
-import { DatePicker, Select, Card, Row, Col } from "antd";
-import { Pie, Bar, Line } from "@ant-design/plots";
-import dayjs from "dayjs";
+"use client";
+import React from "react";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  BarChart,
+  Bar,
+  ResponsiveContainer,
+  CartesianGrid,
+  Legend,
+} from "recharts";
 
-const { Option } = Select;
+const COLORS = ["#00C49F", "#FF8042", "#0088FE"];
 
-const ActivityAnalytics = () => {
-  const [selectedDate, setSelectedDate] = useState(dayjs());
-  const [selectedActivity, setSelectedActivity] = useState(null);
-  const [analyticsData, setAnalyticsData] = useState(null);
-  const [loading, setLoading] = useState(false);
+const allTimeEmotionData = [
+  { name: "Engagement", value: 33.3 },
+  { name: "Frustration", value: 66.7 },
+  { name: "Distraction", value: 0 },
+];
 
-  // Mock activities - replace with actual data from your backend
-  const activities = [
-    { id: "2468", name: "Number Recognition" },
-    { id: "2", name: "Addition Practice" },
-    { id: "3", name: "Subtraction Practice" },
-  ];
+const hourlyLineData = [
+  { time: "0:00", engagement: 30, frustration: 70 },
+  { time: "1:00", engagement: 45, frustration: 55 },
+  { time: "2:00", engagement: 60, frustration: 40 },
+];
 
-  const fetchAnalyticsData = async () => {
-    if (!selectedDate || !selectedActivity) return;
+const hourlyBarData = [
+  { hour: "0:00", engagement: 30, frustration: 70, distraction: 0 },
+  { hour: "1:00", engagement: 45, frustration: 45, distraction: 10 },
+  { hour: "2:00", engagement: 50, frustration: 30, distraction: 20 },
+];
 
-    setLoading(true);
-    try {
-      const response = await fetch(
-        `http://localhost:8005/emotion/analytics?date=${selectedDate.format(
-          "YYYY-MM-DD"
-        )}&activityId=${selectedActivity}&studentId=12345678`
-      );
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      setAnalyticsData(data);
-    } catch (error) {
-      console.error("Error fetching analytics:", error);
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchAnalyticsData();
-  }, [selectedDate, selectedActivity]);
-
-  const pieConfig = {
-    data: analyticsData?.allTimeData
-      ? [
-          { type: "Engagement", value: analyticsData.allTimeData.engagement },
-          { type: "Frustration", value: analyticsData.allTimeData.frustration },
-          { type: "Distraction", value: analyticsData.allTimeData.distraction },
-        ]
-      : [],
-    angleField: "value",
-    colorField: "type",
-    radius: 0.8,
-    label: {
-      type: "outer",
-      content: "{name} {percentage}",
-    },
-    interactions: [{ type: "element-active" }],
-  };
-
-  const lineConfig = {
-    data:
-      analyticsData?.hourlyData?.map((item) => ({
-        hour: `${item.hour}:00`,
-        engagement: item.percentages.engagement,
-        frustration: item.percentages.frustration,
-        distraction: item.percentages.distraction,
-      })) || [],
-    xField: "hour",
-    yField: "value",
-    seriesField: "type",
-    point: {
-      size: 5,
-      shape: "diamond",
-    },
-  };
-
-  const barConfig = {
-    data:
-      analyticsData?.hourlyData?.map((item) => ({
-        hour: `${item.hour}:00`,
-        engagement: item.percentages.engagement,
-        frustration: item.percentages.frustration,
-        distraction: item.percentages.distraction,
-      })) || [],
-    xField: "hour",
-    yField: "value",
-    seriesField: "type",
-    isGroup: true,
-    columnStyle: {
-      radius: [20, 20, 0, 0],
-    },
-  };
-
+const EmotionAnalytics = () => {
   return (
-    <div style={{ padding: "24px" }}>
-      <Row gutter={[16, 16]} style={{ marginBottom: "24px" }}>
-        <Col>
-          <DatePicker
-            value={selectedDate}
-            onChange={setSelectedDate}
-            style={{ width: 200 }}
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-6xl mx-auto">
+        {/* Title */}
+        <h1 className="text-2xl font-bold text-center mb-6">
+          Student Emotion Analytics by Activity
+        </h1>
+
+        {/* Date & Activity */}
+        <div className="flex flex-col md:flex-row justify-center gap-4 mb-6">
+          <input
+            type="date"
+            className="border px-4 py-2 rounded-md shadow-sm"
+            defaultValue="2025-05-15"
           />
-        </Col>
-        <Col>
-          <Select
-            value={selectedActivity}
-            onChange={setSelectedActivity}
-            style={{ width: 200 }}
-            placeholder="Select Activity"
-          >
-            {activities.map((activity) => (
-              <Option key={activity.id} value={activity.id}>
-                {activity.name}
-              </Option>
-            ))}
-          </Select>
-        </Col>
-      </Row>
+          <select className="border px-4 py-2 rounded-md shadow-sm">
+            <option>Number Recognition</option>
+          </select>
+        </div>
 
-      <Row gutter={[16, 16]}>
-        <Col span={12}>
-          <Card title="All-Time Emotion Distribution" loading={loading}>
-            <Pie {...pieConfig} />
-          </Card>
-        </Col>
-        <Col span={12}>
-          <Card title="Hourly Emotion Trends" loading={loading}>
-            <Line {...lineConfig} />
-          </Card>
-        </Col>
-      </Row>
+        {/* Stats */}
+        <div className="flex justify-center gap-8 mb-6 text-center">
+          <div>
+            <p className="text-sm text-gray-500">Engagement</p>
+            <p className="text-xl font-semibold">33.3%</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">Frustration</p>
+            <p className="text-xl font-semibold">66.7%</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">Distraction</p>
+            <p className="text-xl font-semibold">0%</p>
+          </div>
+        </div>
 
-      <Row style={{ marginTop: "24px" }}>
-        <Col span={24}>
-          <Card title="Hourly Emotion Comparison" loading={loading}>
-            <Bar {...barConfig} />
-          </Card>
-        </Col>
-      </Row>
+        {/* Two charts side-by-side */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          {/* Pie Chart */}
+          <div className="bg-white p-4 rounded-lg shadow">
+            <h2 className="font-semibold mb-2">
+              All-Time Emotion Distribution (Pie)
+            </h2>
+            <ResponsiveContainer width="100%" height={250}>
+              <PieChart>
+                <Pie
+                  data={allTimeEmotionData}
+                  cx="50%"
+                  cy="50%"
+                  label
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {allTimeEmotionData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Line Chart */}
+          <div className="bg-white p-4 rounded-lg shadow">
+            <h2 className="font-semibold mb-2">Hourly Emotion Trend (Line)</h2>
+            <ResponsiveContainer width="100%" height={250}>
+              <LineChart data={hourlyLineData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="time" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="engagement" stroke="#00C49F" />
+                <Line type="monotone" dataKey="frustration" stroke="#FF8042" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Bar Chart Centered */}
+        <div className="bg-white p-4 rounded-lg shadow max-w-3xl mx-auto">
+          <h2 className="font-semibold mb-2 text-center">
+            Hourly Emotion Comparison (Bar)
+          </h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={hourlyBarData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="hour" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="engagement" fill="#00C49F" />
+              <Bar dataKey="frustration" fill="#FF8042" />
+              <Bar dataKey="distraction" fill="#0088FE" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default ActivityAnalytics;
+export default EmotionAnalytics;
