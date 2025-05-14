@@ -35,38 +35,59 @@ export default function DashTraining({ userData }) {
     },
   ];
 
+  const handleGetReport = () => {
+
+  }
+
   return (
     <div className="flex h-[calc(100%-20px)] flex-col justify-between">
-      <div className="flex w-full">
-        <div className="flex w-[50%] flex-col">
-          <h3 className=" font-bold">Previous Session Details</h3>
-          <p>
-            <span className="font-bold">Date: </span>
-            {res.data.training.session.date
-              ? res.data.training.session.date
-              : "N/A"}
-          </p>
-          <p>
-            <span className="font-bold">Time: </span>
-            {res.data.training.session.time
-              ? res.data.training.session.time
-              : "N/A"}
-          </p>
-          <p>
-            <span className="font-bold">Status: </span>
-            {res.data.training.session.status
-              ? res.data.training.session.status
-              : "N/A"}
-          </p>
-          <p>
-            <span className="font-bold">Session ID: </span>
-            {res.data.training.session.Id
-              ? res.data.training.session.Id
-              : "N/A"}
-          </p>
+      <div className="flex flex-col w-full lg:h-[250px] items-start lg:flex-row">
+        <div className="flex w-full lg:w-[50%] h-[100%] flex-col">
+          <h3 className=" font-bold mb-[30px]">Previous Session Details</h3>
+          <div className=" hover:h-full lg:h-[63%] transition-all duration-300 ease-in-out px-[15px] py-[15px] group theme-glass rounded-[8px] shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)]">
+            <p>
+              <span className="">Date: </span>
+              <span className="text-[var(--slate-gray)]">
+                {res?.data?.training?.session?.date
+                  ? res?.data?.training?.session?.date
+                  : "N/A"}
+              </span>
+              
+            </p>
+            <p>
+              <span className="">Time: </span>
+              <span className="text-[var(--slate-gray)]">
+              {res?.data?.training?.session?.time
+                ? res?.data?.training?.session?.time
+                : "N/A"}
+              </span>
+            </p>
+            <p>
+              <span className="">Status: </span>
+              <span className="text-[var(--slate-gray)]">
+              {res?.data?.training?.session?.status
+                ? res?.data?.training?.session?.status
+                : "N/A"}
+              </span>
+              
+            </p>
+            <p>
+              <span className="">Session ID: </span>
+              <span className="text-[var(--slate-gray)]">
+              {res?.data?.training?.session?.Id
+                ? res?.data?.training?.session?.Id
+                : "N/A"}
+              </span>
+              
+            </p>
+            <div className=" lg:opacity-0 lg:-translate-y-2 lg:group-hover:block lg:group-hover:opacity-1 lg:group-hover:translate-y-0 transition-all duration-200 ease-out">
+              <button onClick={handleGetReport} className="flex items-center w-full text-center text-white rounded-[6px] bg-[#1574F9] hover:bg-[#3E91F6] transition-all duration-300 justify-center p-[10px] mt-5 text-sm ">Get Full Report</button>
+            </div>
+          </div>
+
         </div>
-        <div className="flex w-[50%] flex-col justify-center  items-end">
-          <div className="w-[65%] flex justify-center items-center ">
+        <div className="flex lg:w-[50%] w-full mt-10 lg:mt-0 flex-col justify-center  items-end">
+          <div className="lg:w-[65%] w-full flex justify-center items-center ">
             <div className="flex flex-col w-full">
               <h3 className=" font-bold mb-7">My Trophies</h3>
               <div className="flex items-center justify-center flex-col">
@@ -74,6 +95,7 @@ export default function DashTraining({ userData }) {
                   className=" w-[100px] h-fit object-cover"
                   src={trophies[0].icon}
                   alt={trophies[0].name}
+                  loading="lazy"
                 />
                 <h4 className="font-bold">{trophies[0].name}</h4>
                 <p>{trophies[0].desc}</p>
@@ -82,7 +104,7 @@ export default function DashTraining({ userData }) {
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-center py-5">
+      <div className="flex items-center justify-center pt-5">
         <Button
           type="primary"
           className="w-[200px]"
@@ -92,7 +114,7 @@ export default function DashTraining({ userData }) {
         >
           Start Training
         </Button>
-        
+
       </div>
     </div>
   );

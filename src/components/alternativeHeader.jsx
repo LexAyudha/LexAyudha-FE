@@ -1,36 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import logo from '../assets/lexLogo.png'
-import { decodeToken } from '../utils/tokenUtils';
-import axiosInstance from '../api/axiosInstance';
+import {getUserDetails} from '../api/RecurringAPI'
 import { DownOutlined, SettingOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
-
+import { useQuery } from '@tanstack/react-query';
 
 
 export default function AlternativeHeader({ title = 'LexAyudha' }) {
-    const [user, setUser] = useState()
-    useEffect(() => {
-        getUserDetails()
-    }, []);
-    const getUserDetails = async () => {
-        const parsedToken = decodeToken('refreshToken')
+    
+    
+    const { data:user, isLoading, error } = useQuery({
+        queryKey: ['userData'],
+        queryFn: () => getUserDetails(),
 
-        try {
-            if (parsedToken) {
-                const res = await axiosInstance.get(`/user/${parsedToken?.userId}`)
-
-                if (res?.status === 200) {
-
-                    setUser(res?.data)
-
-                }
-            }
-
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
+    });
+   
     const handleRedirect  = (redirectPath) => {
        
         window.location.href = redirectPath
@@ -103,7 +87,7 @@ export default function AlternativeHeader({ title = 'LexAyudha' }) {
                             </a>
                         </Dropdown>
                     </div>
-                    <img src={user?.proPic} alt='' className='w-[45px] h-[45px] rounded-full cursor-pointer' onClick={()=>handleRedirect(`/dashboard/${user?._id}`)}></img>
+                    <img src={user?.proPic} loading="lazy" alt='' className='w-[45px] h-[45px] rounded-full cursor-pointer' onClick={()=>handleRedirect(`/dashboard/${user?._id}`)}></img>
                 </div>
             </div>
 
