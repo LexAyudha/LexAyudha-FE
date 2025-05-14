@@ -16,8 +16,8 @@ import {
   Legend,
 } from "recharts";
 
-// Colors for 7 emotions
-const COLORS = [
+// Colors for emotions and emotion classes
+const EMOTION_COLORS = [
   "#00C49F", // happy
   "#FF8042", // angry
   "#0088FE", // surprise
@@ -26,6 +26,12 @@ const COLORS = [
   "#8884D8", // disgust
   "#82CA9D", // neutral
 ];
+
+const CLASS_COLORS = {
+  engagement: "#00C49F",
+  frustration: "#FF8042",
+  distraction: "#0088FE"
+};
 
 const EmotionAnalytics = () => {
   const [selectedDate, setSelectedDate] = useState("2025-05-15");
@@ -64,21 +70,8 @@ const EmotionAnalytics = () => {
     fetchAnalyticsData();
   }, [selectedDate, selectedActivity]);
 
-  // Transform data for pie chart
+  // Transform data for all-time emotion distribution bar chart
   const allTimeEmotionData = analyticsData?.dailyData
-    ? Object.entries(
-        analyticsData.dailyData.reduce((acc, curr) => {
-          acc[curr.Emotion] = (acc[curr.Emotion] || 0) + 1;
-          return acc;
-        }, {})
-      ).map(([emotion, count]) => ({
-        name: emotion.charAt(0).toUpperCase() + emotion.slice(1),
-        value: (count / analyticsData.dailyData.length) * 100,
-      }))
-    : [];
-
-  // Transform data for all-time bar chart
-  const allTimeBarData = analyticsData?.dailyData
     ? Object.entries(
         analyticsData.dailyData.reduce((acc, curr) => {
           acc[curr.Emotion] = (acc[curr.Emotion] || 0) + 1;
@@ -87,36 +80,59 @@ const EmotionAnalytics = () => {
       ).map(([emotion, count], index) => ({
         emotion: emotion.charAt(0).toUpperCase() + emotion.slice(1),
         value: (count / analyticsData.dailyData.length) * 100,
-        fill: COLORS[index % COLORS.length],
+        fill: EMOTION_COLORS[index % EMOTION_COLORS.length],
       }))
     : [];
 
-  // Transform data for line chart
-  const hourlyLineData = analyticsData?.hourlyData
-    ? analyticsData.hourlyData.map((item) => {
-        const hourData = {
-          time: `${item.hour}:00`,
-        };
-        // Add each emotion's percentage
-        Object.entries(item.percentages).forEach(([emotion, value]) => {
-          hourData[emotion] = value;
+  // Transform data for emotion class pie chart
+  const emotionClassData = analyticsData?.allTimeData
+    ? [
+        { name: "Engagement", value: analyticsData.allTimeData.engagement },
+        { name: "Frustration", value: analyticsData.allTimeData.frustration },
+        { name: "Distraction", value: analyticsData.allTimeData.distraction },
+      ]
+    : [];
+
+  // Transform data for all-time emotion trend line chart
+  const allTimeTrendData = analyticsData?.dailyData
+    ? Object.entries(
+        analyticsData.dailyData.reduce((acc, curr) => {
+          const date = curr.TimeStamp.split(" ")[0];
+          if (!acc[date]) {
+            acc[date] = {};
+          }
+          acc[date][curr.Emotion] = (acc[date][curr.Emotion] || 0) + 1;
+          return acc;
+        }, {})
+      ).map(([date, emotions]) => {
+        const total = Object.values(emotions).reduce((sum, count) => sum + count, 0);
+        const data = { date };
+        Object.entries(emotions).forEach(([emotion, count]) => {
+          data[emotion] = (count / total) * 100;
         });
-        return hourData;
+        return data;
       })
     : [];
 
-  // Transform data for bar chart
-  const hourlyBarData = analyticsData?.hourlyData
-    ? analyticsData.hourlyData.map((item) => {
-        const hourData = {
-          hour: `${item.hour}:00`,
-        };
-        // Add each emotion's percentage
-        Object.entries(item.percentages).forEach(([emotion, value]) => {
-          hourData[emotion] = value;
-        });
-        return hourData;
-      })
+  // Transform data for emotion class bar chart
+  const emotionClassBarData = analyticsData?.allTimeData
+    ? [
+        {
+          class: "Engagement",
+          value: analyticsData.allTimeData.engagement,
+          fill: CLASS_COLORS.engagement,
+        },
+        {
+          class: "Frustration",
+          value: analyticsData.allTimeData.frustration,
+          fill: CLASS_COLORS.frustration,
+        },
+        {
+          class: "Distraction",
+          value: analyticsData.allTimeData.distraction,
+          fill: CLASS_COLORS.distraction,
+        },
+      ]
     : [];
 
   return (
@@ -135,7 +151,7 @@ const EmotionAnalytics = () => {
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
           />
-          <select 
+          <select
             className="border px-4 py-2 rounded-md shadow-sm"
             value={selectedActivity}
             onChange={(e) => setSelectedActivity(e.target.value)}
@@ -149,29 +165,29 @@ const EmotionAnalytics = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          {allTimeBarData.map((item, index) => (
-            <div key={item.emotion} className="bg-white p-4 rounded-lg shadow text-center">
-              <p className="text-sm text-gray-500">{item.emotion}</p>
+        <div className="grid grid-cols-3 gap-4 mb-6">
+          {emotionClassData.map((item) => (
+            <div key={item.name} className="bg-white p-4 rounded-lg shadow text-center">
+              <p className="text-sm text-gray-500">{item.name}</p>
               <p className="text-xl font-semibold">{item.value.toFixed(1)}%</p>
             </div>
           ))}
         </div>
 
-        {/* All-time Bar Chart */}
+        {/* All-time Emotion Distribution Bar Chart */}
         <div className="bg-white p-4 rounded-lg shadow mb-6">
           <h2 className="font-semibold mb-2 text-center">
             All-Time Emotion Distribution
           </h2>
           <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={allTimeBarData}>
+            <BarChart data={allTimeEmotionData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="emotion" />
               <YAxis />
               <Tooltip />
               <Legend />
               <Bar dataKey="value" fill="#8884d8">
-                {allTimeBarData.map((entry, index) => (
+                {allTimeEmotionData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.fill} />
                 ))}
               </Bar>
@@ -181,15 +197,15 @@ const EmotionAnalytics = () => {
 
         {/* Two charts side-by-side */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          {/* Pie Chart */}
+          {/* Emotion Class Pie Chart */}
           <div className="bg-white p-4 rounded-lg shadow">
             <h2 className="font-semibold mb-2">
-              All-Time Emotion Distribution (Pie)
+              All-Time Emotion Class Distribution
             </h2>
             <ResponsiveContainer width="100%" height={250}>
               <PieChart>
                 <Pie
-                  data={allTimeEmotionData}
+                  data={emotionClassData}
                   cx="50%"
                   cy="50%"
                   label
@@ -197,10 +213,10 @@ const EmotionAnalytics = () => {
                   fill="#8884d8"
                   dataKey="value"
                 >
-                  {allTimeEmotionData.map((entry, index) => (
+                  {emotionClassData.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
+                      fill={Object.values(CLASS_COLORS)[index]}
                     />
                   ))}
                 </Pie>
@@ -210,22 +226,22 @@ const EmotionAnalytics = () => {
             </ResponsiveContainer>
           </div>
 
-          {/* Line Chart */}
+          {/* All-time Emotion Trend Line Chart */}
           <div className="bg-white p-4 rounded-lg shadow">
-            <h2 className="font-semibold mb-2">Hourly Emotion Trend (Line)</h2>
+            <h2 className="font-semibold mb-2">All-Time Emotion Trend</h2>
             <ResponsiveContainer width="100%" height={250}>
-              <LineChart data={hourlyLineData}>
+              <LineChart data={allTimeTrendData}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="time" />
+                <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                {allTimeBarData.map((item, index) => (
+                {allTimeEmotionData.map((item, index) => (
                   <Line
                     key={item.emotion}
                     type="monotone"
                     dataKey={item.emotion.toLowerCase()}
-                    stroke={COLORS[index % COLORS.length]}
+                    stroke={EMOTION_COLORS[index % EMOTION_COLORS.length]}
                   />
                 ))}
               </LineChart>
@@ -233,25 +249,23 @@ const EmotionAnalytics = () => {
           </div>
         </div>
 
-        {/* Bar Chart Centered */}
+        {/* Emotion Class Bar Chart */}
         <div className="bg-white p-4 rounded-lg shadow max-w-3xl mx-auto">
           <h2 className="font-semibold mb-2 text-center">
-            Hourly Emotion Comparison (Bar)
+            All-Time Emotion Class Distribution
           </h2>
           <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={hourlyBarData}>
+            <BarChart data={emotionClassBarData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="hour" />
+              <XAxis dataKey="class" />
               <YAxis />
               <Tooltip />
               <Legend />
-              {allTimeBarData.map((item, index) => (
-                <Bar
-                  key={item.emotion}
-                  dataKey={item.emotion.toLowerCase()}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
+              <Bar dataKey="value" fill="#8884d8">
+                {emotionClassBarData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.fill} />
+                ))}
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>
