@@ -10,6 +10,8 @@ const EmotionDetection = ({
   onModalAction,
   disablePopup,
   number,
+  studentId,
+  activityId,
 }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -76,6 +78,10 @@ const EmotionDetection = ({
       fetch("http://localhost:8005/emotion/predict", {
         method: "POST",
         body: formData,
+        headers: {
+          'Student-Id': studentId,
+          'Activity-Id': activityId
+        }
       })
         .then((response) => response.json())
         .then((data) => {
@@ -93,7 +99,7 @@ const EmotionDetection = ({
         })
         .catch((error) => console.error("Error sending frame:", error));
     }, "image/jpeg");
-  }, [disablePopup]);
+  }, [disablePopup, studentId, activityId]);
 
   useEffect(() => {
     const startVideoCapture = async () => {
