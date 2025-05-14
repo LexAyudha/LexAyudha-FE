@@ -9,8 +9,8 @@ import NotFound from "../components/notFoundPage.jsx";
 //touch-math
 import PNumber0 from "../components/touch-math/PracticingComponent/PNumber0.jsx";
 import TNumber0 from "../components/touch-math/TeachingComponents/TNumber0.jsx";
-import TNumberSense from "../components/touch-math/Number_Sense/Teaching_Number_Sense.jsx"
-import NumberSenseQuiz from "../components/touch-math/Number_Sense/Number_sense_quiz.jsx"
+import TNumberSense from "../components/touch-math/Number_Sense/Teaching_Number_Sense.jsx";
+import NumberSenseQuiz from "../components/touch-math/Number_Sense/Number_sense_quiz.jsx";
 import Addition from "../components/touch-math/Exercises/Addition.jsx";
 import Subtraction from "../components/touch-math/Exercises/Subtraction.jsx";
 import Addition2 from "../components/touch-math/Exercises/AdditionLevel2.jsx";
@@ -27,6 +27,8 @@ import SelectTrainingPage from "../pages/SelectTraining.jsx";
 import DyslexicTrainingControlPanel from "../pages/dyslexicTrainingControlPanel.jsx";
 import DyscalculiaTrainingControlPanel from "../pages/dyscalculiaTrainingControlPanel.jsx";
 import DyslexicScreenReader from "../pages/dyslexic/dyslexicScreenReader.jsx";
+
+import ActivityAnalytics from "../pages/ActivityAnalytics.jsx";
 
 const Router = () => {
   //   const ProtectedRoute = ({ children }) => {
@@ -104,12 +106,23 @@ const Router = () => {
       <Route path="/config-onboarding" element={<ConfigOnBoardingPage />} />
       <Route path="/speechCalibration" element={<SpeechCalibPage />} />
       <Route path="/selectTraining" element={<SelectTrainingPage />} />
-      <Route path="/dyslexic-training" element={<DyslexicTrainingControlPanel />} />
-      <Route path="/dyscalculic-training" element={<DyscalculiaTrainingControlPanel />}/>
+      <Route
+        path="/dyslexic-training"
+        element={<DyslexicTrainingControlPanel />}
+      />
+      <Route
+        path="/dyscalculic-training"
+        element={<DyscalculiaTrainingControlPanel />}
+      />
+
+      <Route path="/analytics" element={<ActivityAnalytics />} />
 
       {/* Dyslexic training */}
-      <Route path ='/screen-reader-lessons/:id' element={<DyslexicScreenReader/>}/>
-      
+      <Route
+        path="/screen-reader-lessons/:id"
+        element={<DyslexicScreenReader />}
+      />
+
       {/* touch maths */}
       <Route path="/touch-math/teaching_number" element={<TNumber0 />} />
 
@@ -117,19 +130,28 @@ const Router = () => {
 
       <Route path="/touch-math/quiz_number/:id" element={<PNumber0 />} />
 
-      <Route path="/touch-math/teaching-number-sense" element={<TNumberSense />} />
-      <Route path="/touch-math/quiz-number-sense" element={<NumberSenseQuiz />} />
+      <Route
+        path="/touch-math/teaching-number-sense"
+        element={<TNumberSense />}
+      />
+      <Route
+        path="/touch-math/quiz-number-sense"
+        element={<NumberSenseQuiz />}
+      />
 
       <Route path="/touch-math/teaching-addition" element={<TAddition />} />
-      <Route path="/touch-math/teaching-subtraction" element={<TSubtraction />} />
-      
+      <Route
+        path="/touch-math/teaching-subtraction"
+        element={<TSubtraction />}
+      />
+
       <Route path="/practice-addition" element={<Addition />} />
       <Route path="/practice-substraction" element={<Subtraction />} />
       <Route path="/addition_level2" element={<Addition2 />} />
 
       <Route path="/quiz_addition" element={<QAddition />} />
       <Route path="/quiz_subtraction" element={<QSubtraction />} />
-      
+
       {/* Catch-all route for 404 */}
       <Route path="*" element={<NotFound />} />
     </Routes>
