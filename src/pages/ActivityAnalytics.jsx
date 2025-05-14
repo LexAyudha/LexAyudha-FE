@@ -131,6 +131,21 @@ const EmotionAnalytics = () => {
       ]
     : [];
 
+  // Transform data for selected date's emotion distribution
+  const selectedDateEmotionData = analyticsData?.dailyData
+    ? Object.entries(
+        analyticsData.dailyData.reduce((acc, entry) => {
+          const emotion = entry.Emotion;
+          acc[emotion] = (acc[emotion] || 0) + 1;
+          return acc;
+        }, {})
+      ).map(([emotion, count], index) => ({
+        emotion: emotion.charAt(0).toUpperCase() + emotion.slice(1),
+        value: (count / analyticsData.dailyData.length) * 100,
+        fill: EMOTION_COLORS[index % EMOTION_COLORS.length],
+      }))
+    : [];
+
   const generatePDF = async () => {
     if (!reportRef.current) return;
 
@@ -232,6 +247,27 @@ const EmotionAnalytics = () => {
                 <p className="text-xl font-semibold">{item.value.toFixed(2)}%</p>
               </div>
             ))}
+          </div>
+
+          {/* Selected Date's Emotion Distribution Bar Chart */}
+          <div className="bg-white p-4 rounded-lg shadow mb-6">
+            <h2 className="font-semibold mb-2 text-center">
+              Selected Date's Emotion Distribution ({selectedDate})
+            </h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={selectedDateEmotionData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="emotion" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="value" fill="#8884d8">
+                  {selectedDateEmotionData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.fill} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
           </div>
 
           {/* All-time Emotion Distribution Bar Chart */}
