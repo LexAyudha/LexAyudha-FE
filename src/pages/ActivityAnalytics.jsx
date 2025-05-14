@@ -71,15 +71,10 @@ const EmotionAnalytics = () => {
   }, [selectedDate, selectedActivity]);
 
   // Transform data for all-time emotion distribution bar chart
-  const allTimeEmotionData = analyticsData?.dailyData
-    ? Object.entries(
-        analyticsData.dailyData.reduce((acc, curr) => {
-          acc[curr.Emotion] = (acc[curr.Emotion] || 0) + 1;
-          return acc;
-        }, {})
-      ).map(([emotion, count], index) => ({
+  const allTimeEmotionData = analyticsData?.allTimeData?.emotions
+    ? Object.entries(analyticsData.allTimeData.emotions).map(([emotion, count], index) => ({
         emotion: emotion.charAt(0).toUpperCase() + emotion.slice(1),
-        value: (count / analyticsData.dailyData.length) * 100,
+        value: (count / analyticsData.allTimeData.total) * 100,
         fill: EMOTION_COLORS[index % EMOTION_COLORS.length],
       }))
     : [];
@@ -94,17 +89,8 @@ const EmotionAnalytics = () => {
     : [];
 
   // Transform data for all-time emotion trend line chart
-  const allTimeTrendData = analyticsData?.dailyData
-    ? Object.entries(
-        analyticsData.dailyData.reduce((acc, curr) => {
-          const date = curr.TimeStamp.split(" ")[0];
-          if (!acc[date]) {
-            acc[date] = {};
-          }
-          acc[date][curr.Emotion] = (acc[date][curr.Emotion] || 0) + 1;
-          return acc;
-        }, {})
-      ).map(([date, emotions]) => {
+  const allTimeTrendData = analyticsData?.allTimeData?.dailyTrend
+    ? Object.entries(analyticsData.allTimeData.dailyTrend).map(([date, emotions]) => {
         const total = Object.values(emotions).reduce((sum, count) => sum + count, 0);
         const data = { date };
         Object.entries(emotions).forEach(([emotion, count]) => {
