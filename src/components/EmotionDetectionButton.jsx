@@ -39,6 +39,8 @@ export default function EmotionDetectionButton({ onModalAction, number }) {
           onModalAction={handleModalAction}
           disablePopup={disablePopup} // Pass disablePopup to EmotionDetection
           number={number}
+          studentId="12345678"
+          activityId="2468"
         />
       )}
     </div>
