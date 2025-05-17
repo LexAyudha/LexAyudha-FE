@@ -80,7 +80,7 @@ export default function DashTraining({ userData }) {
               </span>
               
             </p>
-            <div className=" lg:opacity-0 lg:-translate-y-2 lg:group-hover:block lg:group-hover:opacity-1 lg:group-hover:translate-y-0 transition-all duration-200 ease-out">
+            <div className=" opacity-100 lg:opacity-0 lg:-translate-y-2 lg:group-hover:block lg:group-hover:opacity-100 lg:group-hover:translate-y-0 transition-all duration-200 ease-out">
               <button onClick={handleGetReport} className="flex items-center w-full text-center text-white rounded-[6px] bg-[#1574F9] hover:bg-[#3E91F6] transition-all duration-300 justify-center p-[10px] mt-5 text-sm ">Get Full Report</button>
             </div>
           </div>
@@ -109,7 +109,7 @@ export default function DashTraining({ userData }) {
           type="primary"
           className="w-[200px]"
           onClick={() => {
-            window.location = `/training?new=${userData?.isFirstTimeUser}`;
+            window.location = `/training?new=${userData?.isFirstTimeUser}&u=${userData?.userName}`;
           }}
         >
           Start Training

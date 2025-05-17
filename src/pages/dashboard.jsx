@@ -378,7 +378,7 @@ export default function Dashboard() {
 
       <div className='la-container flex relative'>
         {/* For larger devices */}
-        <div className={`w-[360px] h-screen primary-color-bg z-10  flex-col shadow-[0px_0px_5px_1px_rgba(0,_0,_0,_0.1)] justify-between hidden lg:flex`}>
+        <div className={`w-[360px] min-h-screen  z-10  flex-col shadow-[0px_0px_5px_1px_rgba(0,_0,_0,_0.1)] justify-between hidden lg:flex`}>
 
           <div className='flex items-center justify-start px-2 py-2'>
             <div className='w-[50px] h-[50px] mr-2'>
@@ -478,7 +478,7 @@ export default function Dashboard() {
         </div>
 
 
-        <div className=" w-full relative h-screen  flex flex-col items-center justify-start">
+        <div className=" w-full relative   flex flex-col items-center justify-start">
           <div className="w-[calc(100%-28px)]  h-[280px] z-[0] group relative">
             <img
               src={userData.coverPic ? userData.coverPic : ""}
@@ -496,7 +496,7 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="w-full p-[14px] h-full flex items-center justify-center">
-            <div className="primary-color-bg shadow-[0px_0px_5px_1px_rgba(0,_0,_0,_0.1)] w-full h-full  bottom-0 px-10 py-5 z-[5]   rounded-md ">
+            <div className="primary-color-bg shadow-[0px_0px_5px_1px_rgba(0,_0,_0,_0.1)] w-full h-full  bottom-0 p-[12px] z-[5]    rounded-md ">
               {panel === "training" && <DashTraining userData={userData} />}
               {panel === "performance" && <DashPerformance />}
               {panel === "achievements" && <DashAchievements />}
