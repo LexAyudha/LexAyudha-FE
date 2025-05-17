@@ -12,9 +12,6 @@ export default function ChromaticModel({ initialChromaticTheme, updateChromaticT
   const [selectedChromaticTheme, setSelectedChromaticTheme] = useState(localStorage.getItem('selectedChromaticTheme') || initialChromaticTheme || 'chromTheme_1');
   const [selectedColPattern, setSelectedColPattern] = useState(colors[0]?.chromThemeColor_1)
 
-
-
-
   // Update selected theme when initialChromaticTheme changes
   useEffect(() => {
     if (initialChromaticTheme) {
