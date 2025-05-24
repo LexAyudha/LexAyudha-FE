@@ -78,16 +78,16 @@ export default function SpeechCalibPage() {
     };
 
     const sentencesList = [
-        'The quick brown fox jumps over the lazy dog.',
-        'She sells seashells by the seashore.',
-        'How much wood would a woodchuck chuck if a woodchuck could chuck wood?',
-        'Peter Piper picked a peck of pickled peppers.',
-        'Betty Botter bought some butter but she said the butter’s bitter.',
+        'She walks to school daily.',
+        'They enjoy playing outside together.',
+        'The sun slowly disappeared behind clouds.',
+        'The baby smiled while playing with toys.',
+        'The wind howled loudly during the cold night.',
 
     ]
 
     const {
-        // ... (Extracted controls and states, if necessary)
+
         recordedBlob,
         error,
         audioRef,
