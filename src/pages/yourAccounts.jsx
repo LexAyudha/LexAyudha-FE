@@ -4,6 +4,7 @@ import axiosInstance from '../api/axiosInstance';
 import { decodeToken } from '../utils/tokenUtils';
 import { ToastContainer, toast, Bounce } from 'react-toastify'
 import ScreenLoader from '../components/screenLoader';
+import lexLogo from '../assets/lexLogo.png'
 
 export default function YourAccounts() {
 
@@ -15,12 +16,23 @@ export default function YourAccounts() {
   const [psw, setPsw] = useState('');
   const [error, setError] = useState('')
   const [showPassword, setShowPassword] = useState(false);
+  const [welcomePopup, setWelcomePopup] = useState(true)
+  const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
 
     getAccountList()
 
   }, []);
+
+  const handleClosePopup = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setWelcomePopup(false);
+      setIsClosing(false);
+    }, 300); // Match this with animation duration
+  };
+
 
   const getAccountList = async () => {
 
@@ -149,7 +161,7 @@ export default function YourAccounts() {
 
               <div className='flex justify-evenly items-center mt-10'>
                 <a className='m-0 py-[5px] px-[16px] rounded-[6px] border border-[var(--primary-color)] hover:border-[#0066cc] text-[#0066cc] cursor-pointer transition duration-300' href='/login'>
-                  login
+                  Login
                 </a>
                 <a className='m-0 bg-[#0066cc] hover:bg-[#0066cc99] text-white py-[8px] px-[16px] rounded-[6px] w-fit text-wrap text-center text-sm cursor-pointer transition duration-300' href='/register'>
                   Create account
@@ -180,7 +192,7 @@ export default function YourAccounts() {
                       >
                         {showPassword ? (
                           <i className="fas fa-eye"></i>
-                          
+
                         ) : (
                           <i className="fas fa-eye-slash"></i>
                         )}
@@ -242,7 +254,39 @@ export default function YourAccounts() {
 
         </div>
 
+
       </div>
+      {welcomePopup && (
+        <div className='absolute'>
+          <div
+            className={`fixed inset-0 bg-black transition-opacity duration-300 flex items-center justify-center z-50
+      ${isClosing ? 'opacity-0' : 'opacity-80'}`}
+          >
+
+          </div>
+          <div
+            className={`relative z-50 px-10 py-6 rounded-lg bg-white flex flex-col justify-center items-center
+        transition-all duration-300 transform
+        ${isClosing ? 'scale-95 opacity-0' : 'scale-100 opacity-100'}
+      `}
+          >
+            <i
+              className='fa-x top-3 right-4 absolute text-xl font-bold cursor-pointer'
+              onClick={handleClosePopup}
+            ></i>
+            <img src={lexLogo} alt='logo' className='w-[250px]'></img>
+            <h1 className='text-5xl'>Welcome!</h1>
+            <h3 className='text-xl'>LexAyudha - Your Personalized Learning Tool</h3>
+            <button
+              className='mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors'
+              onClick={handleClosePopup}
+            >
+              Get Started
+            </button>
+          </div>
+        </div>
+      )}
+
     </>
   )
 }

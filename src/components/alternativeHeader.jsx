@@ -77,9 +77,9 @@ export default function AlternativeHeader({ title = 'LexAyudha' }) {
 
                         >
                             <a onClick={(e) => e.preventDefault()}>
-                                <Space className=' w-[150px]'>
+                                <Space className=' w-[170px]'>
                                     <div className='w-fit flex '>
-                                        <p className=' m-0 cursor-pointer '>Quick Links</p>
+                                        <p className=' m-0 mr-[10px] cursor-pointer '>Quick Links</p>
                                         <DownOutlined />
                                     </div>
 

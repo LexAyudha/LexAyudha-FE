@@ -1,246 +1,17 @@
-import React, { useEffect, useState, } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import ChangeThemeFB from '../../components/changeThemeFB';
-import axios from 'axios';
 import chromaticThemes from '../../configs/chromaticThemes'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { decodeToken } from '../../utils/tokenUtils';
 import axiosInstance from '../../api/axiosInstance';
 import AlternativeHeader from '../../components/alternativeHeader';
+import { useQuery } from '@tanstack/react-query';
+import { getQuizzes } from '../../api/RecurringAPI';
+import DysLexiaQuizReportPDFDoc from '../../components/dysLexiaQuizReportPDFDoc';
 
-const lessonsList = [
-    {
-        id: '01',
-        name: 'Lesson 1',
-        description: 'A simple start with two-word sentences.',
-        example: 'Cat sleeps.',
-        chromaticTheme: 'chromTheme_1',
-        langCode:'en-US',
-        chapters: [
-            'Cat runs.',
-            'Dog barks.',
-            'Bird flies.',
-            'Sun shines.',
-            'Rain falls.',
-            'Wind blows.',
-            'Tree grows.',
-            'Fish swims.',
-            'Clock ticks.',
-            'Leaf drops.',
-            'Baby laughs.'
-        ]
-    },
-    {
-        id: '02',
-        name: 'Lesson 2',
-        description: 'Slightly longer sentences with three words.',
-        example: 'The dog barks.',
-        chromaticTheme: 'chromTheme_2',
-        langCode:'en-US',
-        chapters: [
-            'The cat sleeps.',
-            'She runs fast.',
-            'Birds fly high.',
-            'He eats apples.',
-            'The sun sets.',
-            'Clouds move slowly.',
-            'Fish swim deep.',
-            'Wind blows strong.',
-            'Flowers bloom beautifully.',
-            'The dog jumps.',
-            'Rain falls gently.'
-        ]
-    },
-    {
-        id: '03',
-        name: 'Lesson 3',
-        description: 'Building up complexity with four-word sentences.',
-        example: 'She quickly ran away.',
-        chromaticTheme: 'chromTheme_3',
-        langCode:'en-US',
-        chapters: [
-            'The boy runs fast.',
-            'She drinks warm tea.',
-            'Clouds cover the sky.',
-            'They play outside happily.',
-            'The baby smiles brightly.',
-            'He reads a book.',
-            'Waves crash on rocks.',
-            'The sun rises early.',
-            'Leaves fall in autumn.',
-            'The dog barks loudly.',
-            'A cat sleeps peacefully.'
-        ]
-    },
-    {
-        id: '04',
-        name: 'Lesson 4',
-        description: 'Introducing five-word sentence structures.',
-        example: 'The flowers bloom in spring.',
-        chromaticTheme: 'chromTheme_4',
-        langCode:'en-US',
-        chapters: [
-            'The bird sings every morning.',
-            'She walks to school daily.',
-            'The baby laughs so loudly.',
-            'Raindrops fall on the ground.',
-            'The wind blows very strong.',
-            'He quickly runs to work.',
-            'The car moves very fast.',
-            'They enjoy playing outside together.',
-            'Leaves turn red in autumn.',
-            'The sun sets behind mountains.',
-            'A dog chases the ball.'
-        ]
-    },
-    {
-        id: '05',
-        name: 'Lesson 5',
-        description: 'Challenging six-word sentence patterns.',
-        example: 'He carefully placed the books neatly.',
-        chromaticTheme: 'chromTheme_5',
-        langCode:'en-US',
-        chapters: [
-            'She happily danced in the rain.',
-            'The birds chirped in the trees.',
-            'He quickly ran towards the bus.',
-            'A cat jumped onto the sofa.',
-            'Leaves rustled in the autumn wind.',
-            'The sun slowly disappeared behind clouds.',
-            'She read a book before bed.',
-            'The dog wagged its tail happily.',
-            'Children played joyfully in the park.',
-            'A train passed through the tunnel.',
-            'The waves crashed against the rocks.'
-        ]
-    },
-    {
-        id: '06',
-        name: 'Lesson 6',
-        description: 'Challenging six-word sentence patterns.',
-        example: 'ඇය සතුටින් වැස්සේ නැටුවාය.',
-        chromaticTheme: 'chromTheme_3',
-        langCode:'en-US',
-        chapters: [
-          'ඇය සතුටින් වැස්සේ නැටුවාය.',
-          'කුරුල්ලෝ ගස්වල කිචි බිචි ගෑවෝය.',
-          'ඔහු වේගයෙන් බස් එක දෙසට දිව්වේය.',
-          'පූසෙක් සෝෆාව මතට පැන්නේය.',
-          'කොළ සරත් සුළඟේ සළිත වූවාය.',
-          'ඉර සෙමින් වලාකුළු පිටුපස නැති වුණි.',
-          'ඇය නිදාගැනීමට පෙර පොතක් කියවීය.',
-          'බල්ලා සතුටින් වලිගය වනන්නට විය.',
-          'දරුවෝ උද්යානයේ සතුටින් සෙල්ලම් කළහ.',
-          'දුම්රියක් උමඟ හරහා ගමන් කළේය.',
-          'රළ පර්වත මත හැපී ගියේය.'
-        ]
-      }
-];
 
-// const lessonsList  = [
-//     {
-//       id: '01',
-//       name: 'Lesson 1',
-//       description: 'A simple start with two-word sentences.',
-//       example: 'බල්ලා බුරයි.',
-//       chromaticTheme: 'chromTheme_1',
-//       chapters: [
-//         'පූසා දුවයි.',
-//         'බල්ලා බුරයි.',
-//         'කුරුල්ලා පියාඹයි.',
-//         'ඉර බබළයි.',
-//         'වැස්ස වසී.',
-//         'සුළඟ හමයි.',
-//         'ගස වැඩෙයි.',
-//         'මාළුවා පිහිනයි.',
-//         'ඔරලෝසුව ටික් ටික් ගායි.',
-//         'කොළය වැටෙයි.',
-//         'දරුවා සිනාසෙයි.'
-//       ]
-//     },
-//     {
-//       id: '02',
-//       name: 'Lesson 2',
-//       description: 'Slightly longer sentences with three words.',
-//       example: 'ඇය වේගයෙන් දුවයි.',
-//       chromaticTheme: 'chromTheme_2',
-//       chapters: [
-//         'පූසා නිදයි.',
-//         'ඇය වේගයෙන් දුවයි.',
-//         'කුරුල්ලෝ ඉහළින් පියාඹති.',
-//         'ඔහු ඇපල් කයි.',
-//         'ඉර බසියි.',
-//         'වලාකුළු සෙමින් ගමන් කරයි.',
-//         'මාළුවෝ ගැඹුරට පිහිනති.',
-//         'සුළඟ තදින් හමයි.',
-//         'මල් ලස්සනට පිපෙයි.',
-//         'බල්ලා පනියි.',
-//         'වැස්ස සෙමින් වසී.'
-//       ]
-//     },
-//     {
-//       id: '03',
-//       name: 'Lesson 3',
-//       description: 'Building up complexity with four-word sentences.',
-//       example: 'පිරිමි ළමයා වේගයෙන් දුවයි.',
-//       chromaticTheme: 'chromTheme_3',
-//       chapters: [
-//         'පිරිමි ළමයා වේගයෙන් දුවයි.',
-//         'ඇය උණුසුම් තේ බොයි.',
-//         'වලාකුළු අහස වසයි.',
-//         'ඔවුන් සතුටින් එළිමහනේ සෙල්ලම් කරයි.',
-//         'දරුවා දීප්තිමත්ව සිනාසෙයි.',
-//         'ඔහු පොතක් කියවයි.',
-//         'රළ පර්වත මත ගැටෙයි.',
-//         'ඉර උදේ පායා එයි.',
-//         'කොළ සරත් කාලයේ වැටෙයි.',
-//         'බල්ලා හඬ නගා බුරයි.',
-//         'පූසා සාමයෙන් නිදයි.'
-//       ]
-//     },
-//     {
-//       id: '04',
-//       name: 'Lesson 4',
-//       description: 'Introducing five-word sentence structures.',
-//       example: 'කුරුල්ලා සෑම උදෑසනක්ම ගී ගයයි.',
-//       chromaticTheme: 'chromTheme_2',
-//       chapters: [
-//         'කුරුල්ලා සෑම උදෑසනක්ම ගී ගයයි.',
-//         'ඇය දිනපතා පාසල වෙත ඇවිදයි.',
-//         'දරුවා ඉතා හඬනගා සිනාසෙයි.',
-//         'වැසි බිංදු පොළොව මත වැටෙයි.',
-//         'සුළඟ ඉතා තදින් හමයි.',
-//         'ඔහු වේගයෙන් වැඩට දුවයි.',
-//         'මෝටර් රථය ඉතා වේගයෙන් ගමන් කරයි.',
-//         'ඔවුන් එකට එළිමහනේ සෙල්ලම් කිරීම සතුටු වෙයි.',
-//         'කොළ සරත් කාලයේ රතු පැහැ ගනී.',
-//         'ඉර කඳු පසුපස බැස යයි.',
-//         'බල්ලෙක් බෝලය පසුපස පන්නයි.'
-//       ]
-//     },
-//     {
-//       id: '05',
-//       name: 'Lesson 5',
-//       description: 'Challenging six-word sentence patterns.',
-//       example: 'ඇය සතුටින් වැස්සේ නැටුවාය.',
-//       chromaticTheme: 'chromTheme_3',
-//       chapters: [
-//         'ඇය සතුටින් වැස්සේ නැටුවාය.',
-//         'කුරුල්ලෝ ගස්වල කිචි බිචි ගෑවෝය.',
-//         'ඔහු වේගයෙන් බස් එක දෙසට දිව්වේය.',
-//         'පූසෙක් සෝෆාව මතට පැන්නේය.',
-//         'කොළ සරත් සුළඟේ සළිත වූවාය.',
-//         'ඉර සෙමින් වලාකුළු පිටුපස නැති වුණි.',
-//         'ඇය නිදාගැනීමට පෙර පොතක් කියවීය.',
-//         'බල්ලා සතුටින් වලිගය වනන්නට විය.',
-//         'දරුවෝ උද්යානයේ සතුටින් සෙල්ලම් කළහ.',
-//         'දුම්රියක් උමඟ හරහා ගමන් කළේය.',
-//         'රළ පර්වත මත හැපී ගියේය.'
-//       ]
-//     }
-//   ];
-
-export default function DyslexicScreenReader() {
+export default function DyslexicScreenReaderQuiz() {
 
     const paramObj = useParams()
     const lessonID = paramObj?.id //Check for parameter 'id'
@@ -260,36 +31,59 @@ export default function DyslexicScreenReader() {
     const [totalMarks, setTotalMarks] = useState(0)
     const [myMarks, setMyMarks] = useState(0)
     const [currentTTS, setCurrentTTS] = useState(null)
+    const [pdfPreview, setPdfPreview] = useState(false)
+    const [quizEvalnObj, setQuizEvalObj] = useState({
+        name: '',                    // Quiz name
+        id: '',                      // Quiz ID
+        userId: '',                  // User ID
+        date: '',                    // Attempt date
+        totalScore: 0,              // Total score achieved
+        maxPossibleScore: 0,        // Maximum possible score
+        timeSpent: 0,               // Total time spent in seconds
+        totalAttempts: 0,           // Number of attempts made
+        chapter_performance: [
+
+        ],
+        summary: {
+            totalChapters: 0,       // Total number of chapters
+            completedChapters: 0,   // Number of completed chapters
+            averageAccuracy: 0,     // Average accuracy across all chapters
+            strongestChapter: '',   // Chapter with highest score
+            weakestChapter: '',     // Chapter with lowest score
+            improvementAreas: []    // Array of areas needing improvement
+        }
+    });
+
     const navigate = useNavigate()
+
+    const { data: lessonsList, isLoading, error } = useQuery({
+        queryKey: ['quizzes'],
+        queryFn: getQuizzes,
+        staleTime: 120 * 60 * 1000,  // Data stays fresh for 5 minutes
+
+    });
 
     useEffect(() => {
 
-        const selectedLesson = lessonsList.find((item) => item?.id === lessonID);
+        const selectedLesson = lessonsList?.find((item) => item?.id === lessonID);
         setLesson(selectedLesson);
         setCurrentChapter(selectedLesson?.chapters[0])
         setCurrentChapterIndex(0);
-        getLesson();
+
         getUserDetails();
         // Small delay to ensure DOM is ready
         const timer = setTimeout(() => {
             applyChromaticThemes();
-
         }, 100);
 
         return () => clearTimeout(timer);
 
-    }, []);
+    }, [lessonsList]);
 
     useEffect(() => {
         calculateTotalAchievableMark();
-    }, [lesson]);
-    const calculateTotalAchievableMark = () => {
-        if (lesson) {
-            const fullMark = lesson?.chapters?.length * 10
-            setTotalMarks(fullMark);
-        }
 
-    }
+    }, [lesson]);
 
     useEffect(() => {
         if (lesson) {
@@ -308,6 +102,35 @@ export default function DyslexicScreenReader() {
     useEffect(() => {
         handlePersonalizedRate()
     }, [personalizedRate]);
+
+    useEffect(() => {
+
+        if (lesson && user && totalMarks) {
+            initializeQuizEvaluation(lesson, user, totalMarks);
+        }
+    }, [lesson, user, totalMarks]);
+
+    const useDebounce = (callback, delay) => {
+        const timeoutRef = useRef(null);
+
+        return (...args) => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+
+            timeoutRef.current = setTimeout(() => {
+                callback(...args);
+            }, delay);
+        };
+    };
+
+    const calculateTotalAchievableMark = () => {
+        if (lesson) {
+            const fullMark = lesson?.chapters?.length * 10
+            setTotalMarks(fullMark);
+        }
+
+    }
 
     const applyChromaticThemes = () => {
         const pTags = document.querySelectorAll('p[data-attribute="chromatic"]');
@@ -362,19 +185,85 @@ export default function DyslexicScreenReader() {
         });
     };
 
-    const getLesson = async () => {
-        // const res = await axios.get('');
-        // if(res){
-        //     setLesson(res.data)
-        // }
-    }
+    const initializeQuizEvaluation = (lesson, user, totalMarks) => {
+        const today = new Date();
+        const formattedDate = today.toLocaleDateString('en-GB');
+        setQuizEvalObj(prev => ({
+            ...prev,
+            name: lesson?.name || '',
+            id: lesson?.id || '',
+            userId: user?._id || '',
+            date: formattedDate,
+            maxPossibleScore: totalMarks,
+            totalChapters: lesson?.chapters?.length || 0,
+        }));
+    };
+
+    const updateChapterPerformance = (chapterText, userPronounced, score) => {
+        const chapterData = {
+            chapter: chapterText,
+            userPronounced: userPronounced,
+            score: score,
+            attempts: 1,
+            mistakes: findMistakes(chapterText, userPronounced),
+            accuracy: calculateAccuracy(chapterText, userPronounced),
+            completedAt: new Date().toISOString()
+        };
+
+        setQuizEvalObj(prev => ({
+            ...prev,
+            totalScore: prev.totalScore + score,
+            totalAttempts: prev.totalAttempts + 1,
+            chapter_performance: [...prev.chapter_performance, chapterData]
+        }));
+
+    };
+
+    const generateSummary = () => {
+        const performance = quizEvalnObj.chapter_performance;
+
+        // Find strongest and weakest chapters
+        const sortedByScore = [...performance].sort((a, b) => b.score - a.score);
+        const strongestChapter = sortedByScore[0]?.chapter || '';
+        const weakestChapter = sortedByScore[sortedByScore.length - 1]?.chapter || '';
+
+        // Calculate average accuracy
+        const avgAccuracy = performance.reduce((acc, curr) => acc + curr.accuracy, 0) / performance.length;
+
+        // Identify improvement areas
+        const improvementAreas = [];
+        if (avgAccuracy < 70) improvementAreas.push('Overall pronunciation accuracy');
+        if (performance.some(p => p.mistakes.length > 3)) improvementAreas.push('Word pronunciation');
+
+        setQuizEvalObj(prev => ({
+            ...prev,
+            summary: {
+                totalChapters: lesson?.chapters?.length || 0,
+                completedChapters: performance.length,
+                averageAccuracy: Math.round(avgAccuracy),
+                strongestChapter,
+                weakestChapter,
+                improvementAreas
+            }
+        }));
+    };
+
+    // Helper functions
+    const findMistakes = (original, pronounced) => {
+        const originalWords = original.toLowerCase().split(' ');
+        const pronouncedWords = pronounced.toLowerCase().split(' ');
+        return originalWords.filter((word, index) => word !== pronouncedWords[index]);
+    };
+
+    const calculateAccuracy = (original, pronounced) => {
+        const originalWords = original.toLowerCase().split(' ');
+        const pronouncedWords = pronounced.toLowerCase().split(' ');
+        const correctWords = originalWords.filter((word, index) => word === pronouncedWords[index]);
+        return Math.round((correctWords.length / originalWords.length) * 100);
+    };
 
     const handleNext = () => {
-        if (myMarks <= totalMarks) {
-            const chapterMark = calculateScoreForChapter()
-            setMyMarks(myMarks + chapterMark);
-        }
-
+        console.log('Quiz Obj: ', quizEvalnObj);
         if (currentChapterIndex < lesson?.chapters.length - 1) {
             setCurrentChapterIndex(currentChapterIndex + 1);
         }
@@ -395,21 +284,21 @@ export default function DyslexicScreenReader() {
 
 
     const handleSpeech = async () => {
-      
+
         const payload = {
             text: currentChapter,
             speechRate: speechRate,
             langCode: lesson?.langCode || 'en-US'
         }
-        
+
         try {
-            const res = await axiosInstance.post('/speech/tts', payload,{
+            const res = await axiosInstance.post('/speech/tts', payload, {
                 responseType: 'arraybuffer'  // This is the key change
             })
 
             if (res?.status === 200) {
                 setCurrentTTS(res?.data)
-                
+
                 playAudio()
             }
         } catch (error) {
@@ -422,27 +311,27 @@ export default function DyslexicScreenReader() {
     };
 
     const playAudio = () => {
-        
+
 
         const blob = new Blob([currentTTS], { type: 'audio/mp3' });
         const url = URL.createObjectURL(blob);
         const audio = new Audio(url);
-        
+
         audio.play();
 
         audio.onended = () => {
             URL.revokeObjectURL(url);
-          };
+        };
 
-          audio.onerror = (error) => {
+        audio.onerror = (error) => {
             console.error("Error playing audio:", error);
             URL.revokeObjectURL(url);
-          };
+        };
     };
 
     const handlePersonalizedRate = () => {
         if (personalizedRate) {
-            
+
             setSpeechRate(user?.speechRate)
         } else {
             setSpeechRate(1) //using default speech rate of 1
@@ -450,10 +339,11 @@ export default function DyslexicScreenReader() {
     }
 
     const handleFinish = () => {
-        navigate('/dyslexic-training')
+
+        navigate('/dyslexia-quiz')
     }
     const handleExit = () => {
-        navigate('/dyslexic-training')
+        navigate('/dyslexia-quiz')
     }
     const togglePanel = () => {
         setIsPanelOpen(!isPanelOpen);
@@ -492,7 +382,7 @@ export default function DyslexicScreenReader() {
         });
 
         const score = Math.round((matchingWordsCount / totalAchievableScore) * 10); // Assuming full mark is 10
-        
+
 
         resetTranscript();
         return score;
@@ -504,8 +394,33 @@ export default function DyslexicScreenReader() {
         resetTranscript,
         browserSupportsSpeechRecognition
     } = useSpeechRecognition();
-    const startListening = () => SpeechRecognition.startListening({ continuous: true });
-    const stopListening = () => SpeechRecognition.stopListening();
+
+    const startListening = useDebounce(() => {
+        if (!listening) {
+            SpeechRecognition.startListening({ continuous: true });
+        }
+    }, 200);
+
+    const stopListening = useDebounce(() => {
+        if (listening) {
+            SpeechRecognition.stopListening();
+            if (myMarks <= totalMarks) {
+                const chapterMark = calculateScoreForChapter();
+                setMyMarks(myMarks + chapterMark);
+
+                // Update chapter performance
+                updateChapterPerformance(currentChapter, transcript, chapterMark);
+
+                // If this is the last chapter, generate summary
+                if (currentChapterIndex === lesson?.chapters.length - 1) {
+                    generateSummary();
+                }
+            }
+            handleNext();
+        }
+    }, 200);
+
+
 
     if (!browserSupportsSpeechRecognition) {
         return <span>Browser doesn't support speech recognition.</span>;
@@ -538,12 +453,12 @@ export default function DyslexicScreenReader() {
                                 </span>
 
                             </div>
-                            <div className={`cursor-pointer flex items-center  justify-end w-[100px] ${currentChapterIndex == lesson?.chapters.length - 1 ? 'hidden' : 'flex'} `}>
+                            {/* <div className={`cursor-pointer flex items-center  justify-end w-[100px] ${currentChapterIndex == lesson?.chapters.length - 1 ? 'hidden' : 'flex'} `}>
                                 <span className='relative group' onClick={handleNext}>
                                     <p className=' m-0'>Next</p>
                                     <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"></span>
                                 </span>
-                            </div>
+                            </div> */}
 
                             <div className={`cursor-pointer flex items-center  justify-end w-[100px] ${currentChapterIndex == lesson?.chapters.length - 1 ? 'flex' : 'hidden'} `}>
                                 <span className='relative group' onClick={handleFinish}>
@@ -555,12 +470,12 @@ export default function DyslexicScreenReader() {
                     </div>
                     <div className=' text-wrap overflow-x-hidden overflow-y-auto relative bg-black bg-opacity-5 w-full h-[300px] rounded-lg flex justify-center items-center'>
                         <p className={`p-[20px] m-0 ${selectedChromTheme} `} style={{ fontSize: `${fontSize}px` }} data-attribute="chromatic">{currentChapter || 'Sorry, No chapters in this lesson'}</p>
-                        <span className=' absolute bottom-3 right-6' >{completedChapters}/{lesson?.chapters.length - 1}</span>
+                        <span className=' absolute bottom-3 right-6' >{completedChapters + 1}/{lesson?.chapters.length}</span>
                         <span className=' absolute top-3 right-6' >Score: {myMarks}/{totalMarks}</span>
                     </div>
                     <div className=' flex p-[15px_20px] w-full bg-black bg-opacity-5 rounded-lg mt-[20px]'>
                         <div className='flex flex-col items-center justify-center  p-[10px_20px]  w-full '>
-                            <div className='flex flex-col justify-start w-full'>
+                            <div className={` flex-col justify-start w-full ${currentChapterIndex !== lesson?.chapters.length - 1 ? "flex" : "hidden"} `} >
 
                                 <p> {listening ? 'LexAyudha is now listening' : ''}</p>
 
@@ -572,15 +487,31 @@ export default function DyslexicScreenReader() {
                             </div>
 
                             <div className='w-full flex justify-evenly items-center'>
-                                <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded p-[5px_10px] hover:bg-black hover:bg-opacity-10 transition duration-200 ${transcript && !listening ? 'block' : 'hidden'}`} onClick={resetTranscript}>
-                                    <p className=' m-0'>Restart chapter</p>
 
-                                </span>
-                                <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded p-[5px_10px] hover:bg-black hover:bg-opacity-10 transition duration-200 ${listening ? 'block' : 'hidden'}`} onClick={stopListening}>
-                                    <p className=' m-0'>Finish chapter</p>
+                                <div className={`flex space-x-4 ${listening ? 'block' : 'hidden'}`}>
+                                    <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded p-[5px_10px] hover:bg-black hover:bg-opacity-10 transition duration-200`} onClick={stopListening}>
+                                        <p className=' m-0'>Finish chapter</p>
 
-                                </span>
-                                <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded hover:bg-black hover:bg-opacity-10 transition duration-200 p-[5px_10px] ${!transcript && !listening ? 'block' : 'hidden'}`} onClick={startListening}>
+                                    </span>
+                                    <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded p-[5px_10px] hover:bg-black hover:bg-opacity-10 transition duration-200`} onClick={resetTranscript}>
+                                        <p className=' m-0'>Reset</p>
+
+                                    </span>
+                                </div>
+
+                                <div className={`flex space-x-4 ${currentChapterIndex === lesson?.chapters.length - 1 ? 'block' : 'hidden'}`}>
+                                    <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded p-[5px_10px] hover:bg-black hover:bg-opacity-10 transition duration-200`} onClick={() => setPdfPreview(true)}>
+                                        <p className=' m-0'>See Feedback</p>
+
+                                    </span>
+                                    <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded p-[5px_10px] hover:bg-black hover:bg-opacity-10 transition duration-200`} onClick={handleFinish}>
+                                        <p className=' m-0'>Finish Attempt</p>
+
+                                    </span>
+                                </div>
+
+
+                                <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded hover:bg-black hover:bg-opacity-10 transition duration-200 p-[5px_10px] ${!transcript && !listening && currentChapterIndex !== lesson?.chapters.length - 1 ? 'block' : 'hidden'} `} onClick={startListening}>
                                     <p className=' m-0'>Start chapter</p>
 
                                 </span>
@@ -589,7 +520,7 @@ export default function DyslexicScreenReader() {
 
                         </div>
 
-                        <div className={`flex flex-col items-center justify-center mt-[20px]  ${isReadAloudEnabled ? 'flex' : 'hidden'}`}>
+                        {/* <div className={`flex flex-col items-center justify-center mt-[20px]  ${isReadAloudEnabled ? 'flex' : 'hidden'}`}>
 
                             <div className='flex flex-col justify-center '>
                                 <label htmlFor='speechRate' className='mb-[10px] text-sm'>Speech Rate: {speechRate}</label>
@@ -605,7 +536,7 @@ export default function DyslexicScreenReader() {
                                 />
                             </div>
                             <button onClick={handleSpeech} className='py-[10px] mt-[20px] px-[20px] primary-color-bg rounded-md mr-[15px] hover:bg-black hover:bg-opacity-10 transition duration-200'>Read Aloud</button>
-                        </div>
+                        </div> */}
 
                     </div>
 
@@ -634,7 +565,7 @@ export default function DyslexicScreenReader() {
 
 
                     {/* Font Size Section */}
-                    <div className="mb-8 px-[20px]">
+                    <div className="mb-8 w-full px-[20px]">
                         <div className="flex justify-between items-center mb-2">
                             <div>
                                 <h3 className="text-lg font-semibold ">Font Size</h3>
@@ -661,11 +592,11 @@ export default function DyslexicScreenReader() {
                     <div className="border-b border-[var(--text-color)] mb-[18px] w-[calc(100%-40px)] "></div>
 
                     {/* Read Aloud Section */}
-                    <div className='px-[20px]'>
+                    {/* <div className='px-[20px]'>
                         <h3 className="text-lg font-semibold  mb-2">Read Aloud Features</h3>
                         <p className="text-[12px] mb-4">Configure text-to-speech settings</p>
 
-                        {/* Toggle for Enable Read Aloud */}
+           
                         <div className="flex justify-between items-center mt-[32px] mb-4">
                             <label htmlFor="enableReadAloud" className="">Enable read aloud</label>
                             <label className="relative inline-flex items-center cursor-pointer">
@@ -680,7 +611,7 @@ export default function DyslexicScreenReader() {
                             </label>
                         </div>
 
-                        {/* Toggle for Speech Rate */}
+                        
                         <div className="flex justify-between items-center">
                             <label htmlFor="personalizedRate" className="">Enable personalized speech rate</label>
                             <label className="relative inline-flex items-center cursor-pointer">
@@ -694,10 +625,20 @@ export default function DyslexicScreenReader() {
                                 <div className="w-11 h-6 bg-black bg-opacity-5 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-[var(--text-color)] after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-[var(--background-color)] after:border-[var(--text-color)] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--text-color)]"></div>
                             </label>
                         </div>
-                    </div>
+                    </div> */}
 
                 </div>
             </div>
+
+            {pdfPreview && (
+                <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+
+                    <DysLexiaQuizReportPDFDoc
+                        quizEvalnObj={quizEvalnObj}
+                        closeWindow={() => setPdfPreview(false)}
+                    />
+                </div>
+            )}
         </div>
     )
 }
