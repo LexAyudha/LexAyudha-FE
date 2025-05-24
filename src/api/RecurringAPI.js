@@ -2,39 +2,56 @@
 
 import { decodeToken } from '../utils/tokenUtils';
 import axiosInstance from '../api/axiosInstance';
-import { QueryClient } from '@tanstack/react-query';
-
-// Create and export a configured QueryClient
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      cacheTime: 30 * 60 * 1000, // 30 minutes
-    },
-  },
-});
 
 /**
  * @returns {Promise<Object>} - Returns user details from the server.
  * @description This function fetches user details from the server using the userId from the refresh token.
  */
 const getUserDetails = async () => {
-    const parsedToken = decodeToken('refreshToken')
+  const parsedToken = decodeToken('refreshToken')
 
-    try {
-        if (parsedToken) {
-            const res = await axiosInstance.get(`/user/${parsedToken?.userId}`)
+  try {
+    if (parsedToken) {
+      const res = await axiosInstance.get(`/user/${parsedToken?.userId}`)
 
-            if (res?.status === 200) {
+      if (res?.status === 200) {
 
-                return res?.data
+        return res?.data
 
-            }
-        }
-
-    } catch (error) {
-        console.log(error)
+      }
     }
+
+  } catch (error) {
+    console.log(error)
+  }
 }
 
-export {getUserDetails} 
+const getLessons = async () => {
+
+  try {
+    const res = await axiosInstance('/user/dyslexic?sentence_count=10&refresh=false')
+
+    if (res?.status === 200) {
+      return res?.data;
+    }
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
+const getQuizzes = async () => {
+
+  try {
+    const res = await axiosInstance('/user/dyslexic/quiz?sentence_count=10&quiz_count=8')
+
+    if (res?.status === 200) {
+      return res?.data;
+    }
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
+export { getUserDetails, getLessons, getQuizzes } 

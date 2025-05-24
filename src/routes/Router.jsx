@@ -24,78 +24,17 @@ import TrainingWelcome from "../pages/trainingWelcome.jsx";
 import ConfigOnBoardingPage from "../pages/configOnBoarding.jsx";
 import SpeechCalibPage from "../pages/speechCalib.jsx";
 import SelectTrainingPage from "../pages/SelectTraining.jsx";
-import DyslexicTrainingControlPanel from "../pages/dyslexicTrainingControlPanel.jsx";
+import DyslexicPracticeControlPanel from "../pages/dyslexicPracticeControlPanel.jsx";
 import DyscalculiaTrainingControlPanel from "../pages/dyscalculiaTrainingControlPanel.jsx";
-import DyslexicScreenReader from "../pages/dyslexic/dyslexicScreenReader.jsx";
-
+import DyslexicScreenReaderPractice from "../pages/dyslexic/dyslexicScreenReaderPractice.jsx";
+import DyslexicScreenReaderQuiz from "../pages/dyslexic/dyslexicScreenReaderQuiz.jsx"
+import DyslexicLearningMode from "../pages/dylexicLearningMode.jsx";
+import DyslexicPDFReader from "../pages/dyslexicPDFReader.jsx";
+import DyslexicQuizControlPanel from "../pages/dyslexicQuizControlPanel.jsx";
 import ActivityAnalytics from "../pages/ActivityAnalytics.jsx";
 
 const Router = () => {
-  //   const ProtectedRoute = ({ children }) => {
-  //     // const isAuthenticated = localStorage.getItem("jsonwebtoken") ? true : false;
-
-  //     if (!isAuthenticated) {
-  //       return <Navigate to="/login" />;
-  //     }
-  //     return children;
-  //   };
-  //   const AdminRoute = ({ children }) => {
-  //     const token = localStorage.getItem("jsonwebtoken");
-  //     const isAuthenticated = token ? true : false;
-  //     const payload = JSON.parse(token);
-  //     console.log(payload);
-  //     const isAdmin = payload.decodedJWT.userRole === "admin";
-
-  //     if (!isAuthenticated || !isAdmin) {
-  //       Swal.fire({
-  //         icon: "error",
-  //         title: "Oops...",
-  //         text: "Please Logout Login to your Admin Account",
-  //       });
-  //       return <Navigate to="/login" />;
-  //     }
-  //     return children;
-  //   };
-  //   const InstructorRoute = ({ children }) => {
-  //     const token = localStorage.getItem("jsonwebtoken");
-  //     const isAuthenticated = token ? true : false;
-  //     const payload = JSON.parse(token);
-  //     console.log(payload);
-  //     const isAdmin = payload.decodedJWT.userRole === "instructor";
-
-  //     if (!isAuthenticated || !isAdmin) {
-  //       Swal.fire({
-  //         icon: "error",
-  //         title: "Oops...",
-  //         text: "Please Logout Login to your Instructor Account",
-  //       });
-  //       return <Navigate to="/login" />;
-  //     }
-  //     return children;
-  //   };
-
-  // const LoggedOutRoute = ({ children }) => {
-  //     const token = localStorage.getItem("jsonwebtoken");
-  //     const isAuthenticated = token ? true : false;
-  //     let role;
-  //     if (token) {
-  //       const payload = JSON.parse(token);
-  //       console.log(payload);
-  //       role = payload.decodedJWT.userRole;
-  //     }
-
-  //     if (isAuthenticated) {
-  //       if (role === "admin") {
-  //         return <Navigate to="/admin/home" />;
-  //       } else if (role === "instructor") {
-  //         return <Navigate to="/instructor/home" />;
-  //       } else {
-  //         return <Navigate to="/" />;
-  //       }
-  //     }
-  //     return children;
-  //   };
-
+ 
   return (
     <Routes>
       <Route path="/" element={<AccountList />} />
@@ -108,7 +47,19 @@ const Router = () => {
       <Route path="/selectTraining" element={<SelectTrainingPage />} />
       <Route
         path="/dyslexic-training"
-        element={<DyslexicTrainingControlPanel />}
+        element={<DyslexicLearningMode />}
+      />
+      <Route
+        path="/dyslexia-practice"
+        element={<DyslexicPracticeControlPanel />}
+      />
+      <Route
+        path="/dyslexia-quiz"
+        element={<DyslexicQuizControlPanel />}
+      />
+      <Route
+        path="/dyslexia-pdf-reader"
+        element={<DyslexicPDFReader />}
       />
       <Route
         path="/dyscalculic-training"
@@ -120,7 +71,11 @@ const Router = () => {
       {/* Dyslexic training */}
       <Route
         path="/screen-reader-lessons/:id"
-        element={<DyslexicScreenReader />}
+        element={<DyslexicScreenReaderPractice />}
+      />
+       <Route
+        path="/screen-reader-quiz/:id"
+        element={<DyslexicScreenReaderQuiz />}
       />
 
       {/* touch maths */}
@@ -154,6 +109,7 @@ const Router = () => {
 
       {/* Catch-all route for 404 */}
       <Route path="*" element={<NotFound />} />
+     
     </Routes>
   );
 };
