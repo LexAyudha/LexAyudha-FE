@@ -266,32 +266,31 @@ export default function DyslexicScreenReaderQuiz() {
     };
 
     const handleNext = () => {
-        if (currentChapterIndex < lesson?.chapters.length - 1) {
+        if (currentChapterIndex < lesson?.chapters.length) {
             
             setCurrentChapterIndex(currentChapterIndex + 1);
         }
-        if(chapterIndex <= lesson?.chapters.length){
-            setChapterIndex(chapterIndex + 1)
-        }
+        
+        setChapterIndex(chapterIndex + 1)
         setCompletedChapters(currentChapterIndex + 1)
     };
 
     const handleBack = () => {
-        if (currentChapterIndex <= lesson?.chapters.length - 1) {
+        if (currentChapterIndex <= lesson?.chapters.length ) {
             setCurrentChapterIndex(currentChapterIndex - 1);
         }
-        if(chapterIndex <= lesson?.chapters.length && chapterIndex > 1){
-            setChapterIndex(chapterIndex - 1)
-        }
+        
+        setChapterIndex(chapterIndex - 1)
+        
     };
 
     const handleSkip = () => {
-        if (currentChapterIndex < lesson?.chapters.length - 1) {
+        if (currentChapterIndex < lesson?.chapters.length) {
             setCurrentChapterIndex(currentChapterIndex + 1);
         }
-        if(chapterIndex <= lesson?.chapters.length){
-            setChapterIndex(chapterIndex + 1)
-        }
+       
+        setChapterIndex(chapterIndex + 1)
+        
     }
 
 
@@ -433,7 +432,6 @@ export default function DyslexicScreenReaderQuiz() {
 
                 // Update chapter performance
                 updateChapterPerformance(currentChapter, transcript, chapterMark);
-
                
             }
             handleNext();
@@ -497,13 +495,14 @@ export default function DyslexicScreenReaderQuiz() {
                         </div>
                     </div>
                     <div className=' text-wrap overflow-x-hidden overflow-y-auto relative bg-black bg-opacity-5 w-full h-[300px] rounded-lg flex justify-center items-center'>
-                        <p className={`p-[20px] m-0 ${selectedChromTheme} `} style={{ fontSize: `${fontSize}px` }} data-attribute="chromatic">{currentChapter || 'Sorry, No chapters in this lesson'}</p>
-                        <span className=' absolute bottom-3 right-6' >{chapterIndex}/{lesson?.chapters.length}</span>
+                        <p className={`p-[20px] m-0 ${chapterIndex > lesson?.chapters.length ? "block":"hidden"} `} style={{ fontSize: `${fontSize}px` }}>Quiz Completed</p>
+                        <p className={`p-[20px] m-0 ${selectedChromTheme} ${chapterIndex <= lesson?.chapters.length ? "block":"hidden"} `} style={{ fontSize: `${fontSize}px` }} data-attribute="chromatic">{currentChapter || 'Sorry, No chapters in this lesson'}</p>
+                        <span className={`absolute bottom-3 right-6 ${chapterIndex > lesson?.chapters.length ? "hidden":"block"}`} >{chapterIndex}/{lesson?.chapters.length}</span>
                         <span className=' absolute top-3 right-6' >Score: {myMarks}/{totalMarks}</span>
                     </div>
                     <div className=' flex p-[15px_20px] w-full bg-black bg-opacity-5 rounded-lg mt-[20px]'>
                         <div className='flex flex-col items-center justify-center  p-[10px_20px]  w-full '>
-                            <div className={` flex-col justify-start w-full ${chapterIndex !== lesson?.chapters.length  ? "flex" : "hidden"} `} >
+                            <div className={` flex-col justify-start w-full ${chapterIndex <= lesson?.chapters.length  ? "flex" : "hidden"} `} >
 
                                 <p> {listening ? 'LexAyudha is now listening' : ''}</p>
 
@@ -527,7 +526,7 @@ export default function DyslexicScreenReaderQuiz() {
                                     </span>
                                 </div>
 
-                                <div className={`flex space-x-4 ${chapterIndex === lesson?.chapters.length   ? 'block' : 'hidden'}`}>
+                                <div className={`flex space-x-4 ${chapterIndex > lesson?.chapters.length   ? 'block' : 'hidden'}`}>
                                     <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded p-[5px_10px] hover:bg-black hover:bg-opacity-10 transition duration-200`} onClick={handleSeePDFPreview}>
                                         <p className=' m-0'>See Feedback</p>
 
@@ -539,7 +538,7 @@ export default function DyslexicScreenReaderQuiz() {
                                 </div>
 
 
-                                <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded hover:bg-black hover:bg-opacity-10 transition duration-200 p-[5px_10px] ${!transcript && !listening && chapterIndex !== lesson?.chapters.length  ? 'block' : 'hidden'} `} onClick={startListening}>
+                                <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded hover:bg-black hover:bg-opacity-10 transition duration-200 p-[5px_10px] ${!transcript && !listening && chapterIndex <= lesson?.chapters.length  ? 'block' : 'hidden'} `} onClick={startListening}>
                                     <p className=' m-0'>Start chapter</p>
 
                                 </span>
