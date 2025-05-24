@@ -9,6 +9,7 @@ import countingImg from "../assets/Bcounting.png";
 import additionImg from "../assets/addition.png";
 import subtractionImg from "../assets/Subtractions.png";
 import ChangeThemeFB from "../components/changeThemeFB";
+import AlternativeHeader from "../components/alternativeHeader";
 
 export default function LearningActivity() {
   const [selected, setSelected] = useState(null);
@@ -53,6 +54,7 @@ export default function LearningActivity() {
 
     <div className="la-container flex flex-col items-center justify-center h-screen">
       <ChangeThemeFB />
+      <AlternativeHeader title="Dyscalculia"/>
       <h2 className="mb-[60px]">Select Your Learning Activity</h2>
 
       {/* First row */}

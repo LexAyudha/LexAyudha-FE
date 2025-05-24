@@ -159,7 +159,7 @@ export default function DyslexicScreenReaderPractice() {
     };
     const handleBack = () => {
         if (currentChapterIndex < lesson?.chapters.length - 1) {
-            setCurrentChapterIndex(currentChapterIndex + 1);
+            setCurrentChapterIndex(currentChapterIndex - 1);
         }
     };
 

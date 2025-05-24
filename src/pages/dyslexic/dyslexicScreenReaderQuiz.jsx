@@ -21,6 +21,7 @@ export default function DyslexicScreenReaderQuiz() {
     const [lesson, setLesson] = useState();
     const [currentChapter, setCurrentChapter] = useState();
     const [currentChapterIndex, setCurrentChapterIndex] = useState(0);
+    const [chapterIndex, setChapterIndex] = useState(1)
     const [completedChapters, setCompletedChapters] = useState(0)
     const [speechRate, setSpeechRate] = useState(1);
     const [fontSize, setFontSize] = useState(24)
@@ -246,6 +247,8 @@ export default function DyslexicScreenReaderQuiz() {
                 improvementAreas
             }
         }));
+
+      
     };
 
     // Helper functions
@@ -263,22 +266,31 @@ export default function DyslexicScreenReaderQuiz() {
     };
 
     const handleNext = () => {
-        console.log('Quiz Obj: ', quizEvalnObj);
         if (currentChapterIndex < lesson?.chapters.length - 1) {
+            
             setCurrentChapterIndex(currentChapterIndex + 1);
+        }
+        if(chapterIndex <= lesson?.chapters.length){
+            setChapterIndex(chapterIndex + 1)
         }
         setCompletedChapters(currentChapterIndex + 1)
     };
+
     const handleBack = () => {
-        if (currentChapterIndex < lesson?.chapters.length - 1) {
-            setCurrentChapterIndex(currentChapterIndex + 1);
+        if (currentChapterIndex <= lesson?.chapters.length - 1) {
+            setCurrentChapterIndex(currentChapterIndex - 1);
+        }
+        if(chapterIndex <= lesson?.chapters.length && chapterIndex > 1){
+            setChapterIndex(chapterIndex - 1)
         }
     };
-
 
     const handleSkip = () => {
         if (currentChapterIndex < lesson?.chapters.length - 1) {
             setCurrentChapterIndex(currentChapterIndex + 1);
+        }
+        if(chapterIndex <= lesson?.chapters.length){
+            setChapterIndex(chapterIndex + 1)
         }
     }
 
@@ -369,8 +381,16 @@ export default function DyslexicScreenReaderQuiz() {
     }
 
     const calculateScoreForChapter = () => {
-        const currentChapterWords = currentChapter?.split(' ');
-        const transcriptWords = transcript.split(' ');
+        const currentChapterWords = currentChapter?.toLowerCase()
+            .trim()
+            .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
+            .split(' ')
+            .filter(word => word.length > 0);
+        const transcriptWords = transcript.toLowerCase()
+            .trim()
+            .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
+            .split(' ')
+            .filter(word => word.length > 0);
 
         const totalAchievableScore = currentChapterWords.length;
         let matchingWordsCount = 0;
@@ -403,7 +423,10 @@ export default function DyslexicScreenReaderQuiz() {
 
     const stopListening = useDebounce(() => {
         if (listening) {
-            SpeechRecognition.stopListening();
+            setTimeout(() => {
+                SpeechRecognition.stopListening();
+            }, 200);
+            
             if (myMarks <= totalMarks) {
                 const chapterMark = calculateScoreForChapter();
                 setMyMarks(myMarks + chapterMark);
@@ -411,10 +434,7 @@ export default function DyslexicScreenReaderQuiz() {
                 // Update chapter performance
                 updateChapterPerformance(currentChapter, transcript, chapterMark);
 
-                // If this is the last chapter, generate summary
-                if (currentChapterIndex === lesson?.chapters.length - 1) {
-                    generateSummary();
-                }
+               
             }
             handleNext();
         }
@@ -424,6 +444,14 @@ export default function DyslexicScreenReaderQuiz() {
 
     if (!browserSupportsSpeechRecognition) {
         return <span>Browser doesn't support speech recognition.</span>;
+    }
+
+    const handleSeePDFPreview = () => {
+        generateSummary();
+
+        setTimeout(() => {
+            setPdfPreview(true)
+        }, 200); 
     }
     return (
         <div className='la-container overflow-x-hidden items-center h-screen flex flex-col relative'>
@@ -470,12 +498,12 @@ export default function DyslexicScreenReaderQuiz() {
                     </div>
                     <div className=' text-wrap overflow-x-hidden overflow-y-auto relative bg-black bg-opacity-5 w-full h-[300px] rounded-lg flex justify-center items-center'>
                         <p className={`p-[20px] m-0 ${selectedChromTheme} `} style={{ fontSize: `${fontSize}px` }} data-attribute="chromatic">{currentChapter || 'Sorry, No chapters in this lesson'}</p>
-                        <span className=' absolute bottom-3 right-6' >{completedChapters + 1}/{lesson?.chapters.length}</span>
+                        <span className=' absolute bottom-3 right-6' >{chapterIndex}/{lesson?.chapters.length}</span>
                         <span className=' absolute top-3 right-6' >Score: {myMarks}/{totalMarks}</span>
                     </div>
                     <div className=' flex p-[15px_20px] w-full bg-black bg-opacity-5 rounded-lg mt-[20px]'>
                         <div className='flex flex-col items-center justify-center  p-[10px_20px]  w-full '>
-                            <div className={` flex-col justify-start w-full ${currentChapterIndex !== lesson?.chapters.length - 1 ? "flex" : "hidden"} `} >
+                            <div className={` flex-col justify-start w-full ${chapterIndex !== lesson?.chapters.length  ? "flex" : "hidden"} `} >
 
                                 <p> {listening ? 'LexAyudha is now listening' : ''}</p>
 
@@ -499,8 +527,8 @@ export default function DyslexicScreenReaderQuiz() {
                                     </span>
                                 </div>
 
-                                <div className={`flex space-x-4 ${currentChapterIndex === lesson?.chapters.length - 1 ? 'block' : 'hidden'}`}>
-                                    <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded p-[5px_10px] hover:bg-black hover:bg-opacity-10 transition duration-200`} onClick={() => setPdfPreview(true)}>
+                                <div className={`flex space-x-4 ${chapterIndex === lesson?.chapters.length   ? 'block' : 'hidden'}`}>
+                                    <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded p-[5px_10px] hover:bg-black hover:bg-opacity-10 transition duration-200`} onClick={handleSeePDFPreview}>
                                         <p className=' m-0'>See Feedback</p>
 
                                     </span>
@@ -511,7 +539,7 @@ export default function DyslexicScreenReaderQuiz() {
                                 </div>
 
 
-                                <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded hover:bg-black hover:bg-opacity-10 transition duration-200 p-[5px_10px] ${!transcript && !listening && currentChapterIndex !== lesson?.chapters.length - 1 ? 'block' : 'hidden'} `} onClick={startListening}>
+                                <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded hover:bg-black hover:bg-opacity-10 transition duration-200 p-[5px_10px] ${!transcript && !listening && chapterIndex !== lesson?.chapters.length  ? 'block' : 'hidden'} `} onClick={startListening}>
                                     <p className=' m-0'>Start chapter</p>
 
                                 </span>
