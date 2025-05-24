@@ -52,7 +52,7 @@ const DysLexiaQuizReportPDFDoc = ({ quizEvalnObj, closeWindow }) => {
             }
 
             // Save the PDF
-            pdf.save(`Quiz-${quizEvalnObj}-Feedback.pdf`);
+            pdf.save(`Quiz-${quizEvalnObj?.id}-Feedback.pdf`);
         } catch (error) {
             console.error('Error generating PDF:', error);
         }
