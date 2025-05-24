@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, Button, Progress, Statistic, Row, Col, Spin } from 'antd';
+import { Card, Button, Progress, Statistic, Row, Col, Spin, Radio } from 'antd';
 import { 
   LineChart, 
   Line, 
@@ -14,6 +14,7 @@ import {
 const DashPerformance = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [reportType, setReportType] = useState('dyscalculia'); // 'dyscalculia' or 'dyslexia'
   const [performanceData, setPerformanceData] = useState({
     totalSessions: 0,
     averageEngagement: 0,
@@ -59,6 +60,10 @@ const DashPerformance = () => {
     navigate('/analytics');
   };
 
+  const handleReportTypeChange = (e) => {
+    setReportType(e.target.value);
+  };
+
   if (loading) {
     return (
       <div className="h-full w-full flex items-center justify-center">
@@ -69,18 +74,54 @@ const DashPerformance = () => {
     );
   }
 
+  // Dyslexia Report View
+  if (reportType === 'dyslexia') {
+    return (
+      <div className="p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold">Dyslexia Progress</h1>
+          <Radio.Group 
+            value={reportType} 
+            onChange={handleReportTypeChange}
+            buttonStyle="solid"
+          >
+            <Radio.Button value="dyscalculia">Dyscalculia</Radio.Button>
+            <Radio.Button value="dyslexia">Dyslexia</Radio.Button>
+          </Radio.Group>
+        </div>
+        <Card>
+          <div className="text-center py-8">
+            <h2 className="text-xl text-gray-500">Dyslexia Progress Reports Coming Soon</h2>
+            <p className="text-gray-400 mt-2">We're working on implementing detailed dyslexia progress tracking.</p>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
+  // Dyscalculia Report View (Current Implementation)
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Performance Records</h1>
-        <Button 
-          type="primary" 
-          size="large"
-          onClick={handleViewAnalytics}
-          className="bg-blue-600 hover:bg-blue-700"
-        >
-          View Detailed Analytics
-        </Button>
+        <h1 className="text-2xl font-bold">Dyscalculia Progress</h1>
+        <div className="flex items-center gap-4">
+          <Radio.Group 
+            value={reportType} 
+            onChange={handleReportTypeChange}
+            buttonStyle="solid"
+          >
+            <Radio.Button value="dyscalculia">Dyscalculia</Radio.Button>
+            <Radio.Button value="dyslexia">Dyslexia</Radio.Button>
+          </Radio.Group>
+          <Button 
+            type="primary" 
+            size="large"
+            onClick={handleViewAnalytics}
+            className="bg-blue-600 hover:bg-blue-700"
+          >
+            View Detailed Analytics
+          </Button>
+        </div>
       </div>
 
       {/* Summary Statistics */}
