@@ -202,16 +202,20 @@ const EmotionAnalytics = () => {
     try {
       setSendingEmail(true);
       const canvas = await html2canvas(reportRef.current, {
-        scale: 2,
+        scale: 1.5,
         useCORS: true,
         logging: false,
+        imageTimeout: 0,
+        removeContainer: true,
+        backgroundColor: '#ffffff'
       });
 
-      const imgData = canvas.toDataURL("image/png");
+      const imgData = canvas.toDataURL("image/jpeg", 0.8);
       const pdf = new jsPDF({
         orientation: "portrait",
         unit: "mm",
         format: "a4",
+        compress: true
       });
 
       const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -222,7 +226,7 @@ const EmotionAnalytics = () => {
       const imgX = (pdfWidth - imgWidth * ratio) / 2;
       const imgY = 30;
 
-      pdf.addImage(imgData, "PNG", imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+      pdf.addImage(imgData, "JPEG", imgX, imgY, imgWidth * ratio, imgHeight * ratio, undefined, 'FAST');
 
       // Add header
       pdf.setFontSize(20);
@@ -232,6 +236,9 @@ const EmotionAnalytics = () => {
       const footerText = `Generated on ${new Date().toLocaleDateString()}`;
       pdf.setFontSize(10);
       pdf.text(footerText, pdfWidth / 2, pdfHeight - 10, { align: "center" });
+
+      // Get PDF as base64 string with compression
+      const pdfBase64 = pdf.output('datauristring').split(',')[1];
 
       // Prepare email content
       const activityName = activities.find(a => a.id === selectedActivity)?.name || "Unknown Activity";
@@ -248,6 +255,8 @@ Summary:
 ${analyticsData?.studentSummary || "No summary available"}
 
 This report has been generated based on the student's emotional responses during the activity.
+
+Please find the detailed PDF report attached to this email.
       `;
 
       const emailHtml = `
@@ -268,11 +277,14 @@ This report has been generated based on the student's emotional responses during
             <p style="color: #666; font-size: 12px;">
               This report has been generated based on the student's emotional responses during the activity.
             </p>
+            <p style="color: #666; font-size: 12px; margin-top: 10px;">
+              Please find the detailed PDF report attached to this email.
+            </p>
           </div>
         </div>
       `;
 
-      // Send email
+      // Send email with PDF attachment
       const response = await fetch("http://localhost:8007/email/send-email", {
         method: "POST",
         headers: {
@@ -282,7 +294,13 @@ This report has been generated based on the student's emotional responses during
           to: email,
           subject: emailSubject,
           text: emailText,
-          html: emailHtml
+          html: emailHtml,
+          attachments: [{
+            content: pdfBase64,
+            filename: `emotion-analytics-report-${selectedDate}.pdf`,
+            type: 'application/pdf',
+            disposition: 'attachment'
+          }]
         }),
       });
 
