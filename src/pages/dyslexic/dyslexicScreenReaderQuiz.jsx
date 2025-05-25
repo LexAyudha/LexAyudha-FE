@@ -111,6 +111,23 @@ export default function DyslexicScreenReaderQuiz() {
         }
     }, [lesson, user, totalMarks]);
 
+    useEffect(() => {
+      if(chapterIndex > lesson?.chapters.length)
+      {
+        saveRecord();
+      }
+    }, [quizEvalnObj]);
+
+    //Save records to DB
+    const saveRecord = async() => {
+        const payload = quizEvalnObj;
+        try {
+            await axiosInstance.post('/user/records',payload)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    
     const useDebounce = (callback, delay) => {
         const timeoutRef = useRef(null);
 
