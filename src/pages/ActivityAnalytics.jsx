@@ -233,26 +233,56 @@ const EmotionAnalytics = () => {
       pdf.setFontSize(10);
       pdf.text(footerText, pdfWidth / 2, pdfHeight - 10, { align: "center" });
 
-      const pdfData = pdf.output('datauristring');
+      // Prepare email content
+      const activityName = activities.find(a => a.id === selectedActivity)?.name || "Unknown Activity";
+      const emailSubject = `Emotion Analytics Report - ${activityName} (${selectedDate})`;
+      
+      const emailText = `
+Emotion Analytics Report
+Activity: ${activityName}
+Date: ${selectedDate}
 
-      // Prepare report data
-      const reportData = {
-        date: selectedDate,
-        activity_name: activities.find(a => a.id === selectedActivity)?.name || "Unknown Activity",
-        total_sessions: analyticsData?.allTimeData?.total || 0,
-        summary: analyticsData?.studentSummary || "No summary available"
-      };
+Total Sessions: ${analyticsData?.allTimeData?.total || 0}
+
+Summary:
+${analyticsData?.studentSummary || "No summary available"}
+
+This report has been generated based on the student's emotional responses during the activity.
+      `;
+
+      const emailHtml = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #333;">Emotion Analytics Report</h2>
+          <div style="margin: 20px 0;">
+            <p><strong>Activity:</strong> ${activityName}</p>
+            <p><strong>Date:</strong> ${selectedDate}</p>
+            <p><strong>Total Sessions:</strong> ${analyticsData?.allTimeData?.total || 0}</p>
+          </div>
+          <div style="margin: 20px 0;">
+            <h3 style="color: #444;">Summary</h3>
+            <div style="white-space: pre-line;">
+              ${analyticsData?.studentSummary || "No summary available"}
+            </div>
+          </div>
+          <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+            <p style="color: #666; font-size: 12px;">
+              This report has been generated based on the student's emotional responses during the activity.
+            </p>
+          </div>
+        </div>
+      `;
 
       // Send email
-      const response = await fetch("http://localhost:8005/emotion/send-report", {
+      const response = await fetch("http://localhost:8007/email/send-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email,
-          reportData,
-          pdfData
+          to: email,
+          subject: emailSubject,
+          text: emailText,
+          html: emailHtml
         }),
       });
 
