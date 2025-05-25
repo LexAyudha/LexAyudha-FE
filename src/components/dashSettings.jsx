@@ -137,13 +137,39 @@ const DashSettings = () => {
                 <Input prefix={<UserOutlined />} placeholder="Your email" />
               </Form.Item>
 
-              <Button 
-                type="link" 
-                onClick={() => setIsPasswordModalVisible(true)}
-                icon={<LockOutlined />}
+              <Form.Item
+                name="plan"
+                label="Subscription Plan"
+                rules={[{ required: true, message: 'Please select a subscription plan!' }]}
               >
-                Change Password
-              </Button>
+                <Select placeholder="Select a plan">
+                  <Option value="basic">Silver</Option>
+                  <Option value="standard">Gold</Option>
+                  <Option value="premium">Platinum</Option>
+                </Select>
+              </Form.Item>
+
+              <Row justify="space-between" align="middle">
+                <Col>
+                  <Button 
+                    type="link" 
+                    onClick={() => setIsPasswordModalVisible(true)}
+                    icon={<LockOutlined />}
+                  >
+                    Change Password
+                  </Button>
+                </Col>
+                <Col>
+                  <Button 
+                    type="link" 
+                    danger
+                    icon={<UserOutlined />}
+                    onClick={() => message.success('Account deactivated successfully')}
+                  >
+                    Deactivate Account
+                  </Button>
+                </Col>
+              </Row>
             </Card>
           </TabPane>
 
