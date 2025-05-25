@@ -496,13 +496,13 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="w-full p-[14px] h-full flex items-center justify-center">
-            <div className="primary-color-bg shadow-[0px_0px_5px_1px_rgba(0,_0,_0,_0.1)] w-full h-full  bottom-0 p-[12px] z-[5]    rounded-md ">
+            <div className="primary-color-bg shadow-[0px_0px_5px_1px_rgba(0,_0,_0,_0.1)] w-full h-full  bottom-0 p-[12px] z-[5] rounded-md ">
               {panel === "training" && <DashTraining userData={userData} />}
               {panel === "performance" && <DashPerformance />}
               {panel === "achievements" && <DashAchievements />}
               {panel === "billings" && <DashBilling />}
               {panel === "customize" && <DashCustomize />}
-              {panel === "settings" && <DashSettings />}
+              {panel === "settings" && <DashSettings user={userData} />}
             </div>
           </div>
         </div>
