@@ -70,7 +70,7 @@ const MixedAdditionQuiz = () => {
         {!isFinished ? (
           <>
             <h2 style={{ fontSize: '36px', marginBottom: '0px' }}>Addition Quizzes</h2>
-            <div className="quiz-counter" style={{ marginBottom: '5px', fontSize: '18px', color: '#555', marginTop: '50px' }}>
+            <div className="quiz-counter" style={{ marginBottom: '5px', fontSize: '18px', marginTop: '50px' }}>
               Question {quizCount + 1} / {quizLimit}
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '30px' }}>

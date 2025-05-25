@@ -75,7 +75,7 @@ export default function DysRecordPdf({ record, closeWindow }) {
                 <div className="border-b-2 border-gray-200 pb-4 mb-6">
                     <h1 className="text-3xl font-bold mb-2">{record.name}</h1>
                     <div className="flex justify-between text-sm text-gray-600">
-                        <p>Date: {record.date}</p>
+                        <p>Date: {new Date(record?.createdAt).toISOString().split('T')[0]}</p>
                         <p>ID: {record.id?.substring(0, 6)}</p>
                     </div>
                 </div>
@@ -103,7 +103,7 @@ export default function DysRecordPdf({ record, closeWindow }) {
                         <div key={index} className="mb-4 p-4 bg-gray-50 rounded-lg">
                             <div className="flex justify-between mb-2">
                                 <h3 className="font-semibold">Chapter {index + 1}</h3>
-                                <span className="text-sm">{chapter.completedAt}</span>
+                                <span className="text-sm">{new Date(chapter.completedAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'UTC'  })}</span>
                             </div>
                             <div className="grid grid-cols-2 gap-4 mb-2">
                                 <p><span className="font-semibold">Original:</span> {chapter.chapter}</p>

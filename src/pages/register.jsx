@@ -328,7 +328,7 @@ export default function Register() {
                     onChange={handleOtpInput}
                     onKeyDown={handleKeyDownVerify}
                     required
-                    className="my-2 p-2 shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] rounded-full px-4"
+                    className="my-2 p-2 shadow-[0px_0px_2px_1px_rgba(0,_0,_0,_0.1)] rounded-full px-4 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                   />
                   <div className="error-div">
                     <p className="m-0 text-red-500">{error}</p>

@@ -93,7 +93,7 @@ const DashPerformance = () => {
 
       const res = await axiosInstance.get(`/user/records/${user?._id}`)
       if (res?.status === 200) {
-
+        console.log('DysReports: ', res?.data)
         setDysReportList(res?.data)
       }
     } catch (error) {
@@ -146,8 +146,9 @@ const DashPerformance = () => {
             </div>
             
           ) : (
-            <div className="text-center h-full min-h-[230px] overflow-y-auto flex-wrap w-full py-2 px-2 flex justify-between items-start">
-            {dysReportsList.map((report, index) => (
+            <div className="text-center h-full min-h-[220px] overflow-y-auto flex-wrap w-full py-2 px-2 flex justify-between items-start">
+            {dysReportsList.length > 0 ? (
+              dysReportsList.map((report, index) => (
 
               <div key={index} onClick={() => openDysReportPdf(index)} className='mb-[12px] h-[80px] flex cursor-pointer group rounded-lg shadow-[0px_0px_4px_2px_rgba(0,0,0,0.1)] py-2 px-2 justify-center items-center w-[calc(33.333%-0.5rem)]'>
                 <div className=' h-full flex w-full justify-center items-center'>
@@ -155,7 +156,7 @@ const DashPerformance = () => {
                 </div>
                 <div className='flex w-1/3 flex-col text-gray-500 group-hover:text-black'>
                   <p className='text-lg '>
-                    {new Date(report?.date).toLocaleTimeString('en-US', {
+                    {new Date(report?.createdAt).toLocaleTimeString('en-US', {
                       hour: '2-digit',
                       minute: '2-digit',
                       hour12: false,
@@ -163,10 +164,16 @@ const DashPerformance = () => {
                     })}
                   </p>
 
-                  <p className='text-xs'>{new Date(report?.date).toISOString().split('T')[0]}</p>
+                  <p className='text-xs'>{new Date(report?.createdAt).toISOString().split('T')[0]}</p>
                 </div>
               </div>
-            ))}
+            ))
+            ):(
+              <div className=' flex text-wrap h-full min-h-[180px] w-full items-center justify-center'>
+                <p className='text-gray-500 m-0'>No Records available at the moment.</p>
+              </div>
+            )}
+           
           </div>
           )}
           
