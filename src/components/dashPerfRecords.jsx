@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Button, Progress, Statistic, Row, Col, Spin, Radio } from 'antd';
-import { 
-  LineChart, 
-  Line, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer 
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer
 } from 'recharts';
+import axiosInstance from '../api/axiosInstance';
+import { useQuery } from '@tanstack/react-query';
+import { getUserDetails } from '../api/RecurringAPI'
+import DysRecordPdf from './dysRecordPdf';
 
 const DashPerformance = () => {
   const navigate = useNavigate();
@@ -22,6 +26,29 @@ const DashPerformance = () => {
     averageDistraction: 0,
     recentTrend: []
   });
+  const [dysReportsList, setDysReportList] = useState([])
+  const [reportPreview, setReportPreview] = useState(false)
+  const [reportObj, setReportObj] = useState(null)
+
+  const { data: user, isLoading, error } = useQuery({
+    queryKey: ['userData'],
+    queryFn: () => getUserDetails(),
+  });
+
+  useEffect(() => {
+    if (reportObj !== null) {
+      setReportPreview(true)
+    } else {
+      setReportPreview(false)
+    }
+
+  }, [reportObj]);
+
+  useEffect(() => {
+    if (!reportPreview) {
+      setReportObj(null)
+    }
+  }, [reportPreview]);
 
   useEffect(() => {
     // Fetch performance data
@@ -32,7 +59,7 @@ const DashPerformance = () => {
           'http://localhost:8005/emotion/analytics?date=2025-05-15&activityId=2468&studentId=12345678'
         );
         const data = await response.json();
-        
+
         // Transform data for dashboard
         setPerformanceData({
           totalSessions: data.allTimeData?.total || 0,
@@ -56,6 +83,24 @@ const DashPerformance = () => {
     fetchPerformanceData();
   }, []);
 
+  useEffect(() => {
+
+    getDyslexicRecords()
+  }, [user]);
+
+  const getDyslexicRecords = async () => {
+    try {
+
+      const res = await axiosInstance.get(`/user/records/${user?._id}`)
+      if (res?.status === 200) {
+
+        setDysReportList(res?.data)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const handleViewAnalytics = () => {
     navigate('/analytics');
   };
@@ -63,6 +108,10 @@ const DashPerformance = () => {
   const handleReportTypeChange = (e) => {
     setReportType(e.target.value);
   };
+
+  const openDysReportPdf = (index) => {
+    setReportObj(dysReportsList[index])
+  }
 
   if (loading) {
     return (
@@ -78,10 +127,11 @@ const DashPerformance = () => {
   if (reportType === 'dyslexia') {
     return (
       <div className="p-6">
+        
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Dyslexia Progress</h1>
-          <Radio.Group 
-            value={reportType} 
+          <h1 className="text-2xl font-bold">Dyslexia Quiz Reports</h1>
+          <Radio.Group
+            value={reportType}
             onChange={handleReportTypeChange}
             buttonStyle="solid"
           >
@@ -89,11 +139,37 @@ const DashPerformance = () => {
             <Radio.Button value="dyslexia">Dyslexia</Radio.Button>
           </Radio.Group>
         </div>
-        <Card>
-          <div className="text-center py-8">
-            <h2 className="text-xl text-gray-500">Dyslexia Progress Reports Coming Soon</h2>
-            <p className="text-gray-400 mt-2">We're working on implementing detailed dyslexia progress tracking.</p>
+        <Card className='h-full'>
+          {reportPreview ? (
+            <div className='flex justify-center items-start'>
+              <DysRecordPdf record={reportObj} closeWindow={() => setReportPreview(false)} />
+            </div>
+            
+          ) : (
+            <div className="text-center h-full min-h-[230px] overflow-y-auto flex-wrap w-full py-2 px-2 flex justify-between items-start">
+            {dysReportsList.map((report, index) => (
+
+              <div key={index} onClick={() => openDysReportPdf(index)} className='mb-[12px] h-[80px] flex cursor-pointer group rounded-lg shadow-[0px_0px_4px_2px_rgba(0,0,0,0.1)] py-2 px-2 justify-center items-center w-[calc(33.333%-0.5rem)]'>
+                <div className=' h-full flex w-full justify-center items-center'>
+                  <p className='m-0 text-xl font-bold text-gray-500 group-hover:text-black'>{report?.name}_{report?._id?.substring(0, 6)}</p>
+                </div>
+                <div className='flex w-1/3 flex-col text-gray-500 group-hover:text-black'>
+                  <p className='text-lg '>
+                    {new Date(report?.date).toLocaleTimeString('en-US', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: false,
+                      timeZone: 'UTC'
+                    })}
+                  </p>
+
+                  <p className='text-xs'>{new Date(report?.date).toISOString().split('T')[0]}</p>
+                </div>
+              </div>
+            ))}
           </div>
+          )}
+          
         </Card>
       </div>
     );
@@ -105,16 +181,16 @@ const DashPerformance = () => {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Dyscalculia Progress</h1>
         <div className="flex items-center gap-4">
-          <Radio.Group 
-            value={reportType} 
+          <Radio.Group
+            value={reportType}
             onChange={handleReportTypeChange}
             buttonStyle="solid"
           >
             <Radio.Button value="dyscalculia">Dyscalculia</Radio.Button>
             <Radio.Button value="dyslexia">Dyslexia</Radio.Button>
           </Radio.Group>
-          <Button 
-            type="primary" 
+          <Button
+            type="primary"
             size="large"
             onClick={handleViewAnalytics}
             className="bg-blue-600 hover:bg-blue-700"
@@ -175,8 +251,8 @@ const DashPerformance = () => {
               <span>Engagement</span>
               <span>{performanceData.averageEngagement}%</span>
             </div>
-            <Progress 
-              percent={performanceData.averageEngagement} 
+            <Progress
+              percent={performanceData.averageEngagement}
               strokeColor="#3f8600"
               showInfo={false}
             />
@@ -186,8 +262,8 @@ const DashPerformance = () => {
               <span>Frustration</span>
               <span>{performanceData.averageFrustration}%</span>
             </div>
-            <Progress 
-              percent={performanceData.averageFrustration} 
+            <Progress
+              percent={performanceData.averageFrustration}
               strokeColor="#cf1322"
               showInfo={false}
             />
@@ -197,8 +273,8 @@ const DashPerformance = () => {
               <span>Distraction</span>
               <span>{performanceData.averageDistraction}%</span>
             </div>
-            <Progress 
-              percent={performanceData.averageDistraction} 
+            <Progress
+              percent={performanceData.averageDistraction}
               strokeColor="#faad14"
               showInfo={false}
             />
@@ -215,22 +291,22 @@ const DashPerformance = () => {
               <XAxis dataKey="date" />
               <YAxis />
               <Tooltip />
-              <Line 
-                type="monotone" 
-                dataKey="engagement" 
-                stroke="#3f8600" 
+              <Line
+                type="monotone"
+                dataKey="engagement"
+                stroke="#3f8600"
                 name="Engagement"
               />
-              <Line 
-                type="monotone" 
-                dataKey="frustration" 
-                stroke="#cf1322" 
+              <Line
+                type="monotone"
+                dataKey="frustration"
+                stroke="#cf1322"
                 name="Frustration"
               />
-              <Line 
-                type="monotone" 
-                dataKey="distraction" 
-                stroke="#faad14" 
+              <Line
+                type="monotone"
+                dataKey="distraction"
+                stroke="#faad14"
                 name="Distraction"
               />
             </LineChart>
@@ -241,14 +317,14 @@ const DashPerformance = () => {
       {/* Quick Actions */}
       <Card title="Quick Actions" className="mb-6">
         <div className="flex flex-wrap gap-4">
-          <Button 
-            type="primary" 
+          <Button
+            type="primary"
             onClick={handleViewAnalytics}
             className="bg-blue-600 hover:bg-blue-700"
           >
             View Full Analytics
           </Button>
-          <Button 
+          <Button
             onClick={() => navigate('/analytics')}
             className="border-blue-600 text-blue-600 hover:bg-blue-50"
           >

@@ -7,7 +7,7 @@ import logo from '../assets/lexLogo.png';
 
 const DysLexiaQuizReportPDFDoc = ({ quizEvalnObj, closeWindow }) => {
     const pdfContentRef = useRef(null);
-    console.log('Quiz Eval: ', quizEvalnObj)
+   
 
     const generatePDF = async () => {
         if (!pdfContentRef.current) return;

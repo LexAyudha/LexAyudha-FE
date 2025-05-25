@@ -55,7 +55,7 @@ export default function DyslexicQuizControlPanel() {
   }
 
   const updateChromaticTheme = async (theme) => {
-   //This is a dummy function used for Testing
+   setSelectedChromaticTheme(theme)
   }
 
   const openPdfDownloadMenu = () => {
@@ -136,7 +136,7 @@ export default function DyslexicQuizControlPanel() {
                   <p className='h-[150px] overflow-x-hidden'>{selectedLesson?.description}</p>
                   <div className='mt-[20px] px-[20px] py-[10px] rounded-md'>
                     <p>Ex: </p>
-                    <p className={`m-0 text-[36px] ${selectedLesson?.chromaticTheme}`} data-attribute="chromatic">
+                    <p className={`m-0 text-[36px] ${selectedChromaticTheme}`} data-attribute="chromatic">
                       {selectedLesson?.example}
                     </p>
                   </div>

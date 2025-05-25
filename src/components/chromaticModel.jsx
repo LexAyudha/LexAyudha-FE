@@ -61,7 +61,7 @@ export default function ChromaticModel({ initialChromaticTheme, updateChromaticT
 
   const applyChromaticThemes = () => {
     const pTags = document.querySelectorAll('p[data-attribute="chromatic"]');
-
+   
     pTags.forEach(pTag => {
       // First reset any previously applied styles
       const originalClass = Array.from(pTag.classList).find(cls => cls.startsWith('chromTheme_'));
@@ -73,12 +73,15 @@ export default function ChromaticModel({ initialChromaticTheme, updateChromaticT
 
         // Determine splitting method based on theme
         if (originalClass === 'chromTheme_1') {
+         
           // Split by words, but capture the whitespace
           fragments = originalText.split(/(\s+)/);
         } else if (originalClass === 'chromTheme_2') {
+        
           // Split by pairs of characters
           fragments = originalText.match(/.{1,2}/gs) || [];
         } else if (originalClass === 'chromTheme_3') {
+ 
           // Split by individual characters
           fragments = originalText.match(/./gs) || [];
         }
@@ -88,9 +91,10 @@ export default function ChromaticModel({ initialChromaticTheme, updateChromaticT
         // const themeNumber = originalClass.split('_')[1];
         let newContent; 
 
+        
         if (selectedColPattern != null) {
           const colorPattern = selectedColPattern || colors.chromThemeColor_1;
-
+          
           newContent = fragments.map((fragment) => {
             // Skip applying colors to whitespace for word theme
             if (originalClass === 'chromTheme_1' && fragment.trim() === '') {
@@ -99,11 +103,12 @@ export default function ChromaticModel({ initialChromaticTheme, updateChromaticT
 
             const color = colorPattern[colorIndex % colorPattern.length];
             colorIndex++;
+            
             return `<span style="color: ${color};">${fragment}</span>`;
           }).join(''); // Join without adding spaces
         }else{
          
-
+         
           newContent = fragments.map((fragment) => {
             // Skip applying colors to whitespace for word theme
             if (originalClass === 'chromTheme_1' && fragment.trim() === '') {
@@ -151,6 +156,7 @@ export default function ChromaticModel({ initialChromaticTheme, updateChromaticT
   const handleThemeChange = (theme) => {
     
     setChromaticTheme(theme);
+
     updateChromaticTheme(theme[1])
     localStorage.setItem('selectedChromaticTheme', theme[1])
   };

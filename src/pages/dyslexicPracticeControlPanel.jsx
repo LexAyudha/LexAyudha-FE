@@ -19,6 +19,7 @@ export default function DyslexicPracticeControlPanel() {
   const [pdfChromaticTheme, setPdfChromaticTheme] = useState()
   const [pdfChromaticColor, setPdfChromaticColor] = useState()
   const [pdfPreview, setPdfPreview] = useState(null);
+  
 
   const navigate = useNavigate();
 
@@ -29,9 +30,14 @@ export default function DyslexicPracticeControlPanel() {
   });
 
   useEffect(() => {
+    
     setTimeout(() => {
-      setSelectedLesson(lessons[0]);
-      setSelectedChromaticTheme(lessons[0].chromaticTheme);
+      if(lessons){
+        
+        setSelectedLesson(lessons[0]);
+        setSelectedChromaticTheme(lessons[0].chromaticTheme);
+      }
+      
 
     }, 200);
 
@@ -55,8 +61,10 @@ export default function DyslexicPracticeControlPanel() {
   }
 
   const updateChromaticTheme = async (theme) => {
-   //This is a dummy function used for Testing
+    setSelectedChromaticTheme(theme)
+  
   }
+
 
   const openPdfDownloadMenu = () => {
     setPreviewContent(false)
@@ -136,7 +144,7 @@ export default function DyslexicPracticeControlPanel() {
                   <p className='h-[150px] overflow-x-hidden'>{selectedLesson?.description}</p>
                   <div className='mt-[20px] px-[20px] py-[10px] rounded-md'>
                     <p>Ex: </p>
-                    <p className={`m-0 text-[36px] ${selectedLesson?.chromaticTheme}`} data-attribute="chromatic">
+                    <p className={`m-0 text-[36px] ${selectedChromaticTheme}`} data-attribute="chromatic">
                       {selectedLesson?.example}
                     </p>
                   </div>
