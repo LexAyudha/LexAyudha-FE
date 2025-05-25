@@ -33,6 +33,7 @@ export default function DyslexicScreenReaderQuiz() {
     const [myMarks, setMyMarks] = useState(0)
     const [currentTTS, setCurrentTTS] = useState(null)
     const [pdfPreview, setPdfPreview] = useState(false)
+    const [apiCount, setApiCount] = useState(0)
     const [quizEvalnObj, setQuizEvalObj] = useState({
         name: '',                    // Quiz name
         id: '',                      // Quiz ID
@@ -60,28 +61,30 @@ export default function DyslexicScreenReaderQuiz() {
     const { data: lessonsList, isLoading, error } = useQuery({
         queryKey: ['quizzes'],
         queryFn: getQuizzes,
-        staleTime: 120 * 60 * 1000,  // Data stays fresh for 5 minutes
+        staleTime: 120 * 60 * 1000,
 
     });
 
     useEffect(() => {
+       
+        if (lessonsList) {
+            const selectedLesson = lessonsList?.find((item) => item?.id == lessonID);
+            setLesson(selectedLesson);
+            setCurrentChapter(selectedLesson?.chapters[0])
+            setCurrentChapterIndex(0);
 
-        const selectedLesson = lessonsList?.find((item) => item?.id === lessonID);
-        setLesson(selectedLesson);
-        setCurrentChapter(selectedLesson?.chapters[0])
-        setCurrentChapterIndex(0);
+            getUserDetails();
+            // Small delay to ensure DOM is ready
+            const timer = setTimeout(() => {
+                applyChromaticThemes();
+            }, 100);
 
-        getUserDetails();
-        // Small delay to ensure DOM is ready
-        const timer = setTimeout(() => {
-            applyChromaticThemes();
-        }, 100);
-
-        return () => clearTimeout(timer);
-
+            return () => clearTimeout(timer);
+        }
     }, [lessonsList]);
 
     useEffect(() => {
+
         calculateTotalAchievableMark();
 
     }, [lesson]);
@@ -112,22 +115,26 @@ export default function DyslexicScreenReaderQuiz() {
     }, [lesson, user, totalMarks]);
 
     useEffect(() => {
-      if(chapterIndex > lesson?.chapters.length)
-      {
-        saveRecord();
-      }
+        if (chapterIndex > lesson?.chapters.length) {
+            if(quizEvalnObj?.summary?.weakestChapter != ''){
+                console.log('Saving to Record DB')
+                saveRecord();
+                
+            }
+            
+        }
     }, [quizEvalnObj]);
 
     //Save records to DB
-    const saveRecord = async() => {
+    const saveRecord = async () => {
         const payload = quizEvalnObj;
         try {
-            await axiosInstance.post('/user/records',payload)
+            await axiosInstance.post('/user/records', payload)
         } catch (error) {
             console.log(error)
         }
     }
-    
+
     const useDebounce = (callback, delay) => {
         const timeoutRef = useRef(null);
 
@@ -265,49 +272,65 @@ export default function DyslexicScreenReaderQuiz() {
             }
         }));
 
-      
+
     };
 
     // Helper functions
     const findMistakes = (original, pronounced) => {
-        const originalWords = original.toLowerCase().split(' ');
-        const pronouncedWords = pronounced.toLowerCase().split(' ');
+        const originalWords = original.toLowerCase()
+            .trim()
+            .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
+            .split(' ')
+            .filter(word => word.length > 0);
+        const pronouncedWords = pronounced.toLowerCase()
+            .trim()
+            .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
+            .split(' ')
+            .filter(word => word.length > 0);
         return originalWords.filter((word, index) => word !== pronouncedWords[index]);
     };
 
     const calculateAccuracy = (original, pronounced) => {
-        const originalWords = original.toLowerCase().split(' ');
-        const pronouncedWords = pronounced.toLowerCase().split(' ');
+        const originalWords = original.toLowerCase()
+            .trim()
+            .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
+            .split(' ')
+            .filter(word => word.length > 0);
+        const pronouncedWords = pronounced.toLowerCase()
+            .trim()
+            .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
+            .split(' ')
+            .filter(word => word.length > 0);
         const correctWords = originalWords.filter((word, index) => word === pronouncedWords[index]);
         return Math.round((correctWords.length / originalWords.length) * 100);
     };
 
     const handleNext = () => {
         if (currentChapterIndex < lesson?.chapters.length) {
-            
+
             setCurrentChapterIndex(currentChapterIndex + 1);
         }
-        
+
         setChapterIndex(chapterIndex + 1)
         setCompletedChapters(currentChapterIndex + 1)
     };
 
     const handleBack = () => {
-        if (currentChapterIndex <= lesson?.chapters.length ) {
+        if (currentChapterIndex <= lesson?.chapters.length) {
             setCurrentChapterIndex(currentChapterIndex - 1);
         }
-        
+
         setChapterIndex(chapterIndex - 1)
-        
+
     };
 
     const handleSkip = () => {
         if (currentChapterIndex < lesson?.chapters.length) {
             setCurrentChapterIndex(currentChapterIndex + 1);
         }
-       
+
         setChapterIndex(chapterIndex + 1)
-        
+
     }
 
 
@@ -442,14 +465,14 @@ export default function DyslexicScreenReaderQuiz() {
             setTimeout(() => {
                 SpeechRecognition.stopListening();
             }, 200);
-            
+
             if (myMarks <= totalMarks) {
                 const chapterMark = calculateScoreForChapter();
                 setMyMarks(myMarks + chapterMark);
 
                 // Update chapter performance
                 updateChapterPerformance(currentChapter, transcript, chapterMark);
-               
+
             }
             handleNext();
         }
@@ -466,7 +489,7 @@ export default function DyslexicScreenReaderQuiz() {
 
         setTimeout(() => {
             setPdfPreview(true)
-        }, 200); 
+        }, 200);
     }
     return (
         <div className='la-container overflow-x-hidden items-center h-screen flex flex-col relative'>
@@ -512,14 +535,14 @@ export default function DyslexicScreenReaderQuiz() {
                         </div>
                     </div>
                     <div className=' text-wrap overflow-x-hidden overflow-y-auto relative bg-black bg-opacity-5 w-full h-[300px] rounded-lg flex justify-center items-center'>
-                        <p className={`p-[20px] m-0 ${chapterIndex > lesson?.chapters.length ? "block":"hidden"} `} style={{ fontSize: `${fontSize}px` }}>Quiz Completed</p>
-                        <p className={`p-[20px] m-0 ${selectedChromTheme} ${chapterIndex <= lesson?.chapters.length ? "block":"hidden"} `} style={{ fontSize: `${fontSize}px` }} data-attribute="chromatic">{currentChapter || 'Sorry, No chapters in this lesson'}</p>
-                        <span className={`absolute bottom-3 right-6 ${chapterIndex > lesson?.chapters.length ? "hidden":"block"}`} >{chapterIndex}/{lesson?.chapters.length}</span>
+                        <p className={`p-[20px] m-0 ${chapterIndex > lesson?.chapters.length ? "block" : "hidden"} `} style={{ fontSize: `${fontSize}px` }}>Quiz Completed</p>
+                        <p className={`p-[20px] m-0 ${selectedChromTheme} ${chapterIndex <= lesson?.chapters.length ? "block" : "hidden"} `} style={{ fontSize: `${fontSize}px` }} data-attribute="chromatic">{currentChapter || 'Sorry, No chapters in this lesson'}</p>
+                        <span className={`absolute bottom-3 right-6 ${chapterIndex > lesson?.chapters.length ? "hidden" : "block"}`} >{chapterIndex}/{lesson?.chapters.length}</span>
                         <span className=' absolute top-3 right-6' >Score: {myMarks}/{totalMarks}</span>
                     </div>
                     <div className=' flex p-[15px_20px] w-full bg-black bg-opacity-5 rounded-lg mt-[20px]'>
                         <div className='flex flex-col items-center justify-center  p-[10px_20px]  w-full '>
-                            <div className={` flex-col justify-start w-full ${chapterIndex <= lesson?.chapters.length  ? "flex" : "hidden"} `} >
+                            <div className={` flex-col justify-start w-full ${chapterIndex <= lesson?.chapters.length ? "flex" : "hidden"} `} >
 
                                 <p> {listening ? 'LexAyudha is now listening' : ''}</p>
 
@@ -543,7 +566,7 @@ export default function DyslexicScreenReaderQuiz() {
                                     </span>
                                 </div>
 
-                                <div className={`flex space-x-4 ${chapterIndex > lesson?.chapters.length   ? 'block' : 'hidden'}`}>
+                                <div className={`flex space-x-4 ${chapterIndex > lesson?.chapters.length ? 'block' : 'hidden'}`}>
                                     <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded p-[5px_10px] hover:bg-black hover:bg-opacity-10 transition duration-200`} onClick={handleSeePDFPreview}>
                                         <p className=' m-0'>See Feedback</p>
 
@@ -555,7 +578,7 @@ export default function DyslexicScreenReaderQuiz() {
                                 </div>
 
 
-                                <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded hover:bg-black hover:bg-opacity-10 transition duration-200 p-[5px_10px] ${!transcript && !listening && chapterIndex <= lesson?.chapters.length  ? 'block' : 'hidden'} `} onClick={startListening}>
+                                <span className={`relative group cursor-pointer w-fit bg-[var(--primary-color)] rounded hover:bg-black hover:bg-opacity-10 transition duration-200 p-[5px_10px] ${!transcript && !listening && chapterIndex <= lesson?.chapters.length ? 'block' : 'hidden'} `} onClick={startListening}>
                                     <p className=' m-0'>Start chapter</p>
 
                                 </span>
