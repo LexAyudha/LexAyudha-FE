@@ -1,8 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
-import Swal from 'sweetalert2'; // Feedback
 import ChangeThemeFB from '../../changeThemeFB';
 import AlternativeHeader from "../../alternativeHeader";
+import html2pdf from 'html2pdf.js';
+import { useRef } from 'react';
+
 
 const MixedSubtractionQuiz = () => {
   const [num1, setNum1] = useState(0);
@@ -13,6 +14,7 @@ const MixedSubtractionQuiz = () => {
   const quizLimit = 10;
   const [quizResults, setQuizResults] = useState([]);
   const [isFinished, setIsFinished] = useState(false);
+    const summaryRef = useRef(null);
 
   useEffect(() => {
     if (quizCount < quizLimit) {
@@ -65,6 +67,19 @@ const MixedSubtractionQuiz = () => {
     setQuizResults([]);
     setIsFinished(false);
   };
+
+  const handleDownloadPDF = () => {
+      const element = summaryRef.current;
+      const opt = {
+        margin:       0.5,
+        filename:     'Quiz_Summary.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+  
+      html2pdf().set(opt).from(element).save();
+    };
 
   return (
     <div className="la-container h-screen flex items-center justify-center relative">
@@ -135,17 +150,42 @@ const MixedSubtractionQuiz = () => {
             }}
           >
             <div
+              ref={summaryRef}
               style={{
                 backgroundColor: '#fff',
                 padding: '30px',
-                borderRadius: '30px',
-                width: '90%',
+                borderRadius: '20px',
+                width: '100%',
                 maxWidth: '900px',
-                maxHeight: '90vh',
+                maxHeight: '95vh',
                 overflowY: 'auto',
               }}
             >
               <h2 style={{ fontSize: '28px', marginBottom: '20px', textAlign: 'center' }}>Quiz Summary</h2>
+
+              {/* Summary Cards */}
+              <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '30px', gap: '20px', flexWrap: 'wrap' }}>
+                <div style={{ flex: 1, minWidth: '150px', padding: '20px', backgroundColor: '#e6f7ff', borderRadius: '10px', textAlign: 'center' }}>
+                  <h3 style={{ margin: 0 }}>Correct Answers</h3>
+                  <p style={{ fontSize: '24px', color: 'green', fontWeight: 'bold' }}>
+                    {quizResults.filter((q) => q.isCorrect).length}
+                  </p>
+                </div>
+                <div style={{ flex: 1, minWidth: '150px', padding: '20px', backgroundColor: '#fff3cd', borderRadius: '10px', textAlign: 'center' }}>
+                  <h3 style={{ margin: 0 }}>Incorrect Answers</h3>
+                  <p style={{ fontSize: '24px', color: 'red', fontWeight: 'bold' }}>
+                    {quizResults.filter((q) => !q.isCorrect).length}
+                  </p>
+                </div>
+                <div style={{ flex: 1, minWidth: '150px', padding: '20px', backgroundColor: '#d4edda', borderRadius: '10px', textAlign: 'center' }}>
+                  <h3 style={{ margin: 0 }}>Total Score</h3>
+                  <p style={{ fontSize: '24px', color: '#155724', fontWeight: 'bold' }}>
+                    {quizResults.filter((q) => q.isCorrect).length * 10} / 100
+                  </p>
+                </div>
+              </div>
+
+              {/* Results Table */}
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
                   <tr>
@@ -195,6 +235,26 @@ const MixedSubtractionQuiz = () => {
                 >
                   Restart Quiz
                 </button>
+
+                <button
+                  onClick={handleDownloadPDF}
+                  style={{
+                    marginTop: '15px',
+                    marginLeft: '25px',
+                    padding: '12px 24px',
+                    fontSize: '18px',
+                    color: '#fff',
+                    backgroundColor: '#17a2b8',
+                    border: 'none',
+                    borderRadius: '5px',
+                    cursor: 'pointer',
+                  }}
+                  onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#117a8b')}
+                  onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#17a2b8')}
+                >
+                  Download Summary 
+                </button>
+
               </div>
             </div>
           </div>

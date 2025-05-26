@@ -21,7 +21,7 @@ const Number1 = ({ highlightedTouchPoint }) => {
         <circle
           key={index}
           cx={155} cy={30} r={12}
-          fill={index === highlightedTouchPoint ? "#FFD700" : "#c27e00"}
+          fill={index === highlightedTouchPoint ? "#c27e00" : "#FFD700" }
           onClick={() => handleTouch(index)}
         />
       ))}
