@@ -237,7 +237,7 @@ const DashPerformance = () => {
 
       {/* Summary Statistics */}
       <Row gutter={[16, 16]} className="mb-6">
-        <Col xs={24} sm={12} lg={6}>
+        {/* <Col xs={24} sm={12} lg={6}>
           <Card>
             <Statistic
               title="Total Sessions"
@@ -245,7 +245,7 @@ const DashPerformance = () => {
               suffix="sessions"
             />
           </Card>
-        </Col>
+        </Col> */}
         <Col xs={24} sm={12} lg={6}>
           <Card>
             <Statistic

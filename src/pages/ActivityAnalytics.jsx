@@ -39,7 +39,7 @@ const CLASS_COLORS = {
 
 const EmotionAnalytics = () => {
   const navigate = useNavigate();
-  const [selectedDate, setSelectedDate] = useState("2025-05-15");
+  const [selectedDate, setSelectedDate] = useState("2025-05-26");
   const [selectedActivity, setSelectedActivity] = useState("2468");
   const [analyticsData, setAnalyticsData] = useState(null);
   const [loading, setLoading] = useState(false);
