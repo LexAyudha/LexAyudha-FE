@@ -214,10 +214,25 @@ export default function DashCustLessons() {
   }
 
   const handleNewLessonClick = () => {
+    setSelectedLesson(null);
     setEditMode(false);
     setNewLessonMode(true);
-    setSelectedLesson(null);
+    setNewLesson({
+        name: '',
+        complexity: 2,
+        description: '',
+        example: '',
+        points: 0,
+        chromaticTheme: 'chromTheme_1',
+        colorTheme: 'chromThemeColor_1',
+        chapters: []
+    });
+    
   }
+
+  useEffect(() => {
+    console.log('Is true: ', lessonData?.length === 0 && newLessonMode)
+  }, [newLessonMode]);
 
   // Function to apply chromatic themes
   const applyChromaticThemes = () => {
@@ -310,7 +325,7 @@ export default function DashCustLessons() {
       </div>
       <div className='px-[14px] pb-[8px] w-full h-full bg-white rounded-[4px] shadow-[inset_0_0_2.5px_0px_rgba(0,0,0,0.2)]'>
         <h3 className='mb-[16px]'>Lesson Dashboard</h3>
-        { !selectedLesson ? (
+        { !selectedLesson && !newLessonMode ? (
           <div className=' w-full h-full flex justify-center items-center'>
             {/* Title div */}
             <div className='flex justify-between items-center '>
@@ -318,7 +333,7 @@ export default function DashCustLessons() {
             </div>
           </div>
         ):(
-           lessonData?.length == 0 && !newLessonMode ? (
+           lessonData?.length === 0 && !newLessonMode ? (
           <div className=' w-full h-full flex justify-center items-center'>
             {/* Title div */}
             <div className='flex justify-between items-center '>
@@ -346,9 +361,9 @@ export default function DashCustLessons() {
               <div className='flex items-center ml-[20px]'>
                 <p className='m-0 mr-2'>Complexity : </p>
                 {newLessonMode ? (
-                  <input type='number' max={20} min={2} className='border-2 border-gray-200 px-[8px] rounded-md' placeholder={newLesson?.complexity} onChange={handleNewLessonComplexityChange} value={newLesson?.complexity}></input>
+                  <input type='number' max={20} min={3} className='border-2 border-gray-200 px-[8px] rounded-md' placeholder={newLesson?.complexity} onChange={handleNewLessonComplexityChange} value={newLesson?.complexity}></input>
                 ) : editMode ? (
-                  <input type='number' max={20} min={2} className='border-2 border-gray-200 px-[8px] rounded-md' placeholder={selectedLesson?.complexity} onChange={handleLessonComplexityChange} value={selectedLesson?.complexity}></input>
+                  <input type='number' max={20} min={3} className='border-2 border-gray-200 px-[8px] rounded-md' placeholder={selectedLesson?.complexity} onChange={handleLessonComplexityChange} value={selectedLesson?.complexity}></input>
                 ) : (
                   <div>
                     <p className='m-0 text-[var(--slate-gray)]'>{selectedLesson?.complexity}</p>
