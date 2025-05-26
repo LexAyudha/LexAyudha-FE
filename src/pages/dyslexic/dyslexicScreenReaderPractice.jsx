@@ -1,5 +1,5 @@
 // Dyslexia screen reader main page
-import React, { useEffect, useState, } from 'react'
+import React, { useEffect, useState, useRef} from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import ChangeThemeFB from '../../components/changeThemeFB';
 import chromaticThemes from '../../configs/chromaticThemes'
@@ -14,7 +14,10 @@ import { getLessons } from '../../api/RecurringAPI';
 export default function DyslexicScreenReaderPractice() {
     const paramObj = useParams()
     const lessonID = paramObj?.id //Check for parameter 'id'
-    
+
+    const currentSpeechRate = useRef(1);
+    const currentTTSData = useRef();
+
     const [selectedChromTheme, setSelecetedChromeTheme] = useState(localStorage.getItem('selectedChromaticTheme'))
     const [selectedColPattern, setSelectedColPattern] = useState(localStorage.getItem('selectedColPattern'))
     const [lesson, setLesson] = useState();
@@ -31,6 +34,7 @@ export default function DyslexicScreenReaderPractice() {
     const [myMarks, setMyMarks] = useState(0)
     const [currentTTS, setCurrentTTS] = useState(null)
     const [showFeedback, setShowFeedback] = useState(false);
+    const [paceStateChanging, setPaceStateChanging] = useState(false)
     const [feedbackData, setFeedbackData] = useState({
         correct: 0,
         incorrect: 0,
@@ -63,6 +67,10 @@ export default function DyslexicScreenReaderPractice() {
         return () => clearTimeout(timer);
 
     }, [lessonsList]);
+
+    useEffect(() => {
+      setPaceStateChanging(false)
+    }, [speechRate]);
 
     useEffect(() => {
         calculateTotalAchievableMark();
@@ -170,22 +178,23 @@ export default function DyslexicScreenReaderPractice() {
         }
     }
 
-
+    //Sends the currenChapter to be converted audio using google TTS
     const handleSpeech = async () => {
-
+       
         const payload = {
             text: currentChapter,
-            speechRate: speechRate,
+            speechRate: currentSpeechRate.current,
             langCode: lesson?.langCode || 'en-US'
         }
 
         try {
             const res = await axiosInstance.post('/speech/tts', payload, {
-                responseType: 'arraybuffer'  // This is the key change
+                responseType: 'arraybuffer'  
             })
 
             if (res?.status === 200) {
                 setCurrentTTS(res?.data)
+                currentTTSData.current = res?.data
 
                 playAudio()
             }
@@ -198,8 +207,9 @@ export default function DyslexicScreenReaderPractice() {
 
     };
 
+    //Plays the converted Audio
     const playAudio = () => {
-        const blob = new Blob([currentTTS], { type: 'audio/mp3' });
+        const blob = new Blob([currentTTSData.current], { type: 'audio/mp3' });
         const url = URL.createObjectURL(blob);
         const audio = new Audio(url);
 
@@ -516,7 +526,7 @@ export default function DyslexicScreenReaderPractice() {
                     </div>
                     <div className=' text-wrap overflow-x-hidden overflow-y-auto relative bg-black bg-opacity-5 w-full h-[300px] rounded-lg flex justify-center items-center'>
                         <p className={`p-[20px] m-0 ${selectedChromTheme} `} style={{ fontSize: `${fontSize}px` }} data-attribute="chromatic">{currentChapter || 'Sorry, No chapters in this lesson'}</p>
-                        <span className=' absolute bottom-3 right-6' >{completedChapters}/{lesson?.chapters.length - 1}</span>
+                        <span className=' absolute bottom-3 right-6' >{currentChapterIndex + 1}/{lesson?.chapters.length}</span>
                         {/* <span className=' absolute top-3 right-6' >Score: {myMarks}/{totalMarks}</span> */}
                     </div>
                     <div className=' flex p-[15px_20px] w-full bg-black bg-opacity-5 rounded-lg mt-[20px]'>
@@ -561,11 +571,11 @@ export default function DyslexicScreenReaderPractice() {
                                     max='1.25'
                                     step='0.01'
                                     value={speechRate}
-                                    onChange={(e) => setSpeechRate(e.target.value)}
+                                    onChange={(e) => {setSpeechRate(e.target.value),currentSpeechRate.current = e.target.value}}
                                     className='w-[200px]'
                                 />
                             </div>
-                            <button onClick={handleSpeech} className='py-[10px] mt-[20px] px-[20px] primary-color-bg rounded-md mr-[15px] hover:bg-black hover:bg-opacity-10 transition duration-200'>Read Aloud</button>
+                            <button onClick={handleSpeech} className={`${paceStateChanging ? " disabled":""} py-[10px] mt-[20px] px-[20px] primary-color-bg rounded-md mr-[15px] hover:bg-black hover:bg-opacity-10 transition duration-200`}>Read Aloud</button>
                         </div>
 
                     </div>

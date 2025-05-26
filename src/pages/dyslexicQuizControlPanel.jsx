@@ -81,7 +81,7 @@ export default function DyslexicQuizControlPanel() {
             {isLoading ? (
               <div className="flex px-2 flex-col items-center justify-center h-full space-y-4">
                 <p className="text-sm text-center text-[var(--text-color)]">
-                  Please wait while we generate the lessons for you...
+                  Please wait while we generate the quizzes for you...
                 </p>
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--text-color)]"></div>
               </div>
