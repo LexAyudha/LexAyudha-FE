@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import EmotionDetection from "./EmotionDetection";
+import { message } from "antd";
 
 export default function EmotionDetectionButton({ onModalAction, number }) {
   const [startDetection, setStartDetection] = useState(false);
@@ -9,26 +10,43 @@ export default function EmotionDetectionButton({ onModalAction, number }) {
 
   const handleStopDetection = async () => {
     setStartDetection(false);
-    
+
     // Send reset request to the backend
-    try {
-      const response = await fetch("http://localhost:8005/emotion/reset", {
-        method: "POST",
-        headers: {
-          'Student-Id': userId,
-          'Activity-Id': "2468"
-        }
-      });
+    // try {
+    //   const response = await fetch(
+    //     "http://localhost:8005/emotion/reset-percentages",
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         "Student-Id": userId,
+    //         "Activity-Id": "2468",
+    //       },
+    //     }
+    //   );
 
-      if (!response.ok) {
-        throw new Error('Failed to reset emotion data');
-      }
+    //   if (!response.ok) {
+    //     throw new Error("Failed to reset emotion percentages");
+    //   }
 
-      const data = await response.json();
-      console.log('Emotion data reset successfully:', data);
-    } catch (error) {
-      console.error('Error resetting emotion data:', error);
-    }
+    //   const data = await response.json();
+    //   console.log("Emotion percentages reset successfully:", data);
+
+    //   // Update emotion data with reset values
+    //   setEmotionData({
+    //     prediction: {
+    //       percentages: {
+    //         frustration: 0,
+    //         distraction: 0,
+    //         engagement: 0,
+    //       },
+    //     },
+    //   });
+
+    //   message.success("Emotion monitoring stopped and percentages reset");
+    // } catch (error) {
+    //   console.error("Error resetting emotion percentages:", error);
+    //   message.error("Failed to reset emotion percentages");
+    // }
   };
 
   const handleEmotionData = (data) => {
@@ -42,7 +60,7 @@ export default function EmotionDetectionButton({ onModalAction, number }) {
   // Handle when the user dismisses the modal
   const handleModalAction = (value) => {
     if (value) {
-      setDisablePopup(true); // Disable the popup after clicking hint or "Noo, I got this!"
+      setDisablePopup(true);
     }
     onModalAction?.(value);
   };

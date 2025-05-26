@@ -23,6 +23,7 @@ const EmotionDetection = ({
   const intervalIdRef = useRef(null); // Ref to store interval ID
   const navigate = useNavigate();
   const [showVideo, setShowVideo] = useState(true);
+  const [hasDismissedModal, setHasDismissedModal] = useState(false);
 
   // Store the latest onEmotionData callback in a ref to avoid re-renders
   const onEmotionDataRef = useRef(onEmotionData);
@@ -51,6 +52,7 @@ const EmotionDetection = ({
 
   const handleCancel = useCallback(() => {
     setIsModalVisible(false);
+    setHasDismissedModal(true);
     onModalAction?.(false); // Prevent modal from appearing again
   }, [onModalAction]);
 
@@ -79,9 +81,9 @@ const EmotionDetection = ({
         method: "POST",
         body: formData,
         headers: {
-          'Student-Id': studentId,
-          'Activity-Id': activityId
-        }
+          "Student-Id": studentId,
+          "Activity-Id": activityId,
+        },
       })
         .then((response) => response.json())
         .then((data) => {
@@ -93,7 +95,10 @@ const EmotionDetection = ({
           const { engagement, distraction, frustration } =
             data?.prediction.percentages;
           console.log(engagement, distraction, frustration);
-          if (distraction > 80 || engagement < 10 || frustration > 80) {
+          if (
+            !hasDismissedModal &&
+            (distraction > 80 || engagement < 10 || frustration > 80)
+          ) {
             setIsModalVisible(true);
           }
         })
