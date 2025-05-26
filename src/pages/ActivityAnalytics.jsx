@@ -78,6 +78,7 @@ const EmotionAnalytics = () => {
   useEffect(() => {
     fetchAnalyticsData();
     const userId = localStorage.getItem("userId");
+    console.log(userId);
     setUserId(userId);
   }, [selectedDate, selectedActivity]);
 
