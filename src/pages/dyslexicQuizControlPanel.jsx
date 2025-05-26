@@ -1,3 +1,4 @@
+// Dyslexia quiz page control panel
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import ChangeThemeFB from '../components/changeThemeFB'
@@ -9,7 +10,6 @@ import DysLexiaPracitcePDFDoc from '../components/dysLexiaPracitcePDFDoc';
 
 
 export default function DyslexicQuizControlPanel() {
-
   const [selectedLesson, setSelectedLesson] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedChromaticTheme, setSelectedChromaticTheme] = useState(null);
@@ -268,7 +268,6 @@ export default function DyslexicQuizControlPanel() {
 
       {pdfPreview && (
         <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
-          
           <DysLexiaPracitcePDFDoc
           chromTheme={pdfChromaticTheme}
           chromColor={pdfChromaticColor}

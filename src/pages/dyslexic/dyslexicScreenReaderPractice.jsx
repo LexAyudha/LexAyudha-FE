@@ -1,3 +1,4 @@
+// Dyslexia screen reader main page
 import React, { useEffect, useState, useRef} from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import ChangeThemeFB from '../../components/changeThemeFB';
@@ -11,11 +12,12 @@ import { getLessons } from '../../api/RecurringAPI';
 
 
 export default function DyslexicScreenReaderPractice() {
-
     const paramObj = useParams()
     const lessonID = paramObj?.id //Check for parameter 'id'
+
     const currentSpeechRate = useRef(1);
     const currentTTSData = useRef();
+
     const [selectedChromTheme, setSelecetedChromeTheme] = useState(localStorage.getItem('selectedChromaticTheme'))
     const [selectedColPattern, setSelectedColPattern] = useState(localStorage.getItem('selectedColPattern'))
     const [lesson, setLesson] = useState();

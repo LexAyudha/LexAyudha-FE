@@ -1,3 +1,4 @@
+// Dyslexia practice page control panel
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import ChangeThemeFB from '../components/changeThemeFB'
@@ -7,9 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getLessons } from '../api/RecurringAPI';
 import DysLexiaPracitcePDFDoc from '../components/dysLexiaPracitcePDFDoc';
 
-
 export default function DyslexicPracticeControlPanel() {
-  
   const [selectedLesson, setSelectedLesson] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedChromaticTheme, setSelectedChromaticTheme] = useState(null);
@@ -20,7 +19,6 @@ export default function DyslexicPracticeControlPanel() {
   const [pdfChromaticColor, setPdfChromaticColor] = useState()
   const [pdfPreview, setPdfPreview] = useState(null);
   
-
   const navigate = useNavigate();
 
   const { data: lessons, isLoading, error } = useQuery({
@@ -37,8 +35,6 @@ export default function DyslexicPracticeControlPanel() {
         setSelectedLesson(lessons[0]);
         setSelectedChromaticTheme(lessons[0].chromaticTheme);
       }
-      
-
     }, 200);
 
   }, [lessons]);
@@ -64,7 +60,6 @@ export default function DyslexicPracticeControlPanel() {
     setSelectedChromaticTheme(theme)
   
   }
-
 
   const openPdfDownloadMenu = () => {
     setPreviewContent(false)

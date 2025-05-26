@@ -1,11 +1,10 @@
+// Dyslexia overall performance pdf
 import React, { useEffect, useState, useRef } from 'react'
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
 export default function DysRecordPdf({ record, closeWindow }) {
-
     const pdfContentRef = useRef(null);
-
 
     const generatePDF = async () => {
         if (!pdfContentRef.current) return;
@@ -55,8 +54,6 @@ export default function DysRecordPdf({ record, closeWindow }) {
             console.error('Error generating PDF:', error);
         }
     };
-
-
 
     return (
         <div className='flex flex-col items-center justify-center'>

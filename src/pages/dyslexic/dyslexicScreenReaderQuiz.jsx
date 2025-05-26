@@ -1,3 +1,4 @@
+// Dyslexia screen reader quiz page
 import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import ChangeThemeFB from '../../components/changeThemeFB';
@@ -12,7 +13,6 @@ import DysLexiaQuizReportPDFDoc from '../../components/dysLexiaQuizReportPDFDoc'
 
 
 export default function DyslexicScreenReaderQuiz() {
-
     const paramObj = useParams()
     const lessonID = paramObj?.id //Check for parameter 'id'
 

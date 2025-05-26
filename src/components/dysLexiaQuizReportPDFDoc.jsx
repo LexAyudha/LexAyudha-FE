@@ -1,14 +1,12 @@
+// Dyslexia practice outcome pdf
 import React, { useRef, useState, useEffect } from 'react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import logo from '../assets/lexLogo.png';
 
-
-
 const DysLexiaQuizReportPDFDoc = ({ quizEvalnObj, closeWindow }) => {
     const pdfContentRef = useRef(null);
    
-
     const generatePDF = async () => {
         if (!pdfContentRef.current) return;
 

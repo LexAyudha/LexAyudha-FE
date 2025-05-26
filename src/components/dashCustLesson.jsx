@@ -1,3 +1,4 @@
+// Customizable lesson dashboard
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../api/axiosInstance';
 import chromaticThemes from '../configs/chromaticThemes';
@@ -45,8 +46,8 @@ export default function DashCustLessons() {
     applyChromaticThemes();
   }, [selectedChromatic]);
 
-  //API call functions -----------------------------
-  //API call to get Lessons list
+  /*API call functions
+  API call to get Lessons list */
   const getLessonsList = async () => {
     try {
       const res = await axiosInstance.get('/user/lessons');
@@ -123,7 +124,7 @@ export default function DashCustLessons() {
     }
   }
 
-  //Helper functions ---------------------------------
+  //Helper functions 
   const handleEditToggle = () => {
     if (newLessonMode) {
       setNewLessonMode(false);

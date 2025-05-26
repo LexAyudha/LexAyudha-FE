@@ -20,6 +20,7 @@ import PTouchMath from "../components/touch-math/TouchMath/TochMathPractice.jsx"
 import QAddition from "../components/touch-math/Quizzes/Addition_Quiz.jsx";
 import QSubtraction from "../components/touch-math/Quizzes/Subtraction_Quiz.jsx";
 
+//dyslexia
 import TrainingWelcome from "../pages/trainingWelcome.jsx";
 import ConfigOnBoardingPage from "../pages/configOnBoarding.jsx";
 import SpeechCalibPage from "../pages/speechCalib.jsx";
