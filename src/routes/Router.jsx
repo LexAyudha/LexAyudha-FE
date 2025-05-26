@@ -19,6 +19,7 @@ import TSubtraction from "../components/touch-math/TeachingOperations/TeachingSu
 import PTouchMath from "../components/touch-math/TouchMath/TochMathPractice.jsx";
 import QAddition from "../components/touch-math/Quizzes/Addition_Quiz.jsx";
 import QSubtraction from "../components/touch-math/Quizzes/Subtraction_Quiz.jsx";
+import BackwardCountingGame from "../components/touch-math/BackwordCounting/practice.jsx";
 
 //dyslexia
 import TrainingWelcome from "../pages/trainingWelcome.jsx";
@@ -107,6 +108,8 @@ const Router = () => {
 
       <Route path="/quiz_addition" element={<QAddition />} />
       <Route path="/quiz_subtraction" element={<QSubtraction />} />
+
+      <Route path="/backword_game" element={<BackwardCountingGame />} />
 
       {/* Catch-all route for 404 */}
       <Route path="*" element={<NotFound />} />

@@ -28,8 +28,8 @@ export default function LearningActivity() {
     },
     "Backword Counting": {
       image: countingImg,
-      options: ["Learn", "Practice", "Quiz"],
-      routes: ["/teach_backward_counting", "/practice_backward_counting", "/quiz_backward_counting"]
+      options: ["Practice"],
+      routes: ["/backword_game"]
     },
     Addition: {
       image: additionImg,
