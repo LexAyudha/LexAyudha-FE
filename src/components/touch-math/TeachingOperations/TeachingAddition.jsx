@@ -20,16 +20,16 @@ const TeachingAddition = () => {
   const [highlightedTouchPoint, setHighlightedTouchPoint] = useState(0);
 
   const numberComponents = {
-    1: <Number1 onTouchPointChange={setHighlightedTouchPoint} highlightedTouchPoint={highlightedTouchPoint} />,
-    2: <Number2 onTouchPointChange={setHighlightedTouchPoint} highlightedTouchPoint={highlightedTouchPoint} />,
-    3: <Number3 onTouchPointChange={setHighlightedTouchPoint} highlightedTouchPoint={highlightedTouchPoint} />,
-    4: <Number4 onTouchPointChange={setHighlightedTouchPoint} highlightedTouchPoint={highlightedTouchPoint} />,
-    5: <Number5 onTouchPointChange={setHighlightedTouchPoint} highlightedTouchPoint={highlightedTouchPoint} />,
-    6: <Number6 onTouchPointChange={setHighlightedTouchPoint} highlightedTouchPoint={highlightedTouchPoint} />,
-    7: <Number7 onTouchPointChange={setHighlightedTouchPoint} highlightedTouchPoint={highlightedTouchPoint} />,
-    8: <Number8 onTouchPointChange={setHighlightedTouchPoint} highlightedTouchPoint={highlightedTouchPoint} />,
-    9: <Number9 onTouchPointChange={setHighlightedTouchPoint} highlightedTouchPoint={highlightedTouchPoint} />,
-    0: <Number0 onTouchPointChange={setHighlightedTouchPoint} highlightedTouchPoint={highlightedTouchPoint} />
+    1: <Number1 /*onTouchPointChange={setHighlightedTouchPoint} highlightedTouchPoint={highlightedTouchPoint}*/ />,
+    2: <Number2 /*onTouchPointChange={setHighlightedTouchPoint} highlightedTouchPoint={highlightedTouchPoint}*/ />,
+    3: <Number3 /*onTouchPointChange={setHighlightedTouchPoint} highlightedTouchPoint={highlightedTouchPoint}*/ />,
+    4: <Number4 /*onTouchPointChange={setHighlightedTouchPoint} highlightedTouchPoint={highlightedTouchPoint}*/ />,
+    5: <Number5 /*onTouchPointChange={setHighlightedTouchPoint} highlightedTouchPoint={highlightedTouchPoint}*/ />,
+    6: <Number6 /*onTouchPointChange={setHighlightedTouchPoint} highlightedTouchPoint={highlightedTouchPoint}*/ />,
+    7: <Number7 /*onTouchPointChange={setHighlightedTouchPoint} highlightedTouchPoint={highlightedTouchPoint}*/ />,
+    8: <Number8 /*onTouchPointChange={setHighlightedTouchPoint} highlightedTouchPoint={highlightedTouchPoint}*/ />,
+    9: <Number9 /*onTouchPointChange={setHighlightedTouchPoint} highlightedTouchPoint={highlightedTouchPoint}*/ />,
+    0: <Number0 /*onTouchPointChange={setHighlightedTouchPoint} highlightedTouchPoint={highlightedTouchPoint}*/ />
   };
 
   const pronounceNumber = (number, callback) => {
@@ -42,15 +42,15 @@ const TeachingAddition = () => {
 
   const startTeaching = () => {
     setAnswer('');
-    let touchPointIndex = 0;
+    // let touchPointIndex = 0;
     pronounceNumber(num1, () => {
-      setInterval(() => {
-        setHighlightedTouchPoint(touchPointIndex);
-        touchPointIndex += 1;
-        if (touchPointIndex >= num1) {
-          clearInterval();
-        }
-      }, 1000);
+      // setInterval(() => {
+      //   setHighlightedTouchPoint(touchPointIndex);
+      //   touchPointIndex += 1;
+      //   if (touchPointIndex >= num1) {
+      //     clearInterval();
+      //   }
+      // }, 1000);
 
       setTimeout(() => {
         const plusUtterance = new SpeechSynthesisUtterance('Plus');
