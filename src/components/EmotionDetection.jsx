@@ -24,7 +24,8 @@ const EmotionDetection = ({
   const navigate = useNavigate();
   const [showVideo, setShowVideo] = useState(true);
   const [hasDismissedModal, setHasDismissedModal] = useState(false);
-
+  const modalTimeoutRef = useRef(null);
+  const hasDismissedModalRef = useRef(false);
   // Store the latest onEmotionData callback in a ref to avoid re-renders
   const onEmotionDataRef = useRef(onEmotionData);
   useEffect(() => {
@@ -50,11 +51,26 @@ const EmotionDetection = ({
     onModalAction?.(true);
   }, [navigate]);
 
-  const handleCancel = useCallback(() => {
+  const handleCancel = () => {
     setIsModalVisible(false);
     setHasDismissedModal(true);
-    onModalAction?.(false); // Prevent modal from appearing again
-  }, [onModalAction]);
+    hasDismissedModalRef.current = true;
+
+    // Prevent showing the modal again for 5 minutes
+    modalTimeoutRef.current = setTimeout(() => {
+      setHasDismissedModal(false);
+      hasDismissedModalRef.current = false;
+    }, 5000); // 5 minutes = 300000 ms
+  };
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (modalTimeoutRef.current) {
+        clearTimeout(modalTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Process frame and send to API without causing re-renders
   const processFrame = useCallback(() => {
@@ -96,15 +112,15 @@ const EmotionDetection = ({
             data?.prediction.percentages;
           console.log(engagement, distraction, frustration);
           if (
-            !hasDismissedModal &&
-            (distraction > 80 || engagement < 10 || frustration > 80)
+            !hasDismissedModalRef.current &&
+            (distraction > 60 || engagement < 20 || frustration > 70)
           ) {
             setIsModalVisible(true);
           }
         })
         .catch((error) => console.error("Error sending frame:", error));
     }, "image/jpeg");
-  }, [disablePopup, studentId, activityId]);
+  }, [disablePopup, studentId, activityId, hasDismissedModal]);
 
   useEffect(() => {
     const startVideoCapture = async () => {
