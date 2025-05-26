@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useId } from "react";
 import {
   PieChart,
   Pie,
@@ -47,7 +47,7 @@ const EmotionAnalytics = () => {
   const [isEmailModalVisible, setIsEmailModalVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [sendingEmail, setSendingEmail] = useState(false);
-
+  const [userId, setUserId] = useState(0);
   // Mock activities - replace with actual data from your backend
   const activities = [
     { id: "2468", name: "Number Recognition" },
@@ -77,6 +77,8 @@ const EmotionAnalytics = () => {
 
   useEffect(() => {
     fetchAnalyticsData();
+    const userId = localStorage.getItem("userId");
+    setUserId(userId);
   }, [selectedDate, selectedActivity]);
 
   // Transform data for all-time emotion distribution bar chart
@@ -354,7 +356,7 @@ Please find the detailed PDF report attached to this email.
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center gap-4">
             <button
-              onClick={() => navigate("/dashboard/6824d76701650ef2a5c26f3e")}
+              onClick={() => navigate(`/dashboard/${userId}`)}
               className="px-4 py-2 rounded-md text-white font-medium bg-gray-600 hover:bg-gray-700 flex items-center gap-2"
             >
               <svg
