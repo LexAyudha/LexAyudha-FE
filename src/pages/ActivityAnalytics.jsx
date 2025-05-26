@@ -18,6 +18,7 @@ import {
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { Modal, Input, message } from "antd";
+import { useNavigate } from "react-router-dom";
 
 // Colors for emotions and emotion classes
 const EMOTION_COLORS = [
@@ -37,6 +38,7 @@ const CLASS_COLORS = {
 };
 
 const EmotionAnalytics = () => {
+  const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState("2025-05-15");
   const [selectedActivity, setSelectedActivity] = useState("2468");
   const [analyticsData, setAnalyticsData] = useState(null);
@@ -176,11 +178,20 @@ const EmotionAnalytics = () => {
       const imgX = (pdfWidth - imgWidth * ratio) / 2;
       const imgY = 30;
 
-      pdf.addImage(imgData, "PNG", imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+      pdf.addImage(
+        imgData,
+        "PNG",
+        imgX,
+        imgY,
+        imgWidth * ratio,
+        imgHeight * ratio
+      );
 
       // Add header
       pdf.setFontSize(20);
-      pdf.text("Student Emotion Analytics Report", pdfWidth / 2, 20, { align: "center" });
+      pdf.text("Student Emotion Analytics Report", pdfWidth / 2, 20, {
+        align: "center",
+      });
 
       // Add footer
       const footerText = `Generated on ${new Date().toLocaleDateString()}`;
@@ -207,7 +218,7 @@ const EmotionAnalytics = () => {
         logging: false,
         imageTimeout: 0,
         removeContainer: true,
-        backgroundColor: '#ffffff'
+        backgroundColor: "#ffffff",
       });
 
       const imgData = canvas.toDataURL("image/jpeg", 0.8);
@@ -215,7 +226,7 @@ const EmotionAnalytics = () => {
         orientation: "portrait",
         unit: "mm",
         format: "a4",
-        compress: true
+        compress: true,
       });
 
       const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -226,11 +237,22 @@ const EmotionAnalytics = () => {
       const imgX = (pdfWidth - imgWidth * ratio) / 2;
       const imgY = 30;
 
-      pdf.addImage(imgData, "JPEG", imgX, imgY, imgWidth * ratio, imgHeight * ratio, undefined, 'FAST');
+      pdf.addImage(
+        imgData,
+        "JPEG",
+        imgX,
+        imgY,
+        imgWidth * ratio,
+        imgHeight * ratio,
+        undefined,
+        "FAST"
+      );
 
       // Add header
       pdf.setFontSize(20);
-      pdf.text("Student Emotion Analytics Report", pdfWidth / 2, 20, { align: "center" });
+      pdf.text("Student Emotion Analytics Report", pdfWidth / 2, 20, {
+        align: "center",
+      });
 
       // Add footer
       const footerText = `Generated on ${new Date().toLocaleDateString()}`;
@@ -238,12 +260,14 @@ const EmotionAnalytics = () => {
       pdf.text(footerText, pdfWidth / 2, pdfHeight - 10, { align: "center" });
 
       // Get PDF as base64 string with compression
-      const pdfBase64 = pdf.output('datauristring').split(',')[1];
+      const pdfBase64 = pdf.output("datauristring").split(",")[1];
 
       // Prepare email content
-      const activityName = activities.find(a => a.id === selectedActivity)?.name || "Unknown Activity";
+      const activityName =
+        activities.find((a) => a.id === selectedActivity)?.name ||
+        "Unknown Activity";
       const emailSubject = `Emotion Analytics Report - ${activityName} (${selectedDate})`;
-      
+
       const emailText = `
 Emotion Analytics Report
 Activity: ${activityName}
@@ -265,7 +289,9 @@ Please find the detailed PDF report attached to this email.
           <div style="margin: 20px 0;">
             <p><strong>Activity:</strong> ${activityName}</p>
             <p><strong>Date:</strong> ${selectedDate}</p>
-            <p><strong>Total Sessions:</strong> ${analyticsData?.allTimeData?.total || 0}</p>
+            <p><strong>Total Sessions:</strong> ${
+              analyticsData?.allTimeData?.total || 0
+            }</p>
           </div>
           <div style="margin: 20px 0;">
             <h3 style="color: #444;">Summary</h3>
@@ -295,12 +321,14 @@ Please find the detailed PDF report attached to this email.
           subject: emailSubject,
           text: emailText,
           html: emailHtml,
-          attachments: [{
-            content: pdfBase64,
-            filename: `emotion-analytics-report-${selectedDate}.pdf`,
-            type: 'application/pdf',
-            disposition: 'attachment'
-          }]
+          attachments: [
+            {
+              content: pdfBase64,
+              filename: `emotion-analytics-report-${selectedDate}.pdf`,
+              type: "application/pdf",
+              disposition: "attachment",
+            },
+          ],
         }),
       });
 
@@ -324,9 +352,29 @@ Please find the detailed PDF report attached to this email.
       <div className="max-w-6xl mx-auto">
         {/* Title and Buttons */}
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-center">
-            Student Emotion Analytics by Activity
-          </h1>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => navigate("/dashboard/6824d76701650ef2a5c26f3e")}
+              className="px-4 py-2 rounded-md text-white font-medium bg-gray-600 hover:bg-gray-700 flex items-center gap-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Back to Dashboard
+            </button>
+            <h1 className="text-2xl font-bold text-center">
+              Student Emotion Analytics by Activity
+            </h1>
+          </div>
           <div className="flex gap-2">
             <button
               onClick={() => setIsEmailModalVisible(true)}
@@ -384,7 +432,9 @@ Please find the detailed PDF report attached to this email.
                 className="bg-white p-4 rounded-lg shadow text-center"
               >
                 <p className="text-sm text-gray-500">{item.name}</p>
-                <p className="text-xl font-semibold">{item.value.toFixed(2)}%</p>
+                <p className="text-xl font-semibold">
+                  {item.value.toFixed(2)}%
+                </p>
               </div>
             ))}
           </div>
@@ -519,8 +569,12 @@ Please find the detailed PDF report attached to this email.
                     .map((paragraph, index) => {
                       if (
                         paragraph.startsWith("1. **Summary:**") ||
-                        paragraph.startsWith("2. **Key Areas of Improvement:**") ||
-                        paragraph.startsWith("3. **Recommendations for Better Engagement:**")
+                        paragraph.startsWith(
+                          "2. **Key Areas of Improvement:**"
+                        ) ||
+                        paragraph.startsWith(
+                          "3. **Recommendations for Better Engagement:**"
+                        )
                       ) {
                         return (
                           <h3
