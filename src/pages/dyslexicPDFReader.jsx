@@ -266,12 +266,12 @@ export default function DyslexicPDFReader() {
                 <div className="h-full overflow-auto">
 
 
-                  <div className='w-full h-full overflow-y-auto justify-center items-center flex'>
+                  <div className='w-full h-full overflow-y-auto  justify-center items-center flex'>
                     {sentenceSelect &&
-                      <p data-attribute="chromatic" className={`m-0 ${selectedChromaticTheme}`} style={{ fontSize: `${fontSize}px` }}>{sentences[sentenceIndex]}</p>
+                      <p data-attribute="chromatic" className={`text-wrap m-0 ${selectedChromaticTheme}`} style={{ fontSize: `${fontSize}px` }}>{sentences[sentenceIndex]}</p>
                     }
                     {paraSelect &&
-                      <p data-attribute="chromatic" className={`m-0 ${selectedChromaticTheme}`} style={{ fontSize: `${fontSize}px` }}>{paragraphs[paraIndex]}</p>
+                      <p data-attribute="chromatic" className={`text-wrap m-0 ${selectedChromaticTheme}`} style={{ fontSize: `${fontSize}px` }}>{paragraphs[paraIndex]}</p>
                     }
                   </div>
 

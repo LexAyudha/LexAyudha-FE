@@ -23,7 +23,7 @@ const Number8 = ({ highlightedTouchPoint }) => {
           cx={index === 0 ? 79 : index === 1 ? 159.5 : index === 2 ? 72 : 166.5}
           cy={index === 0 || index === 1 ? 65 : 153}
           r={12}
-          fill={index === highlightedTouchPoint ? "#FFD700" : "#c27e00"}
+          fill={index === highlightedTouchPoint ? "#c27e00" : "#FFD700"}
           onClick={() => handleTouch(index)}
         />
       ))}
