@@ -61,7 +61,7 @@ const EmotionAnalytics = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:8005/emotion/analytics?date=${selectedDate}&activityId=${selectedActivity}&studentId=12345678`
+        `http://localhost:8005/emotion/analytics?date=${selectedDate}&activityId=${selectedActivity}&studentId=${userId}`
       );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

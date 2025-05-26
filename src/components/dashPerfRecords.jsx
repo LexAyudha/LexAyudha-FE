@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Card, Button, Progress, Statistic, Row, Col, Spin, Radio } from 'antd';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Card, Button, Progress, Statistic, Row, Col, Spin, Radio } from "antd";
 import {
   LineChart,
   Line,
@@ -8,45 +8,51 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer
-} from 'recharts';
-import axiosInstance from '../api/axiosInstance';
-import { useQuery } from '@tanstack/react-query';
-import { getUserDetails } from '../api/RecurringAPI'
-import DysRecordPdf from './dysRecordPdf';
+  ResponsiveContainer,
+} from "recharts";
+import axiosInstance from "../api/axiosInstance";
+import { useQuery } from "@tanstack/react-query";
+import { getUserDetails } from "../api/RecurringAPI";
+import DysRecordPdf from "./dysRecordPdf";
 
 const DashPerformance = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [reportType, setReportType] = useState('dyscalculia'); // 'dyscalculia' or 'dyslexia'
+  const [reportType, setReportType] = useState("dyscalculia"); // 'dyscalculia' or 'dyslexia'
   const [performanceData, setPerformanceData] = useState({
     totalSessions: 0,
     averageEngagement: 0,
     averageFrustration: 0,
     averageDistraction: 0,
-    recentTrend: []
+    recentTrend: [],
   });
-  const [dysReportsList, setDysReportList] = useState([])
-  const [reportPreview, setReportPreview] = useState(false)
-  const [reportObj, setReportObj] = useState(null)
+  const [dysReportsList, setDysReportList] = useState([]);
+  const [reportPreview, setReportPreview] = useState(false);
+  const [reportObj, setReportObj] = useState(null);
+  const [userId, setUserId] = useState(0);
 
-  const { data: user, isLoading, error } = useQuery({
-    queryKey: ['userData'],
+  const {
+    data: user,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["userData"],
     queryFn: () => getUserDetails(),
   });
 
   useEffect(() => {
+    const user = localStorage.getItem("userId");
+    setUserId(user);
     if (reportObj !== null) {
-      setReportPreview(true)
+      setReportPreview(true);
     } else {
-      setReportPreview(false)
+      setReportPreview(false);
     }
-
   }, [reportObj]);
 
   useEffect(() => {
     if (!reportPreview) {
-      setReportObj(null)
+      setReportObj(null);
     }
   }, [reportPreview]);
 
@@ -56,7 +62,7 @@ const DashPerformance = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          'http://localhost:8005/emotion/analytics?date=2025-05-15&activityId=2468&studentId=12345678'
+          "http://localhost:8005/emotion/analytics?date=2025-05-15&activityId=2468&studentId=12345678"
         );
         const data = await response.json();
 
@@ -66,15 +72,17 @@ const DashPerformance = () => {
           averageEngagement: data.allTimeData?.engagement || 0,
           averageFrustration: data.allTimeData?.frustration || 0,
           averageDistraction: data.allTimeData?.distraction || 0,
-          recentTrend: Object.entries(data.allTimeData?.dailyTrend || {}).map(([date, emotions]) => ({
-            date,
-            engagement: emotions.happy || 0,
-            frustration: emotions.angry || 0,
-            distraction: emotions.surprise || 0
-          })).slice(-7) // Last 7 days
+          recentTrend: Object.entries(data.allTimeData?.dailyTrend || {})
+            .map(([date, emotions]) => ({
+              date,
+              engagement: emotions.happy || 0,
+              frustration: emotions.angry || 0,
+              distraction: emotions.surprise || 0,
+            }))
+            .slice(-7), // Last 7 days
         });
       } catch (error) {
-        console.error('Error fetching performance data:', error);
+        console.error("Error fetching performance data:", error);
       } finally {
         setLoading(false);
       }
@@ -84,25 +92,23 @@ const DashPerformance = () => {
   }, []);
 
   useEffect(() => {
-
-    getDyslexicRecords()
+    getDyslexicRecords();
   }, [user]);
 
   const getDyslexicRecords = async () => {
     try {
-
-      const res = await axiosInstance.get(`/user/records/${user?._id}`)
+      const res = await axiosInstance.get(`/user/records/${userId}`);
       if (res?.status === 200) {
-        console.log('DysReports: ', res?.data)
-        setDysReportList(res?.data)
+        console.log("DysReports: ", res?.data);
+        setDysReportList(res?.data);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const handleViewAnalytics = () => {
-    navigate('/analytics');
+    navigate("/analytics");
   };
 
   const handleReportTypeChange = (e) => {
@@ -110,24 +116,30 @@ const DashPerformance = () => {
   };
 
   const openDysReportPdf = (index) => {
-    setReportObj(dysReportsList[index])
-  }
+    setReportObj(dysReportsList[index]);
+  };
 
   if (loading) {
     return (
       <div className="h-full w-full flex items-center justify-center">
         <Spin size="large" tip="Loading performance data...">
-          <div className="content" style={{ padding: '50px', background: 'rgba(0, 0, 0, 0.05)', borderRadius: '4px' }} />
+          <div
+            className="content"
+            style={{
+              padding: "50px",
+              background: "rgba(0, 0, 0, 0.05)",
+              borderRadius: "4px",
+            }}
+          />
         </Spin>
       </div>
     );
   }
 
   // Dyslexia Report View
-  if (reportType === 'dyslexia') {
+  if (reportType === "dyslexia") {
     return (
       <div className="p-6">
-        
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">Dyslexia Quiz Reports</h1>
           <Radio.Group
@@ -139,44 +151,60 @@ const DashPerformance = () => {
             <Radio.Button value="dyslexia">Dyslexia</Radio.Button>
           </Radio.Group>
         </div>
-        <Card className='h-full'>
+        <Card className="h-full">
           {reportPreview ? (
-            <div className='flex justify-center items-start'>
-              <DysRecordPdf record={reportObj} closeWindow={() => setReportPreview(false)} />
+            <div className="flex justify-center items-start">
+              <DysRecordPdf
+                record={reportObj}
+                closeWindow={() => setReportPreview(false)}
+              />
             </div>
-            
           ) : (
             <div className="text-center h-full min-h-[220px] overflow-y-auto flex-wrap w-full py-2 px-2 flex justify-between items-start">
-            {dysReportsList.length > 0 ? (
-              dysReportsList.map((report, index) => (
+              {dysReportsList.length > 0 ? (
+                dysReportsList.map((report, index) => (
+                  <div
+                    key={index}
+                    onClick={() => openDysReportPdf(index)}
+                    className="mb-[12px] h-[80px] flex cursor-pointer group rounded-lg shadow-[0px_0px_4px_2px_rgba(0,0,0,0.1)] py-2 px-2 justify-center items-center w-[calc(33.333%-0.5rem)]"
+                  >
+                    <div className=" h-full flex w-full justify-center items-center">
+                      <p className="m-0 text-xl font-bold text-gray-500 group-hover:text-black">
+                        {report?.name}_{report?._id?.substring(0, 6)}
+                      </p>
+                    </div>
+                    <div className="flex w-1/3 flex-col text-gray-500 group-hover:text-black">
+                      <p className="text-lg ">
+                        {new Date(report?.createdAt).toLocaleTimeString(
+                          "en-US",
+                          {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
+                            timeZone: "UTC",
+                          }
+                        )}
+                      </p>
 
-              <div key={index} onClick={() => openDysReportPdf(index)} className='mb-[12px] h-[80px] flex cursor-pointer group rounded-lg shadow-[0px_0px_4px_2px_rgba(0,0,0,0.1)] py-2 px-2 justify-center items-center w-[calc(33.333%-0.5rem)]'>
-                <div className=' h-full flex w-full justify-center items-center'>
-                  <p className='m-0 text-xl font-bold text-gray-500 group-hover:text-black'>{report?.name}_{report?._id?.substring(0, 6)}</p>
-                </div>
-                <div className='flex w-1/3 flex-col text-gray-500 group-hover:text-black'>
-                  <p className='text-lg '>
-                    {new Date(report?.createdAt).toLocaleTimeString('en-US', {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      hour12: false,
-                      timeZone: 'UTC'
-                    })}
+                      <p className="text-xs">
+                        {
+                          new Date(report?.createdAt)
+                            .toISOString()
+                            .split("T")[0]
+                        }
+                      </p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className=" flex text-wrap h-full min-h-[180px] w-full items-center justify-center">
+                  <p className="text-gray-500 m-0">
+                    No Records available at the moment.
                   </p>
-
-                  <p className='text-xs'>{new Date(report?.createdAt).toISOString().split('T')[0]}</p>
                 </div>
-              </div>
-            ))
-            ):(
-              <div className=' flex text-wrap h-full min-h-[180px] w-full items-center justify-center'>
-                <p className='text-gray-500 m-0'>No Records available at the moment.</p>
-              </div>
-            )}
-           
-          </div>
+              )}
+            </div>
           )}
-          
         </Card>
       </div>
     );
@@ -224,7 +252,7 @@ const DashPerformance = () => {
               title="Average Engagement"
               value={performanceData.averageEngagement}
               suffix="%"
-              valueStyle={{ color: '#3f8600' }}
+              valueStyle={{ color: "#3f8600" }}
             />
           </Card>
         </Col>
@@ -234,7 +262,7 @@ const DashPerformance = () => {
               title="Average Frustration"
               value={performanceData.averageFrustration}
               suffix="%"
-              valueStyle={{ color: '#cf1322' }}
+              valueStyle={{ color: "#cf1322" }}
             />
           </Card>
         </Col>
@@ -244,7 +272,7 @@ const DashPerformance = () => {
               title="Average Distraction"
               value={performanceData.averageDistraction}
               suffix="%"
-              valueStyle={{ color: '#faad14' }}
+              valueStyle={{ color: "#faad14" }}
             />
           </Card>
         </Col>
@@ -291,7 +319,7 @@ const DashPerformance = () => {
 
       {/* Recent Trend Chart */}
       <Card title="7-Day Emotion Trend" className="mb-6">
-        <div style={{ width: '100%', height: 300 }}>
+        <div style={{ width: "100%", height: 300 }}>
           <ResponsiveContainer>
             <LineChart data={performanceData.recentTrend}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -332,7 +360,7 @@ const DashPerformance = () => {
             View Full Analytics
           </Button>
           <Button
-            onClick={() => navigate('/analytics')}
+            onClick={() => navigate("/analytics")}
             className="border-blue-600 text-blue-600 hover:bg-blue-50"
           >
             Download Report

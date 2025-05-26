@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import EmotionDetection from "./EmotionDetection";
 
 export default function EmotionDetectionButton({ onModalAction, number }) {
   const [startDetection, setStartDetection] = useState(false);
   const [emotionData, setEmotionData] = useState(null);
   const [disablePopup, setDisablePopup] = useState(false); // Prevent modal reappearing
+  const [userId, setUserId] = useState(0);
 
   const handleStopDetection = () => {
     setStartDetection(false);
@@ -14,6 +15,10 @@ export default function EmotionDetectionButton({ onModalAction, number }) {
     setEmotionData(data);
   };
 
+  useEffect(() => {
+    const user = localStorage.getItem("userId");
+    setUserId(user);
+  }, []);
   // Handle when the user dismisses the modal
   const handleModalAction = (value) => {
     if (value) {
@@ -39,7 +44,7 @@ export default function EmotionDetectionButton({ onModalAction, number }) {
           onModalAction={handleModalAction}
           disablePopup={disablePopup} // Pass disablePopup to EmotionDetection
           number={number}
-          studentId="12345678"
+          studentId={userId}
           activityId="2468"
         />
       )}
