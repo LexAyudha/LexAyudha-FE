@@ -78,11 +78,11 @@ export default function SpeechCalibPage() {
     };
 
     const sentencesList = [
-        'She walks to school daily.',
-        'They enjoy playing outside together.',
-        'The sun slowly disappeared behind clouds.',
-        'The baby smiled while playing with toys.',
-        'The wind howled loudly during the cold night.',
+        'The snowflakes floated from the sky and landed on the ground, covering the trees in a white blanket that sparkled under the glowing streetlights.',
+        'The kitten curled up by the warm fireplace and purred softly as the fire crackled and popped, filling the room with a cozy glow and a peaceful, sleepy feeling.',
+        'As the sun began to rise, the birds chirped happily in the trees, and the sky turned from dark blue to pink and orange with soft clouds floating across it.',
+        'The little boy held his umbrella tight as the rain fell all around him, splashing in puddles and dripping from rooftops like a song sung by the sky itself.',
+        'The wind danced through the tall grass in the meadow, making it sway like the waves in the sea while butterflies fluttered from flower to flower in the morning.',
 
     ]
 
