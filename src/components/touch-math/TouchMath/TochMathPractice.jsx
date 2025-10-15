@@ -310,7 +310,7 @@ const TouchMathPractice = () => {
         <h1 className="font-bold">Touch Math Practice</h1>
 
         {/* Current Number Display */}
-        <div className="text-xl font-bold mt-2 mb-4">
+        <div className="text-3xl font-bold mt-2 mb-4">
           Currently practicing: Number {number}
         </div>
 

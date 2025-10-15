@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import MinimalHeader from "../components/minimalHeader.jsx";
 import ChangeThemeFB from "../components/changeThemeFB.jsx";
 import SignInWithGoogleBtn from "../components/signInWithGoogle.jsx";
-import axios from "axios";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import { data } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance.js";
@@ -121,24 +120,33 @@ export default function Register() {
   const generateOTP = async () => {
     const res = await axiosInstance.get("/auth/otp");
 
-    // const res = {
-    //     status: 200,
-    //     data: {
-    //         otp: 123456
-    //     }
-    // } // Mock response
-
     if (res?.status === 200) {
-      toast.success("OTP code sent!");
+      // toast.success("OTP code sent!");
       console.log("otp: ", res?.data?.otp);
       setOtp(res?.data?.otp);
-      await axios.post("http://localhost:8007/email/send-email", {
-        to: userEmail,
-        subject: "Verify Your Lexayudha Account",
-        text: `Your OTP code is: ${otp}`,
-        html: generateOtpHtmlTemplate(res?.data?.otp),
-      });
-      return true;
+      try {
+        const response = await axiosInstance.post("/smtp/email/send-email", {
+          to: userEmail,
+          subject: "Verify Your Lexayudha Account",
+          text: `Your OTP code is: ${otp}`,
+          html: generateOtpHtmlTemplate(res?.data?.otp),
+        });
+
+        console.log("Email send response: ", response);
+        if (response?.status === 200) {
+          toast.success("OTP code sent!");
+          return true;
+
+        }
+        else {
+          toast.error("Failed to send OTP code!");
+          return true; // Dev note - Change this to false in production
+        }
+      } catch (error) {
+        console.error("Error sending email:", error);
+        toast.error("Failed to send OTP code!");
+        return true; // Dev note - Change this to false in production
+      }
     } else {
       toast.error("Failed to send OTP code!");
       return false;
